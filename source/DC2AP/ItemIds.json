@@ -1,0 +1,1718 @@
+[
+  {
+    "id": 0,
+    "name": "null"
+  },
+  {
+    "id": 1,
+    "name": "battle wrench"
+  },
+  {
+    "id": 2,
+    "name": "drill wrench"
+  },
+  {
+    "id": 3,
+    "name": "smash wrench"
+  },
+  {
+    "id": 4,
+    "name": "stinger wrench"
+  },
+  {
+    "id": 5,
+    "name": "poison wrench"
+  },
+  {
+    "id": 6,
+    "name": "cubic hammer"
+  },
+  {
+    "id": 7,
+    "name": "digi hammer"
+  },
+  {
+    "id": 8,
+    "name": "heavy hammer"
+  },
+  {
+    "id": 9,
+    "name": "handy stick"
+  },
+  {
+    "id": 10,
+    "name": "turkey"
+  },
+  {
+    "id": 11,
+    "name": "swan"
+  },
+  {
+    "id": 12,
+    "name": "flamingo"
+  },
+  {
+    "id": 13,
+    "name": "falcon"
+  },
+  {
+    "id": 14,
+    "name": "albatross"
+  },
+  {
+    "id": 15,
+    "name": "turtle shell hammer"
+  },
+  {
+    "id": 16,
+    "name": "big bucks hammer"
+  },
+  {
+    "id": 17,
+    "name": "frozen tuna"
+  },
+  {
+    "id": 18,
+    "name": "Kubera's hand"
+  },
+  {
+    "id": 19,
+    "name": "sigma breaker"
+  },
+  {
+    "id": 20,
+    "name": "grade 0"
+  },
+  {
+    "id": 21,
+    "name": "LEGEND"
+  },
+  {
+    "id": 22,
+    "name": "classic gun"
+  },
+  {
+    "id": 23,
+    "name": "dryer gun"
+  },
+  {
+    "id": 24,
+    "name": "trumpet gun"
+  },
+  {
+    "id": 25,
+    "name": "bell trigger"
+  },
+  {
+    "id": 26,
+    "name": "magic gun"
+  },
+  {
+    "id": 27,
+    "name": "soul breaker"
+  },
+  {
+    "id": 28,
+    "name": "grenade launcher"
+  },
+  {
+    "id": 29,
+    "name": "dark viper"
+  },
+  {
+    "id": 30,
+    "name": "twin buster"
+  },
+  {
+    "id": 31,
+    "name": "jurak gun"
+  },
+  {
+    "id": 32,
+    "name": "question shooter"
+  },
+  {
+    "id": 33,
+    "name": "steal gun"
+  },
+  {
+    "id": 34,
+    "name": "supernova"
+  },
+  {
+    "id": 35,
+    "name": "star breaker"
+  },
+  {
+    "id": 36,
+    "name": "wild cat"
+  },
+  {
+    "id": 37,
+    "name": "sexy panther"
+  },
+  {
+    "id": 38,
+    "name": "desperado"
+  },
+  {
+    "id": 39,
+    "name": "sigma bazooka"
+  },
+  {
+    "id": 40,
+    "name": "last resort"
+  },
+  {
+    "id": 41,
+    "name": "long sword"
+  },
+  {
+    "id": 42,
+    "name": "broad sword"
+  },
+  {
+    "id": 43,
+    "name": "baselard"
+  },
+  {
+    "id": 44,
+    "name": "gladius"
+  },
+  {
+    "id": 45,
+    "name": "wise owl sword"
+  },
+  {
+    "id": 46,
+    "name": "cliff knife"
+  },
+  {
+    "id": 47,
+    "name": "antique sword"
+  },
+  {
+    "id": 48,
+    "name": "bastard sword"
+  },
+  {
+    "id": 49,
+    "name": "kitchen knife"
+  },
+  {
+    "id": 50,
+    "name": "tsukikage"
+  },
+  {
+    "id": 51,
+    "name": "sun sword"
+  },
+  {
+    "id": 52,
+    "name": "serpent slicer"
+  },
+  {
+    "id": 53,
+    "name": "null"
+  },
+  {
+    "id": 54,
+    "name": "shamshir"
+  },
+  {
+    "id": 55,
+    "name": "ama no murakumo"
+  },
+  {
+    "id": 56,
+    "name": "lamb's sword"
+  },
+  {
+    "id": 57,
+    "name": "dark cloud"
+  },
+  {
+    "id": 58,
+    "name": "brave ark"
+  },
+  {
+    "id": 59,
+    "name": "big bang"
+  },
+  {
+    "id": 60,
+    "name": "atlamillia sword"
+  },
+  {
+    "id": 61,
+    "name": "mardan sword"
+  },
+  {
+    "id": 62,
+    "name": "Garayan sword"
+  },
+  {
+    "id": 63,
+    "name": "mardan garayan"
+  },
+  {
+    "id": 64,
+    "name": "ruler's sword"
+  },
+  {
+    "id": 65,
+    "name": "Evilcise"
+  },
+  {
+    "id": 66,
+    "name": "small sword"
+  },
+  {
+    "id": 67,
+    "name": "sand breaker"
+  },
+  {
+    "id": 68,
+    "name": "drain seeker"
+  },
+  {
+    "id": 69,
+    "name": "chopper"
+  },
+  {
+    "id": 70,
+    "name": "choora"
+  },
+  {
+    "id": 71,
+    "name": "claymore"
+  },
+  {
+    "id": 72,
+    "name": "maneater"
+  },
+  {
+    "id": 73,
+    "name": "bone rapier"
+  },
+  {
+    "id": 74,
+    "name": "sax"
+  },
+  {
+    "id": 75,
+    "name": "7 branch sword"
+  },
+  {
+    "id": 76,
+    "name": "dusack"
+  },
+  {
+    "id": 77,
+    "name": "cross heinder"
+  },
+  {
+    "id": 78,
+    "name": "7th heaven"
+  },
+  {
+    "id": 79,
+    "name": "sword of zeus"
+  },
+  {
+    "id": 80,
+    "name": "chronicle sword"
+  },
+  {
+    "id": 81,
+    "name": "chronicle 2"
+  },
+  {
+    "id": 82,
+    "name": "holy daedalus blade"
+  },
+  {
+    "id": 83,
+    "name": "muramasa"
+  },
+  {
+    "id": 84,
+    "name": "dark excalibur"
+  },
+  {
+    "id": 85,
+    "name": "sargatanas"
+  },
+  {
+    "id": 86,
+    "name": "halloween blade"
+  },
+  {
+    "id": 87,
+    "name": "shining bravado"
+  },
+  {
+    "id": 88,
+    "name": "island king"
+  },
+  {
+    "id": 89,
+    "name": "griffon fork"
+  },
+  {
+    "id": 90,
+    "name": "true battle wrench"
+  },
+  {
+    "id": 91,
+    "name": "magic brassard"
+  },
+  {
+    "id": 92,
+    "name": "gold brassard"
+  },
+  {
+    "id": 93,
+    "name": "bandit brassard"
+  },
+  {
+    "id": 94,
+    "name": "crystal brassard"
+  },
+  {
+    "id": 95,
+    "name": "platinum brassard"
+  },
+  {
+    "id": 96,
+    "name": "goddess brassard"
+  },
+  {
+    "id": 97,
+    "name": "spirit brassard"
+  },
+  {
+    "id": 98,
+    "name": "destruction brassard"
+  },
+  {
+    "id": 99,
+    "name": "satan brassard"
+  },
+  {
+    "id": 100,
+    "name": "athena's armlet"
+  },
+  {
+    "id": 101,
+    "name": "mobius bangle"
+  },
+  {
+    "id": 102,
+    "name": "angel shooter"
+  },
+  {
+    "id": 103,
+    "name": "pocklekul"
+  },
+  {
+    "id": 104,
+    "name": "thorn armlet"
+  },
+  {
+    "id": 105,
+    "name": "star armlet"
+  },
+  {
+    "id": 106,
+    "name": "moon armlet"
+  },
+  {
+    "id": 107,
+    "name": "sun armlet"
+  },
+  {
+    "id": 108,
+    "name": "five-star armlet"
+  },
+  {
+    "id": 109,
+    "name": "love"
+  },
+  {
+    "id": 110,
+    "name": "royal sword"
+  },
+  {
+    "id": 111,
+    "name": "hunting cap"
+  },
+  {
+    "id": 112,
+    "name": "fashionable cap"
+  },
+  {
+    "id": 113,
+    "name": "two-tone beret"
+  },
+  {
+    "id": 114,
+    "name": "maintenance cap"
+  },
+  {
+    "id": 115,
+    "name": "explorer's helmet"
+  },
+  {
+    "id": 116,
+    "name": "clown hat"
+  },
+  {
+    "id": 117,
+    "name": "leather shoes"
+  },
+  {
+    "id": 118,
+    "name": "wing shoes"
+  },
+  {
+    "id": 119,
+    "name": "work shoes"
+  },
+  {
+    "id": 120,
+    "name": "dragon shoes"
+  },
+  {
+    "id": 121,
+    "name": "clown shoes"
+  },
+  {
+    "id": 122,
+    "name": "explorer's shoes"
+  },
+  {
+    "id": 123,
+    "name": "yellow ribbon"
+  },
+  {
+    "id": 124,
+    "name": "striped ribbon"
+  },
+  {
+    "id": 125,
+    "name": "zipangu comb"
+  },
+  {
+    "id": 126,
+    "name": "swallowtail"
+  },
+  {
+    "id": 127,
+    "name": "princess orb"
+  },
+  {
+    "id": 128,
+    "name": "kitty bell"
+  },
+  {
+    "id": 129,
+    "name": "knight boots"
+  },
+  {
+    "id": 130,
+    "name": "metal boots"
+  },
+  {
+    "id": 131,
+    "name": "wing boots"
+  },
+  {
+    "id": 132,
+    "name": "spike boots"
+  },
+  {
+    "id": 133,
+    "name": "princess boots"
+  },
+  {
+    "id": 134,
+    "name": "panther boots"
+  },
+  {
+    "id": 135,
+    "name": "drum can body"
+  },
+  {
+    "id": 136,
+    "name": "milk can body"
+  },
+  {
+    "id": 137,
+    "name": "refrigerator body"
+  },
+  {
+    "id": 138,
+    "name": "wooden box body"
+  },
+  {
+    "id": 139,
+    "name": "clown body"
+  },
+  {
+    "id": 140,
+    "name": "samurai body"
+  },
+  {
+    "id": 141,
+    "name": "super-alloy body"
+  },
+  {
+    "id": 142,
+    "name": "sun and moon armor"
+  },
+  {
+    "id": 143,
+    "name": "null"
+  },
+  {
+    "id": 144,
+    "name": "null"
+  },
+  {
+    "id": 145,
+    "name": "cannonball arm"
+  },
+  {
+    "id": 146,
+    "name": "barrel cannonball"
+  },
+  {
+    "id": 147,
+    "name": "drill arm"
+  },
+  {
+    "id": 148,
+    "name": "missile pod arm"
+  },
+  {
+    "id": 149,
+    "name": "hammer arm"
+  },
+  {
+    "id": 150,
+    "name": "machine gun arm"
+  },
+  {
+    "id": 151,
+    "name": "clown hand"
+  },
+  {
+    "id": 152,
+    "name": "samurai arm"
+  },
+  {
+    "id": 153,
+    "name": "laser arm"
+  },
+  {
+    "id": 154,
+    "name": "nova cannon"
+  },
+  {
+    "id": 155,
+    "name": "iron leg"
+  },
+  {
+    "id": 156,
+    "name": "catterpillar"
+  },
+  {
+    "id": 157,
+    "name": "bucket leg"
+  },
+  {
+    "id": 158,
+    "name": "roller foot"
+  },
+  {
+    "id": 159,
+    "name": "buggy"
+  },
+  {
+    "id": 160,
+    "name": "propeller leg"
+  },
+  {
+    "id": 161,
+    "name": "multi-feet"
+  },
+  {
+    "id": 162,
+    "name": "jet hover"
+  },
+  {
+    "id": 163,
+    "name": "clown foot"
+  },
+  {
+    "id": 164,
+    "name": "null"
+  },
+  {
+    "id": 165,
+    "name": "energy pack"
+  },
+  {
+    "id": 166,
+    "name": "energy pack (barrel)"
+  },
+  {
+    "id": 167,
+    "name": "bucket pack"
+  },
+  {
+    "id": 168,
+    "name": "cleaner pack"
+  },
+  {
+    "id": 169,
+    "name": "energy pack (urn)"
+  },
+  {
+    "id": 170,
+    "name": "triple-urn pack"
+  },
+  {
+    "id": 171,
+    "name": "null"
+  },
+  {
+    "id": 172,
+    "name": "monster notes"
+  },
+  {
+    "id": 173,
+    "name": "dynamite"
+  },
+  {
+    "id": 174,
+    "name": "seal-breaking scroll"
+  },
+  {
+    "id": 175,
+    "name": "flame crystal"
+  },
+  {
+    "id": 176,
+    "name": "chill crystal"
+  },
+  {
+    "id": 177,
+    "name": "lightning crystal"
+  },
+  {
+    "id": 178,
+    "name": "hunter crystal"
+  },
+  {
+    "id": 179,
+    "name": "holy crystal"
+  },
+  {
+    "id": 180,
+    "name": "destruction crystal"
+  },
+  {
+    "id": 181,
+    "name": "wind crystal"
+  },
+  {
+    "id": 182,
+    "name": "sea dragon crystal"
+  },
+  {
+    "id": 183,
+    "name": "power crystal"
+  },
+  {
+    "id": 184,
+    "name": "protector crystal"
+  },
+  {
+    "id": 185,
+    "name": "[line1]"
+  },
+  {
+    "id": 186,
+    "name": "garnet"
+  },
+  {
+    "id": 187,
+    "name": "amethyst"
+  },
+  {
+    "id": 188,
+    "name": "aquamarine"
+  },
+  {
+    "id": 189,
+    "name": "diamond"
+  },
+  {
+    "id": 190,
+    "name": "emerald"
+  },
+  {
+    "id": 191,
+    "name": "pearl"
+  },
+  {
+    "id": 192,
+    "name": "ruby"
+  },
+  {
+    "id": 193,
+    "name": "peridot"
+  },
+  {
+    "id": 194,
+    "name": "sapphire"
+  },
+  {
+    "id": 195,
+    "name": "opal"
+  },
+  {
+    "id": 196,
+    "name": "topaz"
+  },
+  {
+    "id": 197,
+    "name": "turquoise"
+  },
+  {
+    "id": 198,
+    "name": "sun stone"
+  },
+  {
+    "id": 199,
+    "name": "moon stone"
+  },
+  {
+    "id": 200,
+    "name": "wealth coin"
+  },
+  {
+    "id": 201,
+    "name": "dark coin"
+  },
+  {
+    "id": 202,
+    "name": "indestructible coin"
+  },
+  {
+    "id": 203,
+    "name": "poison coin"
+  },
+  {
+    "id": 204,
+    "name": "time coin"
+  },
+  {
+    "id": 205,
+    "name": "bandit coin"
+  },
+  {
+    "id": 206,
+    "name": "absorption coin"
+  },
+  {
+    "id": 207,
+    "name": "healing coin"
+  },
+  {
+    "id": 208,
+    "name": "bull's-eye coin"
+  },
+  {
+    "id": 209,
+    "name": "experience coin"
+  },
+  {
+    "id": 210,
+    "name": "rolling log"
+  },
+  {
+    "id": 211,
+    "name": "sturdy rock"
+  },
+  {
+    "id": 212,
+    "name": "rough rock"
+  },
+  {
+    "id": 213,
+    "name": "bundle of hay"
+  },
+  {
+    "id": 214,
+    "name": "sturdy cloth"
+  },
+  {
+    "id": 215,
+    "name": "gunpowder"
+  },
+  {
+    "id": 216,
+    "name": "glass material"
+  },
+  {
+    "id": 217,
+    "name": "unknown bone"
+  },
+  {
+    "id": 218,
+    "name": "sticky clay"
+  },
+  {
+    "id": 219,
+    "name": "flour"
+  },
+  {
+    "id": 220,
+    "name": "sugar cane"
+  },
+  {
+    "id": 221,
+    "name": "super hot pepper"
+  },
+  {
+    "id": 222,
+    "name": "poison"
+  },
+  {
+    "id": 223,
+    "name": "forest dew"
+  },
+  {
+    "id": 224,
+    "name": "scrap of metal"
+  },
+  {
+    "id": 225,
+    "name": "gold barrel"
+  },
+  {
+    "id": 226,
+    "name": "silver ball"
+  },
+  {
+    "id": 227,
+    "name": "hunk of copper"
+  },
+  {
+    "id": 228,
+    "name": "light element"
+  },
+  {
+    "id": 229,
+    "name": "holy element"
+  },
+  {
+    "id": 230,
+    "name": "earth element"
+  },
+  {
+    "id": 231,
+    "name": "water element"
+  },
+  {
+    "id": 232,
+    "name": "chill element"
+  },
+  {
+    "id": 233,
+    "name": "thunder element"
+  },
+  {
+    "id": 234,
+    "name": "wind element"
+  },
+  {
+    "id": 235,
+    "name": "fire element"
+  },
+  {
+    "id": 236,
+    "name": "life element"
+  },
+  {
+    "id": 237,
+    "name": "paint (red)"
+  },
+  {
+    "id": 238,
+    "name": "paint (blue)"
+  },
+  {
+    "id": 239,
+    "name": "paint (black)"
+  },
+  {
+    "id": 240,
+    "name": "paint (green)"
+  },
+  {
+    "id": 241,
+    "name": "paint (orange)"
+  },
+  {
+    "id": 242,
+    "name": "paint (yellow)"
+  },
+  {
+    "id": 243,
+    "name": "paint (purple)"
+  },
+  {
+    "id": 244,
+    "name": "paint (pink)"
+  },
+  {
+    "id": 245,
+    "name": "thick hide"
+  },
+  {
+    "id": 246,
+    "name": "core"
+  },
+  {
+    "id": 247,
+    "name": "improved core"
+  },
+  {
+    "id": 248,
+    "name": "core ii"
+  },
+  {
+    "id": 249,
+    "name": "core iii"
+  },
+  {
+    "id": 250,
+    "name": "super core"
+  },
+  {
+    "id": 251,
+    "name": "hyper core"
+  },
+  {
+    "id": 252,
+    "name": "master grade core"
+  },
+  {
+    "id": 253,
+    "name": "anti-petrify amulet"
+  },
+  {
+    "id": 254,
+    "name": "non-stop amulet"
+  },
+  {
+    "id": 255,
+    "name": "anti-curse amulet"
+  },
+  {
+    "id": 256,
+    "name": "anti-goo amulet"
+  },
+  {
+    "id": 257,
+    "name": "antidote amulet"
+  },
+  {
+    "id": 258,
+    "name": "green overalls"
+  },
+  {
+    "id": 259,
+    "name": "red vest"
+  },
+  {
+    "id": 260,
+    "name": "denim overalls"
+  },
+  {
+    "id": 261,
+    "name": "explorer's outfit"
+  },
+  {
+    "id": 262,
+    "name": "clown suit"
+  },
+  {
+    "id": 263,
+    "name": "pumpkin shorts"
+  },
+  {
+    "id": 264,
+    "name": "striped dress"
+  },
+  {
+    "id": 265,
+    "name": "star leotard"
+  },
+  {
+    "id": 266,
+    "name": "princess dress"
+  },
+  {
+    "id": 267,
+    "name": "panther ensemble"
+  },
+  {
+    "id": 268,
+    "name": "bread"
+  },
+  {
+    "id": 269,
+    "name": "cheese"
+  },
+  {
+    "id": 270,
+    "name": "premium chicken"
+  },
+  {
+    "id": 271,
+    "name": "double pudding"
+  },
+  {
+    "id": 272,
+    "name": "plum rice ball"
+  },
+  {
+    "id": 273,
+    "name": "resurrection powder"
+  },
+  {
+    "id": 274,
+    "name": "stamina drink"
+  },
+  {
+    "id": 275,
+    "name": "antidote drink"
+  },
+  {
+    "id": 276,
+    "name": "holy water"
+  },
+  {
+    "id": 277,
+    "name": "soap"
+  },
+  {
+    "id": 278,
+    "name": "medusa's tear"
+  },
+  {
+    "id": 279,
+    "name": "mighty healing"
+  },
+  {
+    "id": 280,
+    "name": "bomb"
+  },
+  {
+    "id": 281,
+    "name": "stone"
+  },
+  {
+    "id": 282,
+    "name": "flame stone"
+  },
+  {
+    "id": 283,
+    "name": "chill stone"
+  },
+  {
+    "id": 284,
+    "name": "lightning stone"
+  },
+  {
+    "id": 285,
+    "name": "wind stone"
+  },
+  {
+    "id": 286,
+    "name": "holy stone"
+  },
+  {
+    "id": 287,
+    "name": "heart-throb cherry"
+  },
+  {
+    "id": 288,
+    "name": "stone berry"
+  },
+  {
+    "id": 289,
+    "name": "gooey peach"
+  },
+  {
+    "id": 290,
+    "name": "bomb nut"
+  },
+  {
+    "id": 291,
+    "name": "poison apple"
+  },
+  {
+    "id": 292,
+    "name": "mellow banana"
+  },
+  {
+    "id": 293,
+    "name": "escape powder"
+  },
+  {
+    "id": 294,
+    "name": "Weapon powder"
+  },
+  {
+    "id": 295,
+    "name": "level up powder"
+  },
+  {
+    "id": 296,
+    "name": "fruit of eden"
+  },
+  {
+    "id": 297,
+    "name": "Treasure chest key"
+  },
+  {
+    "id": 298,
+    "name": "gun repair powder"
+  },
+  {
+    "id": 299,
+    "name": "crunchy bread"
+  },
+  {
+    "id": 300,
+    "name": "crunchy bread"
+  },
+  {
+    "id": 301,
+    "name": "roasted chestnut"
+  },
+  {
+    "id": 302,
+    "name": "fishing rod"
+  },
+  {
+    "id": 303,
+    "name": "lure rod"
+  },
+  {
+    "id": 304,
+    "name": "gift capsule"
+  },
+  {
+    "id": 305,
+    "name": "map"
+  },
+  {
+    "id": 306,
+    "name": "magic crystal"
+  },
+  {
+    "id": 307,
+    "name": "lightspeed"
+  },
+  {
+    "id": 308,
+    "name": "badge box"
+  },
+  {
+    "id": 309,
+    "name": "aquarium"
+  },
+  {
+    "id": 310,
+    "name": "priscleen"
+  },
+  {
+    "id": 311,
+    "name": "medal holder"
+  },
+  {
+    "id": 312,
+    "name": "prickly"
+  },
+  {
+    "id": 313,
+    "name": "mimi"
+  },
+  {
+    "id": 314,
+    "name": "evy"
+  },
+  {
+    "id": 315,
+    "name": "carrot"
+  },
+  {
+    "id": 316,
+    "name": "potato cake"
+  },
+  {
+    "id": 317,
+    "name": "minon"
+  },
+  {
+    "id": 318,
+    "name": "battan"
+  },
+  {
+    "id": 319,
+    "name": "petite fish"
+  },
+  {
+    "id": 320,
+    "name": "bobo"
+  },
+  {
+    "id": 321,
+    "name": "gobbler"
+  },
+  {
+    "id": 322,
+    "name": "nonky"
+  },
+  {
+    "id": 323,
+    "name": "kaji"
+  },
+  {
+    "id": 324,
+    "name": "baku baku"
+  },
+  {
+    "id": 325,
+    "name": "mardan garayan"
+  },
+  {
+    "id": 326,
+    "name": "gummy"
+  },
+  {
+    "id": 327,
+    "name": "niler"
+  },
+  {
+    "id": 328,
+    "name": "umadakara"
+  },
+  {
+    "id": 329,
+    "name": "tarton"
+  },
+  {
+    "id": 330,
+    "name": "piccoly"
+  },
+  {
+    "id": 331,
+    "name": "bon"
+  },
+  {
+    "id": 332,
+    "name": "hama hama"
+  },
+  {
+    "id": 333,
+    "name": "negie"
+  },
+  {
+    "id": 334,
+    "name": "den"
+  },
+  {
+    "id": 335,
+    "name": "heela"
+  },
+  {
+    "id": 336,
+    "name": "baron garayan"
+  },
+  {
+    "id": 337,
+    "name": "key handle"
+  },
+  {
+    "id": 338,
+    "name": "channel key"
+  },
+  {
+    "id": 339,
+    "name": "fairy saw"
+  },
+  {
+    "id": 340,
+    "name": "slash branch"
+  },
+  {
+    "id": 341,
+    "name": "giant meat"
+  },
+  {
+    "id": 342,
+    "name": "luna stone"
+  },
+  {
+    "id": 343,
+    "name": "luna stone piece"
+  },
+  {
+    "id": 344,
+    "name": "magma rock"
+  },
+  {
+    "id": 345,
+    "name": "rope"
+  },
+  {
+    "id": 346,
+    "name": "stone \"t\""
+  },
+  {
+    "id": 347,
+    "name": "white wind vase"
+  },
+  {
+    "id": 348,
+    "name": "queen's watering pot"
+  },
+  {
+    "id": 349,
+    "name": "moon clock hand"
+  },
+  {
+    "id": 350,
+    "name": "trolley oil"
+  },
+  {
+    "id": 351,
+    "name": "rusted key"
+  },
+  {
+    "id": 352,
+    "name": "armband repair powder"
+  },
+  {
+    "id": 353,
+    "name": "circus ticket"
+  },
+  {
+    "id": 354,
+    "name": "fire horn"
+  },
+  {
+    "id": 355,
+    "name": "inside scoop memo"
+  },
+  {
+    "id": 356,
+    "name": "sundrop"
+  },
+  {
+    "id": 357,
+    "name": "photo album"
+  },
+  {
+    "id": 358,
+    "name": "cooking stove"
+  },
+  {
+    "id": 359,
+    "name": "help receiver"
+  },
+  {
+    "id": 360,
+    "name": "electric worm"
+  },
+  {
+    "id": 361,
+    "name": "lafrescia seed"
+  },
+  {
+    "id": 362,
+    "name": "star key"
+  },
+  {
+    "id": 363,
+    "name": "white windflower"
+  },
+  {
+    "id": 364,
+    "name": "miracle dumplings"
+  },
+  {
+    "id": 365,
+    "name": "earth gem"
+  },
+  {
+    "id": 366,
+    "name": "water gem"
+  },
+  {
+    "id": 367,
+    "name": "wind gem"
+  },
+  {
+    "id": 368,
+    "name": "fire gem"
+  },
+  {
+    "id": 369,
+    "name": "camera"
+  },
+  {
+    "id": 370,
+    "name": "grape juice"
+  },
+  {
+    "id": 371,
+    "name": "starglass"
+  },
+  {
+    "id": 372,
+    "name": "time bomb"
+  },
+  {
+    "id": 373,
+    "name": "shell talkie"
+  },
+  {
+    "id": 374,
+    "name": "flower of the sun"
+  },
+  {
+    "id": 375,
+    "name": "secret dragon remedy"
+  },
+  {
+    "id": 376,
+    "name": "gold paint"
+  },
+  {
+    "id": 377,
+    "name": "spinner"
+  },
+  {
+    "id": 378,
+    "name": "frog"
+  },
+  {
+    "id": 379,
+    "name": "minnow"
+  },
+  {
+    "id": 380,
+    "name": "fork"
+  },
+  {
+    "id": 381,
+    "name": "ridepod fuel"
+  },
+  {
+    "id": 382,
+    "name": "wrench"
+  },
+  {
+    "id": 383,
+    "name": "monster drop"
+  },
+  {
+    "id": 384,
+    "name": "name-change ticket"
+  },
+  {
+    "id": 385,
+    "name": "teal envelope"
+  },
+  {
+    "id": 386,
+    "name": "notebook"
+  },
+  {
+    "id": 387,
+    "name": "wrench"
+  },
+  {
+    "id": 388,
+    "name": "potato pie"
+  },
+  {
+    "id": 389,
+    "name": "witch parfait"
+  },
+  {
+    "id": 390,
+    "name": "improved bomb"
+  },
+  {
+    "id": 391,
+    "name": "final bomb"
+  },
+  {
+    "id": 392,
+    "name": "cannonball arm ii"
+  },
+  {
+    "id": 393,
+    "name": "cannonball arm iii"
+  },
+  {
+    "id": 394,
+    "name": "cannonball arm iv"
+  },
+  {
+    "id": 395,
+    "name": "barrel cannon ii"
+  },
+  {
+    "id": 396,
+    "name": "barrel cannon iii"
+  },
+  {
+    "id": 397,
+    "name": "barrel cannon iv"
+  },
+  {
+    "id": 398,
+    "name": "drill arm ii"
+  },
+  {
+    "id": 399,
+    "name": "drill arm iii"
+  },
+  {
+    "id": 400,
+    "name": "drill arm iv"
+  },
+  {
+    "id": 401,
+    "name": "missile pod arm ii"
+  },
+  {
+    "id": 402,
+    "name": "missile pod arm iii"
+  },
+  {
+    "id": 403,
+    "name": "missile pod arm iv"
+  },
+  {
+    "id": 404,
+    "name": "hammer arm ii"
+  },
+  {
+    "id": 405,
+    "name": "hammer arm iii"
+  },
+  {
+    "id": 406,
+    "name": "hammer arm iv"
+  },
+  {
+    "id": 407,
+    "name": "machine gun arm ii"
+  },
+  {
+    "id": 408,
+    "name": "machine gun arm iii"
+  },
+  {
+    "id": 409,
+    "name": "machine gun arm iv"
+  },
+  {
+    "id": 410,
+    "name": "clown hand ii"
+  },
+  {
+    "id": 411,
+    "name": "clown hand iii"
+  },
+  {
+    "id": 412,
+    "name": "clown hand iv"
+  },
+  {
+    "id": 413,
+    "name": "samurai arm ii"
+  },
+  {
+    "id": 414,
+    "name": "samurai arm iii"
+  },
+  {
+    "id": 415,
+    "name": "samurai arm iv"
+  },
+  {
+    "id": 416,
+    "name": "laser arm ii"
+  },
+  {
+    "id": 417,
+    "name": "laser arm iii"
+  },
+  {
+    "id": 418,
+    "name": "laser arm iv"
+  },
+  {
+    "id": 419,
+    "name": "nova cannon ii"
+  },
+  {
+    "id": 420,
+    "name": "nova cannon iii"
+  },
+  {
+    "id": 421,
+    "name": "nova cannon iv"
+  },
+  {
+    "id": 422,
+    "name": "voice unit"
+  },
+  {
+    "id": 423,
+    "name": "shield kit"
+  },
+  {
+    "id": 424,
+    "name": "himarra badge"
+  },
+  {
+    "id": 425,
+    "name": "tasty water"
+  },
+  {
+    "id": 426,
+    "name": "null"
+  },
+  {
+    "id": 427,
+    "name": "sun badge"
+  },
+  {
+    "id": 428,
+    "name": "moon badge"
+  }
+]
