@@ -11,6 +11,7 @@ namespace DC2AP
     {
         public static string GameVersion { get; set; }
         public static List<ItemId> ItemList { get; set; }
+        public static List<Enemy> EnemyList { get; set; }
         static void Main()
         {
             Console.SetBufferSize(Console.BufferWidth, 32766);
@@ -37,8 +38,11 @@ namespace DC2AP
                 System.Environment.Exit(0);
             }
             Console.WriteLine($"Connected to Dark Cloud 2 ({GameVersion})");
+
             Console.WriteLine("Building Item List");
             ItemList = Helpers.GetItemIds();
+            Console.WriteLine("Building Enemy List");
+            EnemyList = ReadEnemies();
 
             Console.WriteLine("Beginning main loop.");
 
@@ -169,10 +173,7 @@ namespace DC2AP
             Console.WriteLine($"current medals: {currentMedals}");
 
             var inventory = ReadInventory();
-            var enemies = ReadEnemies();
             var dungeonFloors = ReadFloorData();
-
-
         }
 
         static List<Enemy> ReadEnemies(bool debug = false)
