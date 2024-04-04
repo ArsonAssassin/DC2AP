@@ -20,6 +20,7 @@ namespace DC2AP
             Console.WriteLine("DC2AP - Dark Cloud 2 Archipelago Randomizer");
 
 
+
             Console.WriteLine("Connecting to PCSX2");
             var pid = Memory.PCSX2_PROCESSID;
             if (pid == 0)
@@ -174,10 +175,77 @@ namespace DC2AP
 
             var inventory = ReadInventory();
             var dungeonFloors = ReadFloorData();
+
+
+            List<int> AddressesToMonitor = new List<int>
+            {
+                0x20365188,
+                0x2036519C,
+                0x203651AE,
+               0x203652f0,
+                0x20365300,
+                0x20365A89,
+                0x20369740,
+
+                0x2036BA50,
+                0x2036C0B8,
+                0x2036D730,
+                0x20E4D865,
+                0x20E4D8D4,
+
+                0x203669b0,
+                0x20366960,
+                0x20366970,
+
+                0x20263FF8,
+                0x202CBFF8,
+
+                0x20367312,
+               0x203672E0,
+
+                0x20365a61,
+
+                0x203A8C48
+
+            };
+            foreach (var currentAddress in AddressesToMonitor)
+            {
+                Task.Factory.StartNew(() => MonitorAddressRange(currentAddress, 16));
+            }
         }
 
+        static async Task MonitorAddress(int address)
+        {
+            var initialValue = Memory.ReadByte(address);
+            var currentValue = initialValue;
+            while (initialValue == currentValue)
+            {
+                currentValue = Memory.ReadByte(address);
+                Thread.Sleep(10);
+
+            }
+
+            Console.WriteLine($"Memory value changed at address {address.ToString("X8")}");
+        }
+        static async Task MonitorAddressRange(int address, int length)
+        {
+            var initialValue = Memory.ReadString(address, length);
+            var currentValue = initialValue;
+            Console.WriteLine($"Monitoring address {address.ToString("X8")} with initial value {initialValue}");
+            while (initialValue == currentValue)
+            {
+                currentValue = Memory.ReadString(address, length);
+                Thread.Sleep(10);
+
+            }
+
+            Console.WriteLine($"Memory value changed at address {address.ToString("X8")} from {initialValue} to {currentValue}");
+        }
         static List<Enemy> ReadEnemies(bool debug = false)
         {
+
+            var expMultipler = 50;
+
             List<Enemy> enemies = new List<Enemy>();
             var currentAddress = 0x2033D9E0;
             currentAddress += 0x00000004;
@@ -200,6 +268,8 @@ namespace DC2AP
                 enemy.Family = Memory.ReadShort(currentAddress).ToString();
                 currentAddress += 0x00000002;
                 enemy.ABS = Memory.ReadShort(currentAddress).ToString();
+                var absMultiplied = Memory.ReadShort(currentAddress) * expMultipler;
+                Memory.Write(currentAddress, (short)absMultiplied);
                 currentAddress += 0x00000002;
                 enemy.Gilda = Memory.ReadShort(currentAddress).ToString();
                 currentAddress += 0x00000002;
@@ -236,11 +306,11 @@ namespace DC2AP
                 currentAddress += 0x00000002;
 
                 enemy.Items = new List<ItemId>();
-                if(itemSlot1 != 0x00)
+                if (itemSlot1 != 0x00)
                 {
                     var id = ItemList.First(x => x.Id == itemSlot1);
                     enemy.Items.Add(id);
-                }
+                }                
                 if (itemSlot2 != 0x00)
                 {
                     var id = ItemList.First(x => x.Id == itemSlot2);
@@ -264,7 +334,7 @@ namespace DC2AP
                 currentAddress += 0x00000002;
                 enemies.Add(enemy);
 
-                if(debug) Console.WriteLine($"Discovered enemy: {JsonConvert.SerializeObject(enemy, Formatting.Indented)}");
+                if (debug) Console.WriteLine($"Discovered enemy: {JsonConvert.SerializeObject(enemy, Formatting.Indented)}");
 
 
                 currentAddress += 0x00000004;
@@ -303,7 +373,7 @@ namespace DC2AP
             List<Floor> floors = new List<Floor>();
             var currentAddress = 0x21E1DE22;
 
-                if(debug) Console.WriteLine("Discovering Sewer Dungeon floors");
+            if (debug) Console.WriteLine("Discovering Sewer Dungeon floors");
             for (int i = 0; i < 8; i++)
             {
                 Floor floor = ReadFloor(currentAddress);
@@ -385,6 +455,10 @@ namespace DC2AP
             if (debug) Console.WriteLine($"Starting floor read at {currentAddress.ToString("X8")}");
             Floor floor = new Floor();
             var data = new BitArray(Memory.ReadByteArray(currentAddress, 2));
+            data[0] = true;
+            byte[] newBytes = new byte[2];
+            data.CopyTo(newBytes, 0);
+            Memory.WriteByteArray(currentAddress, newBytes);
             currentAddress += 0x00000002;
             if (debug) Console.WriteLine($"Reading {currentAddress.ToString("X8")}");
             var monstersKilled = Memory.ReadShort(currentAddress);
