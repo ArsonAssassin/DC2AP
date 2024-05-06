@@ -1,0 +1,37 @@
+﻿[
+  {
+    "id": 0,
+    "name": "Underground water channel",
+    "FloorCount": 8
+  },
+  {
+    "id": 1,
+    "name": "Rainbow butterfly wood",
+    "FloorCount": 15
+  },
+  {
+    "id": 2,
+    "name": "Starlight Canyon",
+    "FloorCount": 23
+  },
+  {
+    "id": 3,
+    "name": "Oceans roar cave",
+    "FloorCount": 19
+  },
+  {
+    "id": 4,
+    "name": "Mount Gundor",
+    "FloorCount": 21
+  },
+  {
+    "id": 5,
+    "name": "Moon flower palace",
+    "FloorCount": 27
+  },
+  {
+    "id": 6,
+    "name": "Zelmite Mine",
+    "FloorCount": 38
+  }
+]

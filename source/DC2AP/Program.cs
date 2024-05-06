@@ -1,8 +1,10 @@
-﻿using Newtonsoft.Json;
+﻿using DC2AP.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Reflection.PortableExecutable;
 using System.Text;
 
 namespace DC2AP
@@ -12,38 +14,30 @@ namespace DC2AP
         public static string GameVersion { get; set; }
         public static List<ItemId> ItemList { get; set; }
         public static List<Enemy> EnemyList { get; set; }
+        public static List<QuestId> QuestList { get; set; }
+        public static List<Dungeon> DungeonList { get; set; }
+        public static bool IsConnected = false;
+        public static GameState CurrentGameState = new GameState();
+        public static PlayerState CurrentPlayerState = new PlayerState();
         static void Main()
         {
             Console.SetBufferSize(Console.BufferWidth, 32766);
-
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+
             Console.WriteLine("DC2AP - Dark Cloud 2 Archipelago Randomizer");
+            IsConnected = Connect();
+            PopulateLists();
+            UpdateGameState();
+            UpdatePlayerState();
 
-
-
-            Console.WriteLine("Connecting to PCSX2");
-            var pid = Memory.PCSX2_PROCESSID;
-            if (pid == 0)
+            CurrentGameState.PropertyChanged += (obj, args) =>
             {
-                Console.WriteLine("PCSX2 not found.");
-                Console.WriteLine("Press any key to exit.");
-                Console.Read();
-                System.Environment.Exit(0);
-            }
-            GameVersion = Memory.ReadInt(0x203694D0) == 1701667175 ? "PAL" : Memory.ReadInt(0x20364BD0) == 1701667175 ? "US" : "";
-            if (string.IsNullOrWhiteSpace(GameVersion))
+                Console.WriteLine($"Game State changed: {JsonConvert.SerializeObject(args, Formatting.Indented)}");
+            };
+            CurrentPlayerState.InventoryChanged += (obj, args) =>
             {
-                Console.WriteLine("Dark cloud 2 is not loaded, please load the game and try again.");
-                Console.WriteLine("Press any key to exit.");
-                Console.Read();
-                System.Environment.Exit(0);
-            }
-            Console.WriteLine($"Connected to Dark Cloud 2 ({GameVersion})");
-
-            Console.WriteLine("Building Item List");
-            ItemList = Helpers.GetItemIds();
-            Console.WriteLine("Building Enemy List");
-            EnemyList = ReadEnemies();
+                Console.WriteLine($"Inventory changed: {JsonConvert.SerializeObject(args, Formatting.Indented)}");
+            };
 
             Console.WriteLine("Beginning main loop.");
 
@@ -70,39 +64,20 @@ namespace DC2AP
                         }
                         Thread.Sleep(1000);
                         Console.WriteLine("Map spawned on first chest");
-                        Memory.Write(currentAddress, (ushort)305);
+                        Memory.Write(currentAddress, (ushort)ItemList.First(x => x.Name.ToLower() == "map").Id);
                         currentAddress += 0x00000070;
                         Console.WriteLine("Magic crystal spawned on second chest");
-                        Memory.Write(currentAddress, (ushort)306);
+                        Memory.Write(currentAddress, (ushort)ItemList.First(x => x.Name.ToLower() == "magic crystal").Id);
                         currentAddress += 0x0000006C;
-                        for (int i = 0; i < 25; i++)
+                        var chestId = 0;
+                        while (chestId != 1)
                         {
-                            var chest = Memory.ReadByte(currentAddress);
-                            if (chest == 1)
-                            {
-                                Console.WriteLine("End of chests");
-                                break;
-                            }
-                            if (chest < 128)
-                            {
-                                Console.WriteLine("Found single chest");
-                                AddChestItem(currentAddress, 268, 1);
-                                currentAddress += 0x00000004;
-                                currentAddress += 0x00000004;
-                                currentAddress += 0x00000068;
-                            }
-                            else
-                            {
-                                Console.WriteLine("Found double chest");
-                                AddDoubleChestItems(currentAddress, 268, 1, 268, 1);
-                                currentAddress += 0x00000004;
-                                currentAddress += 0x00000002;
-                                currentAddress += 0x00000002;
-                                currentAddress += 0x00000002;
-                                currentAddress += 0x00000066;
-                            }
+                            chestId = Memory.ReadByte(currentAddress);
+                            var chest = ReadChest(currentAddress, chestId >= 128);
+                            currentAddress += 0x00000070;
                         }
 
+                        Console.WriteLine("End of chests");
 
                         Addresses.Instance.PreviousFloor = Addresses.Instance.CurrentFloor;
                     }
@@ -113,33 +88,88 @@ namespace DC2AP
                 }
 
                 //Handle exiting the game
-                if (GameVersion == "PAL")
+
+                if (Memory.ReadInt(Addresses.Instance.CurrentExitFlag) != Addresses.Instance.exitFlagCheck)
                 {
-                    if (Memory.ReadInt(0x203694D0) != 1701667175)
+                    Thread.Sleep(1000);
+                    if (Memory.ReadInt(Addresses.Instance.CurrentExitFlag) != Addresses.Instance.exitFlagCheck)
                     {
-                        Thread.Sleep(1000);
-                        if (Memory.ReadInt(0x203694D0) != 1701667175)
-                        {
-                            System.Environment.Exit(0);
-                        }
-                    }
-                }
-                else if (GameVersion == "US")
-                {
-                    if (Memory.ReadInt(0x20364BD0) != 1701667175)
-                    {
-                        Thread.Sleep(1000);
-                        if (Memory.ReadInt(0x20364BD0) != 1701667175)
-                        {
-                            System.Environment.Exit(0);
-                        }
+                        System.Environment.Exit(0);
                     }
                 }
 
                 Thread.Sleep(1);
             }
         }
+        static bool Connect()
+        {
+            Console.WriteLine("Connecting to PCSX2");
+            var pid = Memory.PCSX2_PROCESSID;
+            if (pid == 0)
+            {
+                Console.WriteLine("PCSX2 not found.");
+                Console.WriteLine("Press any key to exit.");
+                Console.Read();
+                System.Environment.Exit(0);
+                return false;
+            }
+            GameVersion = Memory.ReadInt(0x203694D0) == 1701667175 ? "PAL" : Memory.ReadInt(0x20364BD0) == 1701667175 ? "US" : "";
+            if (string.IsNullOrWhiteSpace(GameVersion))
+            {
+                Console.WriteLine("Dark cloud 2 is not loaded, please load the game and try again.");
+                Console.WriteLine("Press any key to exit.");
+                Console.Read();
+                System.Environment.Exit(0);
+                return false;
+            }
+            Console.WriteLine($"Connected to Dark Cloud 2 ({GameVersion})");
+            return true;
 
+        }
+        static void PopulateLists()
+        {
+            Console.WriteLine("Building Item List");
+            ItemList = Helpers.GetItemIds();
+            Console.WriteLine("Building Quest List");
+            QuestList = Helpers.GetQuestIds();
+            Console.WriteLine("Building Enemy List");
+            EnemyList = ReadEnemies();
+            Console.WriteLine("Building Dungeon List");
+            DungeonList = PopulateDungeons();
+        }
+        static void UpdateGameState()
+        {
+            CurrentGameState.CurrentFloor = Memory.ReadByte(Addresses.Instance.CurrentFloor);
+            CurrentGameState.CurrentDungeon = Memory.ReadByte(Addresses.Instance.CurrentDungeon);
+
+
+        }
+        static void UpdatePlayerState()
+        {
+            CurrentPlayerState.Gilda = Memory.ReadInt(Addresses.Instance.PlayerGilda);
+            CurrentPlayerState.MedalCount = Memory.ReadShort(Addresses.Instance.PlayerMedals);
+            var tempInv = ReadInventory();
+            for (int i = 0; i < tempInv.Count; i++)
+            {
+                if (tempInv[i] != CurrentPlayerState.Inventory[i])
+                {
+                    CurrentPlayerState.Inventory[i] = tempInv[i];
+                }
+            }
+        }
+        static Chest ReadChest(int startAddress, bool isDouble = false)
+        {
+            Chest chest = new Chest() { IsDoubleChest = isDouble };
+            var currentAddress = startAddress + 0x00000004;
+            chest.Item1 = Memory.ReadShort(currentAddress);
+            currentAddress += 0x00000002;
+            if (isDouble) chest.Item2 = Memory.ReadShort(currentAddress);
+            currentAddress += 0x00000002;
+            chest.Quantity1 = Memory.ReadShort(currentAddress);
+            currentAddress += 0x00000002;
+            if (isDouble) chest.Quantity2 = Memory.ReadShort(currentAddress);
+            return chest;
+        }
         static void AddChestItem(int startAddress, int id, int quantity)
         {
             startAddress += 0x00000004;
@@ -173,40 +203,12 @@ namespace DC2AP
             var currentMedals = Memory.ReadShort(Addresses.Instance.PlayerMedals);
             Console.WriteLine($"current medals: {currentMedals}");
 
-            var inventory = ReadInventory();
-            var dungeonFloors = ReadFloorData();
+
 
 
             List<int> AddressesToMonitor = new List<int>
             {
-                0x20365188,
-                0x2036519C,
-                0x203651AE,
-               0x203652f0,
-                0x20365300,
-                0x20365A89,
-                0x20369740,
-
-                0x2036BA50,
-                0x2036C0B8,
-                0x2036D730,
-                0x20E4D865,
-                0x20E4D8D4,
-
-                0x203669b0,
-                0x20366960,
-                0x20366970,
-
-                0x20263FF8,
-                0x202CBFF8,
-
-                0x20367312,
-               0x203672E0,
-
-                0x20365a61,
-
-                0x203A8C48
-
+                0x20365188
             };
             foreach (var currentAddress in AddressesToMonitor)
             {
@@ -244,10 +246,10 @@ namespace DC2AP
         static List<Enemy> ReadEnemies(bool debug = false)
         {
 
-            var expMultipler = 50;
+            var expMultipler = 1;
 
             List<Enemy> enemies = new List<Enemy>();
-            var currentAddress = 0x2033D9E0;
+            var currentAddress = Addresses.Instance.EnemyStartAddress;
             currentAddress += 0x00000004;
             for (int i = 0; i < 280; i++)
             {
@@ -268,8 +270,8 @@ namespace DC2AP
                 enemy.Family = Memory.ReadShort(currentAddress).ToString();
                 currentAddress += 0x00000002;
                 enemy.ABS = Memory.ReadShort(currentAddress).ToString();
-                var absMultiplied = Memory.ReadShort(currentAddress) * expMultipler;
-                Memory.Write(currentAddress, (short)absMultiplied);
+                //  var absMultiplied = Memory.ReadShort(currentAddress) * expMultipler;
+                //  Memory.Write(currentAddress, (short)absMultiplied);
                 currentAddress += 0x00000002;
                 enemy.Gilda = Memory.ReadShort(currentAddress).ToString();
                 currentAddress += 0x00000002;
@@ -310,7 +312,7 @@ namespace DC2AP
                 {
                     var id = ItemList.First(x => x.Id == itemSlot1);
                     enemy.Items.Add(id);
-                }                
+                }
                 if (itemSlot2 != 0x00)
                 {
                     var id = ItemList.First(x => x.Id == itemSlot2);
@@ -347,9 +349,7 @@ namespace DC2AP
         {
             List<Item> inventory = new List<Item>();
 
-            // start of inventory
-            var startAddress = 0x21E1EAB2;
-
+            var startAddress = Addresses.Instance.InventoryStartAddress;
 
             for (int i = 0; i < 144; i++)
             {
@@ -368,87 +368,25 @@ namespace DC2AP
             return inventory;
         }
 
-        static List<Floor> ReadFloorData(bool debug = false)
+        static List<Dungeon> PopulateDungeons(bool debug = false)
         {
-            List<Floor> floors = new List<Floor>();
-            var currentAddress = 0x21E1DE22;
+            List<Dungeon> dungeons = Helpers.GetDungeons();
 
-            if (debug) Console.WriteLine("Discovering Sewer Dungeon floors");
-            for (int i = 0; i < 8; i++)
+            var currentAddress = Addresses.Instance.DungeonStartAddress;
+
+            foreach (var dungeon in dungeons)
             {
-                Floor floor = ReadFloor(currentAddress);
+                dungeon.Floors = new List<Floor>();
+                for (int i = 0; i < dungeon.FloorCount; i++)
+                {
+                    Floor floor = ReadFloor(currentAddress);
+                    currentAddress += 0x0000014;
+                    dungeon.Floors.Add(floor);
+                    if (debug) Console.WriteLine(JsonConvert.SerializeObject(floor, Formatting.Indented));
+                }
                 currentAddress += 0x0000014;
-                floors.Add(floor);
-                if (debug) Console.WriteLine(JsonConvert.SerializeObject(floor, Formatting.Indented));
             }
-
-            currentAddress += 0x0000014;
-
-            if (debug) Console.WriteLine("Discovering Rainbow woods Dungeon floors");
-            for (int i = 0; i < 15; i++)
-            {
-                Floor floor = ReadFloor(currentAddress);
-                currentAddress += 0x0000014;
-
-                floors.Add(floor);
-                if (debug) Console.WriteLine(JsonConvert.SerializeObject(floor, Formatting.Indented));
-            }
-
-            currentAddress += 0x0000014;
-            if (debug) Console.WriteLine("Discovering Starlight Dungeon floors");
-            for (int i = 0; i < 23; i++)
-            {
-                Floor floor = ReadFloor(currentAddress);
-                currentAddress += 0x0000014;
-
-                floors.Add(floor);
-                if (debug) Console.WriteLine(JsonConvert.SerializeObject(floor, Formatting.Indented));
-            }
-
-            currentAddress += 0x0000014;
-            if (debug) Console.WriteLine("Discovering Ocean cavern Dungeon floors");
-            for (int i = 0; i < 19; i++)
-            {
-                Floor floor = ReadFloor(currentAddress);
-                currentAddress += 0x0000014;
-
-                floors.Add(floor);
-                if (debug) Console.WriteLine(JsonConvert.SerializeObject(floor, Formatting.Indented));
-            }
-
-            currentAddress += 0x0000014;
-            if (debug) Console.WriteLine("Discovering Mount Gundor Dungeon floors");
-            for (int i = 0; i < 21; i++)
-            {
-                Floor floor = ReadFloor(currentAddress);
-                currentAddress += 0x0000014;
-
-                floors.Add(floor);
-                if (debug) Console.WriteLine(JsonConvert.SerializeObject(floor, Formatting.Indented));
-            }
-
-            currentAddress += 0x0000014;
-            if (debug) Console.WriteLine("Discovering Moon flower palace Dungeon floors");
-            for (int i = 0; i < 27; i++)
-            {
-                Floor floor = ReadFloor(currentAddress);
-                currentAddress += 0x0000014;
-
-                floors.Add(floor);
-                if (debug) Console.WriteLine(JsonConvert.SerializeObject(floor, Formatting.Indented));
-            }
-
-            currentAddress += 0x0000014;
-            if (debug) Console.WriteLine("Discovering Zenite mine Dungeon floors");
-            for (int i = 0; i < 38; i++)
-            {
-                Floor floor = ReadFloor(currentAddress);
-                currentAddress += 0x0000014;
-
-                floors.Add(floor);
-                if (debug) Console.WriteLine(JsonConvert.SerializeObject(floor, Formatting.Indented));
-            }
-            return floors;
+            return dungeons;
         }
         static Floor ReadFloor(int currentAddress, bool debug = false)
         {
@@ -465,7 +403,6 @@ namespace DC2AP
             currentAddress += 0x00000002;
             if (debug) Console.WriteLine($"Reading {currentAddress.ToString("X8")}");
             var timesVisited = Memory.ReadShort(currentAddress);
-            currentAddress += 0x00000002;
 
             floor.IsUnlocked = data[0].ToString();
             floor.IsFinished = data[1].ToString();

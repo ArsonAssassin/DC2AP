@@ -29,6 +29,7 @@ namespace DC2AP
                 CurrentDungeon = currentDungeonPAL;
                 DungeonAreaChestAddress = dungeonAreaChestAddressPAL;
                 DungeonCheckAddress = dungeonCheckAddressPAL;
+                CurrentExitFlag = exitFlagPAL;
             }
             else if (GameVersion == "US")
             {
@@ -36,6 +37,7 @@ namespace DC2AP
                 CurrentDungeon = currentDungeonUS;
                 DungeonAreaChestAddress = dungeonAreaChestAddressUS;
                 DungeonCheckAddress = dungeonCheckAddressUS;
+                CurrentExitFlag = exitFlagUS;
             }
         }
         private int currentFloorUS = 0x21ECD638;
@@ -47,13 +49,21 @@ namespace DC2AP
         private int dungeonCheckAddressUS = 0x21E9F6E0;
         private int dungeonCheckAddressPAL = 0x21ECE1E0;
 
+        public int DungeonStartAddress = 0x21E1DE22;
+
+        public int exitFlagUS = 0x20364BD0;
+        public int exitFlagPAL = 0x203694D0;
+        public int exitFlagCheck = 1701667175;
 
         public int CurrentFloor;
         public int CurrentDungeon;
         public int[] DungeonAreaChestAddress;
         public int DungeonCheckAddress;
+        public int CurrentExitFlag;
 
         public int PreviousFloor;
+
+        public int EnemyStartAddress = 0x2033D9E0;
 
         public int[] tier1weapons = { 1, 2, 9, 15, 22, 23, 24, 90 };
         public int[] tier2weapons = { 10, 11, 18, 25, 28, 31 };
@@ -65,6 +75,6 @@ namespace DC2AP
 
         public int PlayerGilda = 0x21E6384C;
         public int PlayerMedals = 0x21E63850;
-
+        public int InventoryStartAddress = 0x21E1EAB2;
     }
 }

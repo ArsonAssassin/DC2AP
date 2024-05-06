@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using DC2AP.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,12 +21,22 @@ namespace DC2AP
         }
         public static List<ItemId> GetItemIds()
         {
-            var json = OpenEmbeddedResource("DC2AP.ItemIds.json");
+            var json = OpenEmbeddedResource("DC2AP.Resources.ItemIds.json");
             var list = JsonConvert.DeserializeObject<List<ItemId>>(json);
-
             return list;
         }
-
+        public static List<QuestId> GetQuestIds()
+        {
+            var json = OpenEmbeddedResource("DC2AP.Resources.QuestIds.json");
+            var list = JsonConvert.DeserializeObject<List<QuestId>>(json);
+            return list;
+        }
+        public static List<Dungeon> GetDungeons()
+        {
+            var json = OpenEmbeddedResource("DC2AP.Resources.Dungeons.json");
+            var list = JsonConvert.DeserializeObject<List<Dungeon>>(json);
+            return list;
+        }
         public static string OpenEmbeddedResource(string resourceName)
         {
             var assembly = Assembly.GetExecutingAssembly();
