@@ -12,5 +12,9 @@ namespace DC2AP.Models
         public string Name { get; set; }
         public int FloorCount { get; set; }
         public List<Floor> Floors { get; set; }
+        public int KeyItemId1 { get; set; }
+        public int InteriorKeyItemId1 { get; set; }
+        public int KeyItemId2 { get; set; }
+        public int InteriorKeyItemId2 { get; set; }
     }
 }

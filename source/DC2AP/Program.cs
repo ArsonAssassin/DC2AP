@@ -37,11 +37,12 @@ namespace DC2AP
             CurrentPlayerState.InventoryChanged += (obj, args) =>
             {
                 Console.WriteLine($"Inventory changed: {JsonConvert.SerializeObject(args, Formatting.Indented)}");
-
             };
-
+            CurrentPlayerState.PropertyChanged += (obj, args) =>
+            {
+                Console.WriteLine($"Player State changed: {JsonConvert.SerializeObject(args, Formatting.Indented)}");
+            };
             Console.WriteLine("Beginning main loop.");
-
             while (true)
             {
                 UpdateGameState();
@@ -58,22 +59,27 @@ namespace DC2AP
                         Thread.Sleep(6000);
 
                         var currentAddress = Addresses.Instance.DungeonAreaChestAddress[Memory.ReadByte(Addresses.Instance.CurrentDungeon)] + 0x0000005C;
-                        while (Memory.ReadShort(currentAddress) != 306)
+                        Task.Factory.StartNew(() =>
                         {
-                            Thread.Sleep(1);
-                            if (Memory.ReadByte(Addresses.Instance.CurrentFloor) == 0 || Memory.ReadByte(Addresses.Instance.DungeonCheckAddress) > 2)
+                            while (true)
                             {
-                                Console.WriteLine("Exited dungeon");
-                                break;
+                                Thread.Sleep(10);
+                                if (Memory.ReadByte(Addresses.Instance.CurrentFloor) == 0 || Memory.ReadByte(Addresses.Instance.DungeonCheckAddress) > 2)
+                                {
+                                    Console.WriteLine("Exited dungeon");
+                                    break;
+                                }
                             }
-                        }
+                        });
                         Thread.Sleep(1000);
-                        Console.WriteLine("Map spawned on first chest");
-                        Memory.Write(currentAddress, (ushort)ItemList.First(x => x.Name.ToLower() == "map").Id);
-                        currentAddress += 0x00000070;
-                        Console.WriteLine("Magic crystal spawned on second chest");
-                        Memory.Write(currentAddress, (ushort)ItemList.First(x => x.Name.ToLower() == "magic crystal").Id);
-                        currentAddress += 0x0000006C;
+                        // Ensures Map and Magic Crystal are available
+
+                        //Console.WriteLine("Map spawned on first chest");
+                        //Memory.Write(currentAddress, (ushort)ItemList.First(x => x.Name.ToLower() == "map").Id);
+                        //currentAddress += 0x00000070;
+                        //Console.WriteLine("Magic crystal spawned on second chest");
+                        //Memory.Write(currentAddress, (ushort)ItemList.First(x => x.Name.ToLower() == "magic crystal").Id);
+                        //currentAddress += 0x0000006C;
 
                         var chests = ReadChests();
 

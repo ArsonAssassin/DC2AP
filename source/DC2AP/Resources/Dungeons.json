@@ -2,36 +2,64 @@
   {
     "id": 0,
     "name": "Underground water channel",
-    "FloorCount": 8
+    "FloorCount": 8,
+    "KeyItemId1": 337,
+    "InteriorKeyItemId1": 338,
+    "KeyItemId2": -1,
+    "InteriorKeyItemId2": -1
   },
   {
     "id": 1,
     "name": "Rainbow butterfly wood",
-    "FloorCount": 15
+    "FloorCount": 15,
+    "KeyItemId1": 339,
+    "InteriorKeyItemId1": 340,
+    "KeyItemId2": -1,
+    "InteriorKeyItemId2": -1
   },
   {
     "id": 2,
     "name": "Starlight Canyon",
-    "FloorCount": 23
+    "FloorCount": 23,
+    "KeyItemId1": 341,
+    "InteriorKeyItemId1": -1,
+    "KeyItemId2": -1,
+    "InteriorKeyItemId2": -1
   },
   {
     "id": 3,
     "name": "Oceans roar cave",
-    "FloorCount": 19
+    "FloorCount": 19,
+    "KeyItemId1": 342,
+    "InteriorKeyItemId1": 343,
+    "KeyItemId2": -1,
+    "InteriorKeyItemId2": -1
   },
   {
     "id": 4,
     "name": "Mount Gundor",
-    "FloorCount": 21
+    "FloorCount": 21,
+    "KeyItemId1": 344,
+    "InteriorKeyItemId1": 346,
+    "KeyItemId2": 345,
+    "InteriorKeyItemId2": 347
   },
   {
     "id": 5,
     "name": "Moon flower palace",
-    "FloorCount": 27
+    "FloorCount": 27,
+    "KeyItemId1": 348,
+    "InteriorKeyItemId1": 349,
+    "KeyItemId2": -1,
+    "InteriorKeyItemId2": -1
   },
   {
     "id": 6,
     "name": "Zelmite Mine",
-    "FloorCount": 38
+    "FloorCount": 38,
+    "KeyItemId1": 350,
+    "InteriorKeyItemId1": 351,
+    "KeyItemId2": -1,
+    "InteriorKeyItemId2": -1
   }
 ]
