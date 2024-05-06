@@ -30,6 +30,21 @@ namespace DC2AP.Models
             }
         }
         public int FreeInventorySlots => 144 - inventory.Count;
+        public int GetFirstSlot(int itemId = 0)
+        {
+            if (inventory.Any(x => x.Id == itemId))
+            {
+                return inventory.IndexOf(inventory.First(x => x.Id == itemId));
+            }
+            else if (itemId != 0)
+            {
+                if (inventory.Any(x => x.Id == 0))
+                {
+                    return inventory.IndexOf(inventory.First(x => x.Id == 0));
+                }
+            }
+            return -1;
+        }
         public event NotifyCollectionChangedEventHandler? InventoryChanged;
         public event PropertyChangedEventHandler? PropertyChanged;
         public void OnPropertyChanged([CallerMemberName] string propertyName = "")

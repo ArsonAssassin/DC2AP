@@ -5,11 +5,12 @@ using System.Collections;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Reflection.PortableExecutable;
+using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace DC2AP
 {
-    static class Program
+    public static class Program
     {
         public static string GameVersion { get; set; }
         public static List<ItemId> ItemList { get; set; }
@@ -19,7 +20,7 @@ namespace DC2AP
         public static bool IsConnected = false;
         public static GameState CurrentGameState = new GameState();
         public static PlayerState CurrentPlayerState = new PlayerState();
-        static void Main()
+        public static void Main()
         {
             Console.SetBufferSize(Console.BufferWidth, 32766);
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
@@ -47,6 +48,25 @@ namespace DC2AP
             {
                 UpdateGameState();
                 UpdatePlayerState();
+
+                //get any keys currently pressed
+                if (Console.KeyAvailable)
+                {
+                    var key = Console.ReadKey(true);
+                    if (key.Key == ConsoleKey.F1)
+                    {
+                        var freeSlot = CurrentPlayerState.GetFirstSlot(268);
+                        Helpers.WriteItem(new Item() { Id = 268, Quantity = 20 }, Helpers.GetItemSlotAddress(freeSlot));
+                    }
+                    if (key.Key == ConsoleKey.F2)
+                    {
+                        var freeSlot = CurrentPlayerState.GetFirstSlot(0);
+                        Console.WriteLine("Enter item name:");
+                        var itemName = Console.ReadLine();
+                        Helpers.WriteItem(new Item() { Id = ItemList.First(x => x.Name.ToLower() == itemName).Id, Quantity = 1 }, Helpers.GetItemSlotAddress(freeSlot));
+                    }
+                }
+
                 if (Memory.ReadByte(Addresses.Instance.CurrentFloor) == 0)
                 {
                     Addresses.Instance.PreviousFloor = 200;
@@ -149,10 +169,10 @@ namespace DC2AP
             ItemList = Helpers.GetItemIds();
             Console.WriteLine("Building Quest List");
             QuestList = Helpers.GetQuestIds();
-            Console.WriteLine("Building Enemy List");
-            EnemyList = ReadEnemies();
             Console.WriteLine("Building Dungeon List");
             DungeonList = PopulateDungeons();
+            Console.WriteLine("Building Enemy List");
+            EnemyList = ReadEnemies();
         }
         static void UpdateGameState()
         {
@@ -166,7 +186,7 @@ namespace DC2AP
             var tempInv = ReadInventory();
             for (int i = 0; i < tempInv.Count; i++)
             {
-                if (tempInv[i] != CurrentPlayerState.Inventory[i])
+                if (tempInv[i].Id != CurrentPlayerState.Inventory[i].Id || tempInv[i].Quantity != CurrentPlayerState.Inventory[i].Quantity)
                 {
                     CurrentPlayerState.Inventory[i] = tempInv[i];
                 }
@@ -335,7 +355,7 @@ namespace DC2AP
             if (debug) Console.WriteLine($"Found {enemies.Count} enemies");
             return enemies;
         }
-        static List<Item> ReadInventory(bool debug = false)
+        public static List<Item> ReadInventory(bool debug = false)
         {
             List<Item> inventory = new List<Item>();
 
@@ -358,7 +378,7 @@ namespace DC2AP
             return inventory;
         }
 
-        static List<Dungeon> PopulateDungeons(bool debug = false)
+        public static List<Dungeon> PopulateDungeons(bool debug = false)
         {
             List<Dungeon> dungeons = Helpers.GetDungeons();
 
@@ -378,7 +398,7 @@ namespace DC2AP
             }
             return dungeons;
         }
-        static Floor ReadFloor(int currentAddress, bool debug = false)
+        public static Floor ReadFloor(int currentAddress, bool debug = false)
         {
             if (debug) Console.WriteLine($"Starting floor read at {currentAddress.ToString("X8")}");
             Floor floor = new Floor();

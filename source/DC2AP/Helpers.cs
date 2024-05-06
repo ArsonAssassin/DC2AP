@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -52,17 +53,28 @@ namespace DC2AP
             var alreadyHave = playerState.Inventory.Any(x => x.Id == item.Id);
             if (alreadyHave)
             {
-                playerState.Inventory.First(x => x.Id == item.Id).Quantity += item.Quantity;
+                var slotNum = playerState.GetFirstSlot(item.Id);
+                var address = GetItemSlotAddress(slotNum);
+                WriteItem(item, address);
             }
             else
             {
-                if (playerState.FreeInventorySlots > 0)
-                {
-                    playerState.Inventory.First(x => x.Id == 0).Id = item.Id;
-                    playerState.Inventory.First(x => x.Id == 0).Name = item.Name;
-                    playerState.Inventory.First(x => x.Id == 0).Quantity = item.Quantity;
-                }
+                var slotNum = playerState.GetFirstSlot(0);
+                var address = GetItemSlotAddress(slotNum);
+                WriteItem(item, address);
             }
+        }
+        public static void WriteItem(Item item, int address)
+        {            
+            Memory.Write(address, (ushort)item.Id);
+            Memory.Write(address + 0x0000000E, (ushort)item.Quantity);
+        }
+        public static int GetItemSlotAddress(int slotNum)
+        {
+            var startAddress = Addresses.Instance.InventoryStartAddress;
+            var offset = 0x0000006c * (slotNum);
+            var slotAddress = startAddress + offset;
+            return slotAddress;
         }
         public static string GetHabitat(string id)
         {

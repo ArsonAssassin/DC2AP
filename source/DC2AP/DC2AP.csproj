@@ -9,12 +9,16 @@
 
   <ItemGroup>
     <None Remove="ItemIds.json" />
+    <None Remove="Resources\Dungeons.json" />
+    <None Remove="Resources\QuestIds.json" />
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Resources\Dungeons.json" />
     <EmbeddedResource Include="Resources\ItemIds.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
+    <EmbeddedResource Include="Resources\QuestIds.json" />
   </ItemGroup>
 
   <ItemGroup>
