@@ -57,11 +57,11 @@ namespace DC2AP
 
         public int CurrentFloor;
         public int CurrentDungeon;
+        public int PreviousFloor;
         public int[] DungeonAreaChestAddress;
         public int DungeonCheckAddress;
         public int CurrentExitFlag;
 
-        public int PreviousFloor;
 
         public int EnemyStartAddress = 0x2033D9E0;
 

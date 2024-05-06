@@ -46,14 +46,16 @@ namespace DC2AP
             {
                 UpdateGameState();
                 UpdatePlayerState();
-                if (Memory.ReadByte(Addresses.Instance.CurrentFloor) > 0)
+                if (Memory.ReadByte(Addresses.Instance.CurrentFloor) == 0)
+                {
+                    Addresses.Instance.PreviousFloor = 200;
+                }
+                else
                 {
                     if (Addresses.Instance.CurrentFloor != Addresses.Instance.PreviousFloor)
                     {
                         Console.WriteLine("Moved to new floor");
                         Thread.Sleep(6000);
-
-                        TestCode(5);
 
                         var currentAddress = Addresses.Instance.DungeonAreaChestAddress[Memory.ReadByte(Addresses.Instance.CurrentDungeon)] + 0x0000005C;
                         while (Memory.ReadShort(currentAddress) != 306)
@@ -72,22 +74,11 @@ namespace DC2AP
                         Console.WriteLine("Magic crystal spawned on second chest");
                         Memory.Write(currentAddress, (ushort)ItemList.First(x => x.Name.ToLower() == "magic crystal").Id);
                         currentAddress += 0x0000006C;
-                        var chestId = 0;
-                        while (chestId != 1)
-                        {
-                            chestId = Memory.ReadByte(currentAddress);
-                            var chest = ReadChest(currentAddress, chestId >= 128);
-                            currentAddress += 0x00000070;
-                        }
 
-                        Console.WriteLine("End of chests");
+                        var chests = ReadChests();
 
                         Addresses.Instance.PreviousFloor = Addresses.Instance.CurrentFloor;
                     }
-                }
-                else
-                {
-                    Addresses.Instance.PreviousFloor = 200;
                 }
 
                 //Handle exiting the game
@@ -104,6 +95,24 @@ namespace DC2AP
                 Thread.Sleep(1);
             }
         }
+
+        private static List<Chest> ReadChests()
+        {
+            List<Chest> chests = new List<Chest>();
+            var chestStartAddress = Addresses.Instance.DungeonAreaChestAddress[Memory.ReadByte(Addresses.Instance.CurrentDungeon)];
+            var currentChestAddress = chestStartAddress;
+            var chestId = 0;
+            while (chestId != 1)
+            {
+                chestId = Memory.ReadByte(currentChestAddress);
+                var chest = ReadChest(currentChestAddress, chestId >= 128);
+                chests.Add(chest);
+                currentChestAddress += 0x00000070;
+            }
+            Console.WriteLine("End of chests");
+            return chests;
+        }
+
         static bool Connect()
         {
             Console.WriteLine("Connecting to PCSX2");
@@ -178,7 +187,6 @@ namespace DC2AP
             Memory.Write(startAddress, BitConverter.GetBytes(id));
             startAddress += 0x00000004;
             Memory.Write(startAddress, BitConverter.GetBytes(quantity));
-
             Console.WriteLine("Added item!");
         }
         static void AddDoubleChestItems(int startAddress, int id1, int quantity1, int id2, int quantity2)
@@ -197,19 +205,6 @@ namespace DC2AP
             Memory.Write(startAddress, BitConverter.GetBytes(quantity2));
         }
 
-        static void TestCode(int id1)
-        {
-
-            List<int> AddressesToMonitor = new List<int>
-            {
-                0x20365188
-            };
-            foreach (var currentAddress in AddressesToMonitor)
-            {
-                Task.Factory.StartNew(() => MonitorAddressRange(currentAddress, 16));
-            }
-        }
-
         static async Task MonitorAddress(int address)
         {
             var initialValue = Memory.ReadByte(address);
@@ -218,9 +213,7 @@ namespace DC2AP
             {
                 currentValue = Memory.ReadByte(address);
                 Thread.Sleep(10);
-
             }
-
             Console.WriteLine($"Memory value changed at address {address.ToString("X8")}");
         }
         static async Task MonitorAddressRange(int address, int length)
@@ -232,9 +225,7 @@ namespace DC2AP
             {
                 currentValue = Memory.ReadString(address, length);
                 Thread.Sleep(10);
-
             }
-
             Console.WriteLine($"Memory value changed at address {address.ToString("X8")} from {initialValue} to {currentValue}");
         }
         static List<Enemy> ReadEnemies(bool debug = false)
