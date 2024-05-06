@@ -47,7 +47,23 @@ namespace DC2AP
                 return jsonFile;
             }
         }
-
+        public static void AddItem(Item item, PlayerState playerState)
+        {
+            var alreadyHave = playerState.Inventory.Any(x => x.Id == item.Id);
+            if (alreadyHave)
+            {
+                playerState.Inventory.First(x => x.Id == item.Id).Quantity += item.Quantity;
+            }
+            else
+            {
+                if (playerState.FreeInventorySlots > 0)
+                {
+                    playerState.Inventory.First(x => x.Id == 0).Id = item.Id;
+                    playerState.Inventory.First(x => x.Id == 0).Name = item.Name;
+                    playerState.Inventory.First(x => x.Id == 0).Quantity = item.Quantity;
+                }
+            }
+        }
         public static string GetHabitat(string id)
         {
             switch (id)
@@ -57,7 +73,7 @@ namespace DC2AP
                 case ("1"):
                     return "Rainbow butterfly wood";
                 case ("2"):
-                   return "Starlight Canyon";
+                    return "Starlight Canyon";
                 case ("3"):
                     return "Oceans roar cave";
                 case ("4"):

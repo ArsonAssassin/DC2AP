@@ -37,12 +37,15 @@ namespace DC2AP
             CurrentPlayerState.InventoryChanged += (obj, args) =>
             {
                 Console.WriteLine($"Inventory changed: {JsonConvert.SerializeObject(args, Formatting.Indented)}");
+
             };
 
             Console.WriteLine("Beginning main loop.");
 
             while (true)
             {
+                UpdateGameState();
+                UpdatePlayerState();
                 if (Memory.ReadByte(Addresses.Instance.CurrentFloor) > 0)
                 {
                     if (Addresses.Instance.CurrentFloor != Addresses.Instance.PreviousFloor)
@@ -141,8 +144,6 @@ namespace DC2AP
         {
             CurrentGameState.CurrentFloor = Memory.ReadByte(Addresses.Instance.CurrentFloor);
             CurrentGameState.CurrentDungeon = Memory.ReadByte(Addresses.Instance.CurrentDungeon);
-
-
         }
         static void UpdatePlayerState()
         {
@@ -198,13 +199,6 @@ namespace DC2AP
 
         static void TestCode(int id1)
         {
-            var currentGil = Memory.ReadInt(Addresses.Instance.PlayerGilda);
-            Console.WriteLine($"Current Gilda: {currentGil}");
-            var currentMedals = Memory.ReadShort(Addresses.Instance.PlayerMedals);
-            Console.WriteLine($"current medals: {currentMedals}");
-
-
-
 
             List<int> AddressesToMonitor = new List<int>
             {

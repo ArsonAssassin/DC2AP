@@ -29,7 +29,7 @@ namespace DC2AP.Models
                 }
             }
         }
-
+        public int FreeInventorySlots => 144 - inventory.Count;
         public event NotifyCollectionChangedEventHandler? InventoryChanged;
         public event PropertyChangedEventHandler? PropertyChanged;
         public void OnPropertyChanged([CallerMemberName] string propertyName = "")
@@ -38,7 +38,7 @@ namespace DC2AP.Models
         }
         public PlayerState()
         {
-            inventory = new ObservableCollection<Item>();
+            inventory = new ObservableCollection<Item>(Enumerable.Range(0, 144).Select(_ => new Item()));
             inventory.CollectionChanged += (obj, args) =>
             {
                 InventoryChanged?.Invoke(obj, args);
