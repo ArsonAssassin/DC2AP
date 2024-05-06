@@ -40,6 +40,9 @@ namespace DC2AP
                 CurrentExitFlag = exitFlagUS;
             }
         }
+
+        public int ShortOffset = 0x00000002;
+
         private int currentFloorUS = 0x21ECD638;
         private int currentFloorPAL = 0x21EFC658;
         private int currentDungeonUS = 0x20376638;

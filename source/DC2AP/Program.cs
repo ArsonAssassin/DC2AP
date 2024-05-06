@@ -82,7 +82,6 @@ namespace DC2AP
                         //currentAddress += 0x0000006C;
 
                         var chests = ReadChests();
-
                         Addresses.Instance.PreviousFloor = Addresses.Instance.CurrentFloor;
                     }
                 }
@@ -178,11 +177,11 @@ namespace DC2AP
             Chest chest = new Chest() { IsDoubleChest = isDouble };
             var currentAddress = startAddress + 0x00000004;
             chest.Item1 = Memory.ReadShort(currentAddress);
-            currentAddress += 0x00000002;
+            currentAddress += Addresses.Instance.ShortOffset;
             if (isDouble) chest.Item2 = Memory.ReadShort(currentAddress);
-            currentAddress += 0x00000002;
+            currentAddress += Addresses.Instance.ShortOffset;
             chest.Quantity1 = Memory.ReadShort(currentAddress);
-            currentAddress += 0x00000002;
+            currentAddress += Addresses.Instance.ShortOffset;
             if (isDouble) chest.Quantity2 = Memory.ReadShort(currentAddress);
             return chest;
         }
@@ -201,13 +200,13 @@ namespace DC2AP
             var currentItem = Memory.ReadByte(startAddress);
             Console.WriteLine($"replacing {currentItem} with {id1}");
             Memory.Write(startAddress, BitConverter.GetBytes(id1));
-            startAddress += 0x00000002;
+            startAddress += Addresses.Instance.ShortOffset;
             var currentItem2 = Memory.ReadByte(startAddress);
             Console.WriteLine($"replacing {currentItem2} with {id2}");
             Memory.Write(startAddress, BitConverter.GetBytes(id2));
-            startAddress += 0x00000002;
+            startAddress += Addresses.Instance.ShortOffset;
             Memory.Write(startAddress, BitConverter.GetBytes(quantity1));
-            startAddress += 0x00000002;
+            startAddress += Addresses.Instance.ShortOffset;
             Memory.Write(startAddress, BitConverter.GetBytes(quantity2));
         }
 
@@ -259,25 +258,25 @@ namespace DC2AP
                 enemy.HP = Memory.ReadInt(currentAddress).ToString();
                 currentAddress += 0x00000004;
                 enemy.Family = Memory.ReadShort(currentAddress).ToString();
-                currentAddress += 0x00000002;
+                currentAddress += Addresses.Instance.ShortOffset;
                 enemy.ABS = Memory.ReadShort(currentAddress).ToString();
                 //  var absMultiplied = Memory.ReadShort(currentAddress) * expMultipler;
                 //  Memory.Write(currentAddress, (short)absMultiplied);
-                currentAddress += 0x00000002;
+                currentAddress += Addresses.Instance.ShortOffset;
                 enemy.Gilda = Memory.ReadShort(currentAddress).ToString();
-                currentAddress += 0x00000002;
+                currentAddress += Addresses.Instance.ShortOffset;
                 enemy.Unknown2 = BitConverter.ToString(Memory.ReadByteArray(currentAddress, 6));
                 currentAddress += 0x00000006;
                 enemy.Rage = Memory.ReadShort(currentAddress).ToString();
-                currentAddress += 0x00000002;
+                currentAddress += Addresses.Instance.ShortOffset;
                 enemy.Unknown3 = BitConverter.ToString(Memory.ReadByteArray(currentAddress, 4));
                 currentAddress += 0x00000004;
                 enemy.Damage = Memory.ReadShort(currentAddress).ToString();
-                currentAddress += 0x00000002;
+                currentAddress += Addresses.Instance.ShortOffset;
                 enemy.Defense = Memory.ReadShort(currentAddress).ToString();
-                currentAddress += 0x00000002;
+                currentAddress += Addresses.Instance.ShortOffset;
                 enemy.BossFlag = Memory.ReadShort(currentAddress).ToString();
-                currentAddress += 0x00000002;
+                currentAddress += Addresses.Instance.ShortOffset;
                 enemy.Weaknesses = BitConverter.ToString(Memory.ReadByteArray(currentAddress, 16));
                 currentAddress += 0x00000010;
                 enemy.Effectiveness = BitConverter.ToString(Memory.ReadByteArray(currentAddress, 24));
@@ -285,18 +284,18 @@ namespace DC2AP
                 enemy.Unknown4 = BitConverter.ToString(Memory.ReadByteArray(currentAddress, 4));
                 currentAddress += 0x00000004;
                 enemy.IsRidepodEnemy = Memory.ReadByte(currentAddress).ToString();
-                currentAddress += 0x00000002;
+                currentAddress += Addresses.Instance.ShortOffset;
                 enemy.UnusedBits = BitConverter.ToString(Memory.ReadByteArray(currentAddress, 2));
-                currentAddress += 0x00000002;
+                currentAddress += Addresses.Instance.ShortOffset;
                 enemy.Minions = BitConverter.ToString(Memory.ReadByteArray(currentAddress, 4));
                 currentAddress += 0x00000004;
 
                 var itemSlot1 = Memory.ReadShort(currentAddress);
-                currentAddress += 0x00000002;
+                currentAddress += Addresses.Instance.ShortOffset;
                 var itemSlot2 = Memory.ReadShort(currentAddress);
-                currentAddress += 0x00000002;
+                currentAddress += Addresses.Instance.ShortOffset;
                 var itemSlot3 = Memory.ReadShort(currentAddress);
-                currentAddress += 0x00000002;
+                currentAddress += Addresses.Instance.ShortOffset;
 
                 enemy.Items = new List<ItemId>();
                 if (itemSlot1 != 0x00)
@@ -317,14 +316,14 @@ namespace DC2AP
                 enemy.Unknown6 = BitConverter.ToString(Memory.ReadByteArray(currentAddress, 10));
                 currentAddress += 0x0000000A;
                 var dungeon = Memory.ReadShort(currentAddress).ToString();
-                enemy.Dungeon = Helpers.GetHabitat(dungeon);
-                currentAddress += 0x00000002;
+                enemy.Dungeon = DungeonList.First(x => x.id == int.Parse(dungeon)).Name;
+                currentAddress += Addresses.Instance.ShortOffset;
                 enemy.BestiarySpot = Memory.ReadShort(currentAddress).ToString();
-                currentAddress += 0x00000002;
+                currentAddress += Addresses.Instance.ShortOffset;
                 enemy.SharedHP = Memory.ReadShort(currentAddress).ToString();
-                currentAddress += 0x00000002;
+                currentAddress += Addresses.Instance.ShortOffset;
                 enemy.Unknown7 = Memory.ReadShort(currentAddress).ToString();
-                currentAddress += 0x00000002;
+                currentAddress += Addresses.Instance.ShortOffset;
                 enemies.Add(enemy);
 
                 if (debug) Console.WriteLine($"Discovered enemy: {JsonConvert.SerializeObject(enemy, Formatting.Indented)}");
@@ -388,10 +387,10 @@ namespace DC2AP
             byte[] newBytes = new byte[2];
             data.CopyTo(newBytes, 0);
             Memory.WriteByteArray(currentAddress, newBytes);
-            currentAddress += 0x00000002;
+            currentAddress += Addresses.Instance.ShortOffset;
             if (debug) Console.WriteLine($"Reading {currentAddress.ToString("X8")}");
             var monstersKilled = Memory.ReadShort(currentAddress);
-            currentAddress += 0x00000002;
+            currentAddress += Addresses.Instance.ShortOffset;
             if (debug) Console.WriteLine($"Reading {currentAddress.ToString("X8")}");
             var timesVisited = Memory.ReadShort(currentAddress);
 

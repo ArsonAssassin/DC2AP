@@ -12,6 +12,7 @@ namespace DC2AP
 {
     public class Memory
     {
+        #region kernel functions
         public const uint PROCESS_VM_READ = 0x0010;
         public const uint PROCESS_VM_WRITE = 0x0020;
         public const uint PROCESS_VM_OPERATION = 0x0008;
@@ -47,7 +48,7 @@ namespace DC2AP
 
         [DllImport("kernel32.dll", SetLastError = true)]
         static extern int FormatMessage(uint dwFlags, IntPtr lpSource, uint dwMessageId, uint dwLanguageId, ref IntPtr lpBuffer, uint nSize, IntPtr Arguments);
-
+        
         private static int GetProcessID(string procName)
 
         {
@@ -74,8 +75,7 @@ namespace DC2AP
         {
             return Marshal.PtrToStringAnsi(IntPtr.Zero);
         }
-
-
+        #endregion
         internal static byte ReadByte(int address) 
         {
             byte[] dataBuffer = new byte[1];
@@ -129,7 +129,7 @@ namespace DC2AP
         {
             byte[] dataBuffer = new byte[8];
             ReadProcessMemory(processH, address, dataBuffer, dataBuffer.Length, out _);
-            return BitConverter.ToDouble(dataBuffer, 0); ;
+            return BitConverter.ToDouble(dataBuffer, 0);
         }
 
         internal static string ReadString(int address, int length)
