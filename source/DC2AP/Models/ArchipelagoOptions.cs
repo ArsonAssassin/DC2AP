@@ -13,7 +13,7 @@ namespace DC2AP.Models
         public int ResourcePackCount { get; set; } = 0;
         public int WeaponUpgradePackCount { get; set; } = 0;
         public int ElementPackCount { get; set; } = 0;
-        public int DungeonCountGoal { get; set; } = 4;
+        public int ChapterGoalCount { get; set; } = 4;
         public bool Fishsanity { get; set; } = false;
         public bool Sphedasanity { get; set; } = false;
         public bool Medalsanity { get; set; } = false;

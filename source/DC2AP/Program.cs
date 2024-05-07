@@ -1,4 +1,5 @@
-﻿using DC2AP.Models;
+﻿using DC2AP.Archipelago;
+using DC2AP.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections;
@@ -20,52 +21,20 @@ namespace DC2AP
         public static bool IsConnected = false;
         public static GameState CurrentGameState = new GameState();
         public static PlayerState CurrentPlayerState = new PlayerState();
-        public static void Main()
+        public static ArchipelagoClient Client { get; set; }
+        public static async Task Main()
         {
             Console.SetBufferSize(Console.BufferWidth, 32766);
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
             Console.WriteLine("DC2AP - Dark Cloud 2 Archipelago Randomizer");
-            IsConnected = Connect();
-            PopulateLists();
-            UpdateGameState();
-            UpdatePlayerState();
 
-            CurrentGameState.PropertyChanged += (obj, args) =>
-            {
-                Console.WriteLine($"Game State changed: {JsonConvert.SerializeObject(args, Formatting.Indented)}");
-            };
-            CurrentPlayerState.InventoryChanged += (obj, args) =>
-            {
-                Console.WriteLine($"Inventory changed: {JsonConvert.SerializeObject(args, Formatting.Indented)}");
-            };
-            CurrentPlayerState.PropertyChanged += (obj, args) =>
-            {
-                Console.WriteLine($"Player State changed: {JsonConvert.SerializeObject(args, Formatting.Indented)}");
-            };
+            await Initialise();
+
             Console.WriteLine("Beginning main loop.");
             while (true)
             {
-                UpdateGameState();
-                UpdatePlayerState();
 
-                //get any keys currently pressed
-                if (Console.KeyAvailable)
-                {
-                    var key = Console.ReadKey(true);
-                    if (key.Key == ConsoleKey.F1)
-                    {
-                        var freeSlot = CurrentPlayerState.GetFirstSlot(268);
-                        Helpers.WriteItem(new Item() { Id = 268, Quantity = 20 }, Helpers.GetItemSlotAddress(freeSlot));
-                    }
-                    if (key.Key == ConsoleKey.F2)
-                    {
-                        var freeSlot = CurrentPlayerState.GetFirstSlot(0);
-                        Console.WriteLine("Enter item name:");
-                        var itemName = Console.ReadLine();
-                        Helpers.WriteItem(new Item() { Id = ItemList.First(x => x.Name.ToLower() == itemName).Id, Quantity = 1 }, Helpers.GetItemSlotAddress(freeSlot));
-                    }
-                }
 
                 if (Memory.ReadByte(Addresses.Instance.CurrentFloor) == 0)
                 {
@@ -117,7 +86,53 @@ namespace DC2AP
                     }
                 }
 
+                UpdateGameState();
+                UpdatePlayerState();
+
+                HandleInputCommands();
                 Thread.Sleep(1);
+            }
+        }
+
+        private static async Task Initialise()
+        {
+            IsConnected = await ConnectAsync();
+            
+            PopulateLists();
+            UpdateGameState();
+            UpdatePlayerState();
+
+            CurrentGameState.PropertyChanged += (obj, args) =>
+            {
+                Console.WriteLine($"Game State changed: {JsonConvert.SerializeObject(args, Formatting.Indented)}");
+            };
+            CurrentPlayerState.InventoryChanged += (obj, args) =>
+            {
+                Console.WriteLine($"Inventory changed: {JsonConvert.SerializeObject(args, Formatting.Indented)}");
+            };
+            CurrentPlayerState.PropertyChanged += (obj, args) =>
+            {
+                Console.WriteLine($"Player State changed: {JsonConvert.SerializeObject(args, Formatting.Indented)}");
+            };
+        }
+
+        private static void HandleInputCommands()
+        {
+            if (Console.KeyAvailable)
+            {
+                var key = Console.ReadKey(true);
+                if (key.Key == ConsoleKey.F1)
+                {
+                    var freeSlot = CurrentPlayerState.GetFirstSlot(268);
+                    Helpers.WriteItem(new Item() { Id = 268, Quantity = 20 }, Helpers.GetItemSlotAddress(freeSlot));
+                }
+                if (key.Key == ConsoleKey.F2)
+                {
+                    var freeSlot = CurrentPlayerState.GetFirstSlot(0);
+                    Console.WriteLine("Enter item name:");
+                    var itemName = Console.ReadLine();
+                    Helpers.WriteItem(new Item() { Id = ItemList.First(x => x.Name.ToLower() == itemName).Id, Quantity = 1 }, Helpers.GetItemSlotAddress(freeSlot));
+                }
             }
         }
 
@@ -138,7 +153,7 @@ namespace DC2AP
             return chests;
         }
 
-        static bool Connect()
+        static async Task<bool> ConnectAsync()
         {
             Console.WriteLine("Connecting to PCSX2");
             var pid = Memory.PCSX2_PROCESSID;
@@ -160,6 +175,15 @@ namespace DC2AP
                 return false;
             }
             Console.WriteLine($"Connected to Dark Cloud 2 ({GameVersion})");
+
+            Console.WriteLine($"Connecting to Archipelago");
+            Client = new ArchipelagoClient();
+            await Client.Connect("localhost:38281");
+            await Client.Login("Player1");
+            Client.ItemReceived += (e, args) =>
+            {
+
+            };
             return true;
 
         }
@@ -278,11 +302,13 @@ namespace DC2AP
                 enemy.HP = Memory.ReadInt(currentAddress).ToString();
                 currentAddress += 0x00000004;
                 enemy.Family = Memory.ReadShort(currentAddress).ToString();
-                currentAddress += Addresses.Instance.ShortOffset;
+                currentAddress += Addresses.Instance.ShortOffset;                
+                var absMultiplied = Memory.ReadShort(currentAddress) * Client.Options.ExpMultiplier;
+                Memory.Write(currentAddress, (short)absMultiplied);
                 enemy.ABS = Memory.ReadShort(currentAddress).ToString();
-                //  var absMultiplied = Memory.ReadShort(currentAddress) * expMultipler;
-                //  Memory.Write(currentAddress, (short)absMultiplied);
                 currentAddress += Addresses.Instance.ShortOffset;
+                var gildaMultiplied = Memory.ReadShort(currentAddress) * Client.Options.GoldMultiplier;
+                Memory.Write(currentAddress, (short)gildaMultiplied);
                 enemy.Gilda = Memory.ReadShort(currentAddress).ToString();
                 currentAddress += Addresses.Instance.ShortOffset;
                 enemy.Unknown2 = BitConverter.ToString(Memory.ReadByteArray(currentAddress, 6));
