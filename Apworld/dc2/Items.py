@@ -29,7 +29,7 @@ class DarkCloud2Item(Item):
 
     @staticmethod
     def get_name_to_id() -> dict:
-        base_id = 100000
+        base_id = 0
         return {item_data.name: id for id, item_data in enumerate(_all_items, base_id)}
 
 
@@ -62,12 +62,7 @@ _all_items = [DC2ItemData(row[0], row[1], row[2]) for row in [
     ("Turtle Shell Hammer",            15, DC2ItemCategory.WEAPON_MAX_R),
     ("Big Bucks Hammer",               16, DC2ItemCategory.WEAPON_MAX_R),
     ("Frozen Tuna",                    17, DC2ItemCategory.WEAPON_MAX_R),
-    ("Kubera's Hand",                  18, DC2ItemCategory.WEAPON_MAX_R),
-    
-    ("True Battle Wrench",             90, DC2ItemCategory.WEAPON_MAX_R),
-    
-    ("Fishing Rod",                   302, DC2ItemCategory.WEAPON_MAX_R),
-    ("Lure Rod",                      303, DC2ItemCategory.WEAPON_MAX_R),
+    ("Kubera's Hand",                  18, DC2ItemCategory.WEAPON_MAX_R),    
     
     ("Sigma Breaker",                  19, DC2ItemCategory.WEAPON_MAX_L),  
     ("Grade 0",                        20, DC2ItemCategory.WEAPON_MAX_L),
@@ -142,6 +137,8 @@ _all_items = [DC2ItemData(row[0], row[1], row[2]) for row in [
     ("Island King",                    88, DC2ItemCategory.WEAPON_MONICA_R),
     ("Griffon Fork",                   89, DC2ItemCategory.WEAPON_MONICA_R),
     
+    ("True Battle Wrench",             90, DC2ItemCategory.WEAPON_MAX_R),
+    
     ("Magic Brassard",                 91, DC2ItemCategory.WEAPON_MONICA_L),
     ("Gold Brassard",                  92, DC2ItemCategory.WEAPON_MONICA_L),
     ("Bandit Brassard",                93, DC2ItemCategory.WEAPON_MONICA_L),
@@ -200,8 +197,8 @@ _all_items = [DC2ItemData(row[0], row[1], row[2]) for row in [
     ("Super-Alloy Body",               141, DC2ItemCategory.MISC),
     ("Sun and moon Armor",             142, DC2ItemCategory.MISC),
     
-    ("null",                           143, DC2ItemCategory.SKIP),
-    ("null",                           144, DC2ItemCategory.SKIP),
+    ("null1",                           143, DC2ItemCategory.SKIP),
+    ("null2",                           144, DC2ItemCategory.SKIP),
     
     ("Cannonball Arm",                 145, DC2ItemCategory.MISC),
     ("Barrel Cannon",                  146, DC2ItemCategory.MISC),
@@ -224,7 +221,7 @@ _all_items = [DC2ItemData(row[0], row[1], row[2]) for row in [
     ("Jet Hover",                      162, DC2ItemCategory.MISC),
     ("Clown Foot",                     163, DC2ItemCategory.MISC),
     
-    ("null",                           164, DC2ItemCategory.SKIP),
+    ("null3",                           164, DC2ItemCategory.SKIP),
     
     ("Energy Pack",                    165, DC2ItemCategory.MISC),
     ("Energy Pack (Barrel)",           166, DC2ItemCategory.MISC),
@@ -233,14 +230,12 @@ _all_items = [DC2ItemData(row[0], row[1], row[2]) for row in [
     ("Energy Pack (Urn)",              169, DC2ItemCategory.MISC),
     ("Triple-Urn Pack",                170, DC2ItemCategory.MISC),
     
-    ("null",                           171, DC2ItemCategory.SKIP),
+    ("null4",                           171, DC2ItemCategory.SKIP),
     
     ("Monster Notes",                  172, DC2ItemCategory.MISC),
     
     ("Dynamite",                       173, DC2ItemCategory.CONSUMABLE),
     ("Seal-breaking Scroll",           174, DC2ItemCategory.CONSUMABLE),
-    
-    ("Lightspeed",                     307, DC2ItemCategory.CONSUMABLE),
     
     ("Flame Crystal",                  175, DC2ItemCategory.MISC),
     ("Chill Crystal",                  176, DC2ItemCategory.MISC),
@@ -300,7 +295,6 @@ _all_items = [DC2ItemData(row[0], row[1], row[2]) for row in [
     ("Silver Ball",                    226, DC2ItemCategory.GEORAMA_RESOURCE),
     ("Hunk of Copper",                 227, DC2ItemCategory.GEORAMA_RESOURCE),
     
-    ("Thick Hide",                     245, DC2ItemCategory.GEORAMA_RESOURCE),
     
     ("Light Element",                  228, DC2ItemCategory.GEORAMA_RESOURCE),
     ("Holy Element",                   229, DC2ItemCategory.GEORAMA_RESOURCE),
@@ -320,6 +314,8 @@ _all_items = [DC2ItemData(row[0], row[1], row[2]) for row in [
     ("Paint (Yellow)",                 242, DC2ItemCategory.GEORAMA_RESOURCE),
     ("Paint (Purple)",                 243, DC2ItemCategory.GEORAMA_RESOURCE),
     ("Paint (Pink)",                   244, DC2ItemCategory.GEORAMA_RESOURCE),
+    
+    ("Thick Hide",                     245, DC2ItemCategory.GEORAMA_RESOURCE),
     
     ("Core",                           246, DC2ItemCategory.MISC),
     ("Improved Core",                  247, DC2ItemCategory.MISC),
@@ -382,12 +378,16 @@ _all_items = [DC2ItemData(row[0], row[1], row[2]) for row in [
     ("Crunchy Bread",                  300, DC2ItemCategory.CONSUMABLE),
     ("Roasted Chestnut",               301, DC2ItemCategory.CONSUMABLE),
     
+    
+    ("Fishing Rod",                   302, DC2ItemCategory.WEAPON_MAX_R),
+    ("Lure Rod",                      303, DC2ItemCategory.WEAPON_MAX_R),
+    
     ("Gift Capsule",                   304, DC2ItemCategory.CONSUMABLE),
     
-    ("Armband Repair Powder",          352, DC2ItemCategory.CONSUMABLE),
-    
     ("Map",                            305, DC2ItemCategory.MISC),
-    ("Magic Crystal",                  306, DC2ItemCategory.MISC),    
+    ("Magic Crystal",                  306, DC2ItemCategory.MISC),        
+    
+    ("Lightspeed",                     307, DC2ItemCategory.CONSUMABLE),
     
     ("Badge Box",                      308, DC2ItemCategory.MISC),
     ("Aquarium",                       309, DC2ItemCategory.MISC),
@@ -438,6 +438,8 @@ _all_items = [DC2ItemData(row[0], row[1], row[2]) for row in [
     ("Moon Clock Hand",                349, DC2ItemCategory.GATE_KEY),
     ("Trolley Oil",                    350, DC2ItemCategory.GATE_KEY),
     ("Rusted Key",                     351, DC2ItemCategory.GATE_KEY),    
+    
+    ("Armband Repair Powder",          352, DC2ItemCategory.CONSUMABLE),
     
     ("Circus Ticket",                  353, DC2ItemCategory.MISC),
     ("Fire Horn",                      354, DC2ItemCategory.MISC),  
@@ -523,7 +525,7 @@ _all_items = [DC2ItemData(row[0], row[1], row[2]) for row in [
     
     ("Tasty Water",                    425, DC2ItemCategory.CONSUMABLE),     
     
-    ("null",                           426, DC2ItemCategory.SKIP), 
+    ("null5",                           426, DC2ItemCategory.SKIP), 
     
     ("Sun Badge",                      427, DC2ItemCategory.MISC), 
     ("Moon Badge",                     428, DC2ItemCategory.MISC), 
