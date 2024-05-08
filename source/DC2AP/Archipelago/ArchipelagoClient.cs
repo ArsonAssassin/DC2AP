@@ -15,7 +15,7 @@ namespace DC2AP.Archipelago
     {
         public bool IsConnected { get; set; }
         public bool IsLoggedIn { get; set; }
-        public event EventHandler ItemReceived;
+        public event EventHandler<ItemReceivedEventArgs> ItemReceived;
         public ArchipelagoSession CurrentSession { get; set; }
         public ArchipelagoOptions Options { get; set; }
         public async Task Connect(string host)
@@ -39,26 +39,30 @@ namespace DC2AP.Archipelago
                 Console.WriteLine("Must be Connected before calling Login");
                 return;
             }
-            var loginResult = await CurrentSession.LoginAsync("Dark Cloud 2", playerName, ItemsHandlingFlags.AllItems, Version.Parse("4.6"), password: password, requestSlotData: true);
+            var loginResult = await CurrentSession.LoginAsync("Dark Cloud 2", playerName, ItemsHandlingFlags.AllItems, Version.Parse("4.6.0"), password: password, requestSlotData: true);
             Console.WriteLine($"Login Result: {(loginResult.Successful ? "Success" : "Failed")}");
             if (loginResult.Successful)
             {
                 Console.WriteLine($"Connected as Player: {playerName} playing Dark Cloud 2");
             }
             var currentSlot = CurrentSession.ConnectionInfo.Slot;
-            var slotData = await CurrentSession.DataStorage.GetSlotDataAsync( currentSlot );
+            var slotData = await CurrentSession.DataStorage.GetSlotDataAsync(currentSlot);
             var options = JsonConvert.DeserializeObject<Dictionary<string, object>>(slotData["options"].ToString());
 
             Options = new ArchipelagoOptions()
             {
-                ExpMultiplier = (int)options["abs_multiplier"],
-                GoldMultiplier = (int)options["gilda_multiplier"]
+                ExpMultiplier = (int)(long)options["abs_multiplier"],
+                GoldMultiplier = (int)(long)options["gilda_multiplier"]
             };
 
             CurrentSession.Items.ItemReceived += (helper) =>
             {
                 Console.WriteLine("Item received");
-                ItemReceived?.Invoke(this, new EventArgs());
+                var item = helper.PeekItem();
+                var newItem = new Item() { Id = (int)item.Item, Quantity = 1 };
+                ItemReceived?.Invoke(this, new ItemReceivedEventArgs() { Item = newItem });
+                helper.DequeueItem();
+
             };
             return;
         }

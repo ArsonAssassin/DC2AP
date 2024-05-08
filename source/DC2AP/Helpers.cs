@@ -55,6 +55,8 @@ namespace DC2AP
             {
                 var slotNum = playerState.GetFirstSlot(item.Id);
                 var address = GetItemSlotAddress(slotNum);
+                var currentQuantity = Memory.ReadShort(address + 0x0000000E);
+                item.Quantity += currentQuantity;
                 WriteItem(item, address);
             }
             else

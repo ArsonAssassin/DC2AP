@@ -182,7 +182,15 @@ namespace DC2AP
             await Client.Login("Player1");
             Client.ItemReceived += (e, args) =>
             {
-
+                if (args.Item.Id <= 428)
+                {
+                    args.Item.Name = ItemList.First(x => x.Id == args.Item.Id).Name;
+                    Helpers.AddItem(args.Item, CurrentPlayerState);
+                }
+                else
+                {
+                    //An event was completed
+                }
             };
             return true;
 
