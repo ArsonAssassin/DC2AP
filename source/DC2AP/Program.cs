@@ -262,17 +262,7 @@ namespace DC2AP
             Memory.Write(startAddress, BitConverter.GetBytes(quantity2));
         }
 
-        static async Task MonitorAddress(int address)
-        {
-            var initialValue = Memory.ReadByte(address);
-            var currentValue = initialValue;
-            while (initialValue == currentValue)
-            {
-                currentValue = Memory.ReadByte(address);
-                Thread.Sleep(10);
-            }
-            Console.WriteLine($"Memory value changed at address {address.ToString("X8")}");
-        }
+
         static async Task MonitorAddressRange(int address, int length)
         {
             var initialValue = Memory.ReadString(address, length);
@@ -287,9 +277,6 @@ namespace DC2AP
         }
         static List<Enemy> ReadEnemies(bool debug = false)
         {
-
-            var expMultipler = 1;
-
             List<Enemy> enemies = new List<Enemy>();
             var currentAddress = Addresses.Instance.EnemyStartAddress;
             currentAddress += 0x00000004;
@@ -310,8 +297,8 @@ namespace DC2AP
                 enemy.HP = Memory.ReadInt(currentAddress).ToString();
                 currentAddress += 0x00000004;
                 enemy.Family = Memory.ReadShort(currentAddress).ToString();
-                currentAddress += Addresses.Instance.ShortOffset;                
-                var absMultiplied = Memory.ReadShort(currentAddress) * Client.Options.ExpMultiplier;
+                currentAddress += Addresses.Instance.ShortOffset;
+                var absMultiplied = Memory.ReadShort(currentAddress) *  Client.Options.ExpMultiplier;
                 Memory.Write(currentAddress, (short)absMultiplied);
                 enemy.ABS = Memory.ReadShort(currentAddress).ToString();
                 currentAddress += Addresses.Instance.ShortOffset;

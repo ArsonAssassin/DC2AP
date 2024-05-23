@@ -18,6 +18,7 @@ namespace DC2AP.Archipelago
         public event EventHandler<ItemReceivedEventArgs> ItemReceived;
         public ArchipelagoSession CurrentSession { get; set; }
         public ArchipelagoOptions Options { get; set; }
+        public List<Location> Locations { get; set; }
         public async Task Connect(string host)
         {
             CurrentSession = ArchipelagoSessionFactory.CreateSession(host);
@@ -48,7 +49,10 @@ namespace DC2AP.Archipelago
             var currentSlot = CurrentSession.ConnectionInfo.Slot;
             var slotData = await CurrentSession.DataStorage.GetSlotDataAsync(currentSlot);
             var options = JsonConvert.DeserializeObject<Dictionary<string, object>>(slotData["options"].ToString());
-
+          //  var locationIds = JsonConvert.DeserializeObject<List<int>>(slotData["locationsId"].ToString());
+         //   var locationItems = JsonConvert.DeserializeObject<List<int>>(slotData["locationsItem"].ToString());
+            Locations = Helpers.GetLocations();
+            MonitorLocations(Locations);
             Options = new ArchipelagoOptions()
             {
                 ExpMultiplier = (int)(long)options["abs_multiplier"],
@@ -64,9 +68,31 @@ namespace DC2AP.Archipelago
                 helper.DequeueItem();
 
             };
+            IsLoggedIn = true;
             return;
         }
-
+        private async void MonitorLocations(List<Location> locations)
+        {
+            foreach (var location in Locations)
+            {
+                if (location.CheckType == LocationCheckType.Bit)
+                {
+                    Task.Factory.StartNew(async () =>
+                    {
+                        await Helpers.MonitorAddressBit(location.Address, location.AddressBit);
+                        SendLocation(location.Id);
+                    });
+                }
+                else if(location.CheckType == LocationCheckType.Int)
+                {
+                    Task.Factory.StartNew(async () =>
+                    {
+                        await Helpers.MonitorAddress(location.Address, int.Parse(location.CheckValue));
+                        SendLocation(location.Id);
+                    });
+                }
+            }
+        }
         public async void SendLocation(long id)
         {
             if (!(IsConnected && IsLoggedIn))

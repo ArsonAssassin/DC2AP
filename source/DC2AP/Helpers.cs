@@ -1,6 +1,8 @@
-﻿using DC2AP.Models;
+﻿using DC2AP.Archipelago;
+using DC2AP.Models;
 using Newtonsoft.Json;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -38,6 +40,12 @@ namespace DC2AP
             var list = JsonConvert.DeserializeObject<List<Dungeon>>(json);
             return list;
         }
+        public static List<Location> GetLocations()
+        {
+            var json = OpenEmbeddedResource("DC2AP.Resources.Locations.json");
+            var list = JsonConvert.DeserializeObject<List<Location>>(json);
+            return list;
+        }
         public static string OpenEmbeddedResource(string resourceName)
         {
             var assembly = Assembly.GetExecutingAssembly();
@@ -47,6 +55,47 @@ namespace DC2AP
                 string jsonFile = reader.ReadToEnd();
                 return jsonFile;
             }
+        }
+        public static async Task MonitorAddress(int address)
+        {
+            var initialValue = Memory.ReadByte(address);
+            var currentValue = initialValue;
+            while (initialValue == currentValue)
+            {
+                currentValue = Memory.ReadByte(address);
+                Thread.Sleep(10);
+            }
+            Console.WriteLine($"Memory value changed at address {address.ToString("X8")}");
+        }
+        public static async Task MonitorAddress(int address, int valueToCheck)
+        {
+            var currentValue = Memory.ReadByte(address);
+            while (currentValue != valueToCheck)
+            {
+                currentValue = Memory.ReadByte(address);
+                Thread.Sleep(10);
+                Console.WriteLine("Current Chapter: " + currentValue);
+            }
+        }
+        public static async Task MonitorAddressBit(int address, int bit)
+        {
+            byte initialValue = Memory.ReadByte(address);
+            byte currentValue = initialValue;
+            bool initialBitValue = GetBitValue(initialValue, bit);
+            bool currentBitValue = initialBitValue;
+
+            while (!currentBitValue)
+            {
+                currentValue = Memory.ReadByte(address);
+                currentBitValue = GetBitValue(currentValue, bit);
+                Thread.Sleep(10);
+            }
+
+            Console.WriteLine($"Memory value changed at address {address.ToString("X8")}, bit {bit}");
+        }
+        private static bool GetBitValue(byte value, int bitIndex)
+        {
+            return (value & (1 << bitIndex)) != 0;
         }
         public static void AddItem(Item item, PlayerState playerState)
         {

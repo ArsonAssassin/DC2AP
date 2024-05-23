@@ -1,0 +1,86 @@
+[
+  {
+    "Name": "PB: Miracle chest 1",
+    "Id": 1,
+    "Address": "0x21E01B70",
+    "AddressBit": 1,
+    "CheckType":  0
+  },
+  {
+    "Name": "PB: Miracle chest 2",
+    "Id": 2,
+    "Address": "0x21E01AB0",
+    "AddressBit": 1,
+    "CheckType": 0
+  },
+  {
+    "Name": "PB: Miracle chest 3",
+    "Id": 3,
+    "Address": "0x21E01AB0",
+    "AddressBit": 2,
+    "CheckType": 0
+  },
+  {
+    "Name": "UWC: Floor 1",
+    "Id": 4,
+    "Address": "0x21E1DE22",
+    "AddressBit": 1,
+    "CheckType": 0
+  },
+  {
+    "Name": "UWC: Floor 2",
+    "Id": 5,
+    "Address": "0x21E1DE36",
+    "AddressBit": 1,
+    "CheckType": 0
+  },
+  {
+    "Name": "UWC: Floor 3",
+    "Id": 6,
+    "Address": "0x21E1DE4A",
+    "AddressBit": 1,
+    "CheckType": 0
+  },
+  {
+    "Name": "UWC: Pump Room",
+    "Id": 7,
+    "Address": "0x21E1DE5E",
+    "AddressBit": 0,
+    "CheckType": 0
+  },
+  {
+    "Name": "UWC: Linda",
+    "Id": 8,
+    "Address": "0x21E0181D",
+    "AddressBit": 4,
+    "CheckType": 0
+  },
+  {
+    "Name": "UWC: Floor 4",
+    "Id": 9,
+    "Address": "0x21E1DE72",
+    "AddressBit": 1,
+    "CheckType": 0
+  },
+  {
+    "Name": "UWC: Floor 5",
+    "Id": 10,
+    "Address": "0x21E1DE86",
+    "AddressBit": 1,
+    "CheckType": 0
+  },
+  {
+    "Name": "UWC: Halloween",
+    "Id": 11,
+    "Address": "0x21E0181D",
+    "AddressBit": 7,
+    "CheckType": 0
+  },
+  {
+    "Name": "UWC: Chapter 1 Complete",
+    "Id": 12,
+    "Address": "0x21E03218",
+    "CheckType": 1,
+    "CheckValue": "2"
+  }
+]
