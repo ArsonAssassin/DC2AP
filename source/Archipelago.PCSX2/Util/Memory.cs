@@ -8,7 +8,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DC2AP
+namespace Archipelago.PCSX2.Util
 {
     public class Memory
     {
@@ -61,7 +61,7 @@ namespace DC2AP
             }
             else 
             {
-                Console.WriteLine(procName + " not running");
+                //application is not running
                 CloseHandle(processH);
                 return 0;
             }
@@ -76,92 +76,88 @@ namespace DC2AP
             return Marshal.PtrToStringAnsi(IntPtr.Zero);
         }
         #endregion
-        internal static byte ReadByte(int address) 
+        public static byte ReadByte(int address) 
         {
             byte[] dataBuffer = new byte[1];
             ReadProcessMemory(processH, address, dataBuffer, dataBuffer.Length, out _);
             return dataBuffer[0];
         }
 
-        internal static byte[] ReadByteArray(int address, int numBytes)
+        public static byte[] ReadByteArray(int address, int numBytes)
         {
             byte[] dataBuffer = new byte[numBytes];
             ReadProcessMemory(processH, address, dataBuffer, dataBuffer.Length, out _); 
             return dataBuffer;
         }
 
-        internal static ushort ReadUShort(int address) 
+        public static ushort ReadUShort(int address) 
         {
             byte[] dataBuffer = new byte[2];
             ReadProcessMemory(processH, address, dataBuffer, dataBuffer.Length, out _);
             return BitConverter.ToUInt16(dataBuffer, 0);
         }
 
-        internal static short ReadShort(int address)
+        public static short ReadShort(int address)
         {
             byte[] dataBuffer = new byte[2]; 
             ReadProcessMemory(processH, address, dataBuffer, dataBuffer.Length, out _);
             return BitConverter.ToInt16(dataBuffer, 0);
         }
 
-        internal static uint ReadUInt(int address)
+        public static uint ReadUInt(int address)
         {
             byte[] dataBuffer = new byte[4];
             ReadProcessMemory(processH, address, dataBuffer, dataBuffer.Length, out _);
             return BitConverter.ToUInt32(dataBuffer, 0);
         }
 
-        internal static int ReadInt(int address)
+        public static int ReadInt(int address)
         {
             byte[] dataBuffer = new byte[4];
             ReadProcessMemory(processH, address, dataBuffer, dataBuffer.Length, out _);
             return BitConverter.ToInt32(dataBuffer, 0);
         }
 
-        internal static float ReadFloat(int address)
+        public static float ReadFloat(int address)
         {
             byte[] dataBuffer = new byte[8];
             ReadProcessMemory(processH, address, dataBuffer, dataBuffer.Length, out _);
             return BitConverter.ToSingle(dataBuffer, 0);
         }
 
-        internal static double ReadDouble(int address)
+        public static double ReadDouble(int address)
         {
             byte[] dataBuffer = new byte[8];
             ReadProcessMemory(processH, address, dataBuffer, dataBuffer.Length, out _);
             return BitConverter.ToDouble(dataBuffer, 0);
         }
 
-        internal static string ReadString(int address, int length)
+        public static string ReadString(int address, int length)
         {
             byte[] dataBuffer = new byte[length];
             ReadProcessMemory(processH, address, dataBuffer, length, out _);
             var converter = Encoding.GetEncoding(10000);
             var output = converter.GetString(dataBuffer);
-            output = output.Replace("\u0000", "");
-            output = output.Replace("e60a", "").Replace("e60b", "").Replace("e60c", "").Replace("e60d", "").Replace("e60e", "").Replace("e201a", "").Replace("e201b", "");
-            output = output.Replace("e202a", "").Replace("e201c","").Replace("e201d", "").Replace("e253d","").Replace("e253a","");// remove non-unicode characters
-            output = output.Replace("ñ", "");
             return output;
         }
 
-        internal static bool Write(int address, byte[] value)
+        public static bool Write(int address, byte[] value)
         {
             return WriteProcessMemory(processH, address, value, value.Length, out _);
         }
 
-        internal static bool WriteString(int address, string stringToWrite)
+        public static bool WriteString(int address, string stringToWrite)
         {
             byte[] dataBuffer = Encoding.GetEncoding(10000).GetBytes(stringToWrite);
             return WriteProcessMemory(processH, address, dataBuffer, dataBuffer.Length, out _);
         }
 
-        internal static bool WriteByte(int address, byte value)
+        public static bool WriteByte(int address, byte value)
         {
             return Write(address, [value] );
         }
 
-        internal static void WriteByteArray(int address, byte[] byteArray)
+        public static void WriteByteArray(int address, byte[] byteArray)
         {
             bool successful;
             successful = VirtualProtectEx(processH, address, byteArray.Length, PAGE_EXECUTE_READWRITE, out _);
@@ -172,23 +168,23 @@ namespace DC2AP
                 Console.WriteLine(GetLastError() + " - " + GetSystemMessage(GetLastError()));
         }
 
-        internal static bool Write(int address, ushort value)
+        public static bool Write(int address, ushort value)
         {
             return Write(address, BitConverter.GetBytes(value));
         }
-        internal static bool Write(int address, int value)
+        public static bool Write(int address, int value)
         {
             return Write(address, BitConverter.GetBytes(value));
         }
-        internal static bool Write(int address, uint value)
+        public static bool Write(int address, uint value)
         {
             return Write(address, BitConverter.GetBytes(value));
         }
-        internal static bool Write(int address, float value)
+        public static bool Write(int address, float value)
         {
             return Write(address, BitConverter.GetBytes(value));
         }
-        internal static bool Write(int address, double value)
+        public static bool Write(int address, double value)
         {
             return Write(address, BitConverter.GetBytes(value));
         }

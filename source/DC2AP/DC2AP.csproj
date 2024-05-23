@@ -29,4 +29,8 @@
     <PackageReference Include="System.Text.Encoding.CodePages" Version="8.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Archipelago.PCSX2\Archipelago.PCSX2.csproj" />
+  </ItemGroup>
+
 </Project>

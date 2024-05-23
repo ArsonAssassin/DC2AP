@@ -1,11 +1,12 @@
-﻿using Newtonsoft.Json;
+﻿using Archipelago.PCSX2.Util;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DC2AP.Archipelago
+namespace Archipelago.PCSX2.Models
 {
     public class Location
     {

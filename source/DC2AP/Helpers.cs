@@ -1,4 +1,5 @@
-﻿using DC2AP.Archipelago;
+﻿using Archipelago.PCSX2.Models;
+using Archipelago.PCSX2.Util;
 using DC2AP.Models;
 using Newtonsoft.Json;
 using System;
@@ -56,43 +57,7 @@ namespace DC2AP
                 return jsonFile;
             }
         }
-        public static async Task MonitorAddress(int address)
-        {
-            var initialValue = Memory.ReadByte(address);
-            var currentValue = initialValue;
-            while (initialValue == currentValue)
-            {
-                currentValue = Memory.ReadByte(address);
-                Thread.Sleep(10);
-            }
-            Console.WriteLine($"Memory value changed at address {address.ToString("X8")}");
-        }
-        public static async Task MonitorAddress(int address, int valueToCheck)
-        {
-            var currentValue = Memory.ReadByte(address);
-            while (currentValue != valueToCheck)
-            {
-                currentValue = Memory.ReadByte(address);
-                Thread.Sleep(10);
-                Console.WriteLine("Current Chapter: " + currentValue);
-            }
-        }
-        public static async Task MonitorAddressBit(int address, int bit)
-        {
-            byte initialValue = Memory.ReadByte(address);
-            byte currentValue = initialValue;
-            bool initialBitValue = GetBitValue(initialValue, bit);
-            bool currentBitValue = initialBitValue;
 
-            while (!currentBitValue)
-            {
-                currentValue = Memory.ReadByte(address);
-                currentBitValue = GetBitValue(currentValue, bit);
-                Thread.Sleep(10);
-            }
-
-            Console.WriteLine($"Memory value changed at address {address.ToString("X8")}, bit {bit}");
-        }
         private static bool GetBitValue(byte value, int bitIndex)
         {
             return (value & (1 << bitIndex)) != 0;

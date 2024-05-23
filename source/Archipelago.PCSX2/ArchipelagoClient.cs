@@ -1,7 +1,9 @@
 ﻿using Archipelago.MultiClient.Net;
 using Archipelago.MultiClient.Net.Enums;
 using Archipelago.MultiClient.Net.Helpers;
-using DC2AP.Models;
+using Archipelago.MultiClient.Net.Models;
+using Archipelago.PCSX2.Models;
+using Archipelago.PCSX2.Util;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -9,22 +11,25 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DC2AP.Archipelago
+namespace Archipelago.PCSX2
 {
     public class ArchipelagoClient
     {
-        public bool IsConnected { get; set; }
-        public bool IsLoggedIn { get; set; }
+        internal bool IsConnected { get; set; }
+        internal bool IsLoggedIn { get; set; }
         public event EventHandler<ItemReceivedEventArgs> ItemReceived;
         public ArchipelagoSession CurrentSession { get; set; }
-        public ArchipelagoOptions Options { get; set; }
-        public List<Location> Locations { get; set; }
-        public async Task Connect(string host)
+        private List<Location> Locations { get; set; }
+        private string GameName { get; set;}
+        private Dictionary<string, object> _options;
+        public Dictionary<string, object> Options { get { return _options; } }
+        public async Task Connect(string host, string gameName)
         {
             CurrentSession = ArchipelagoSessionFactory.CreateSession(host);
             var roomInfo = await CurrentSession.ConnectAsync();
             Console.WriteLine($"Connected to room {roomInfo.SeedName}");
             Console.WriteLine($"Available Players: {JsonConvert.SerializeObject(roomInfo.Players)}");
+            GameName = gameName;
             IsConnected = true;
         }
         public void Disconnect()
@@ -40,24 +45,27 @@ namespace DC2AP.Archipelago
                 Console.WriteLine("Must be Connected before calling Login");
                 return;
             }
-            var loginResult = await CurrentSession.LoginAsync("Dark Cloud 2", playerName, ItemsHandlingFlags.AllItems, Version.Parse("4.6.0"), password: password, requestSlotData: true);
+            if(Locations == null || !Locations.Any())
+            {
+                Console.WriteLine("Please populate locations before calling Login");
+                return;
+            }
+            var loginResult = await CurrentSession.LoginAsync(GameName, playerName, ItemsHandlingFlags.AllItems, Version.Parse("4.6.0"), password: password, requestSlotData: true);
             Console.WriteLine($"Login Result: {(loginResult.Successful ? "Success" : "Failed")}");
             if (loginResult.Successful)
             {
-                Console.WriteLine($"Connected as Player: {playerName} playing Dark Cloud 2");
+                Console.WriteLine($"Connected as Player: {playerName} playing {GameName}");
+            }
+            else
+            {
+                Console.WriteLine($"Login failed.");
+                return;
             }
             var currentSlot = CurrentSession.ConnectionInfo.Slot;
             var slotData = await CurrentSession.DataStorage.GetSlotDataAsync(currentSlot);
-            var options = JsonConvert.DeserializeObject<Dictionary<string, object>>(slotData["options"].ToString());
-          //  var locationIds = JsonConvert.DeserializeObject<List<int>>(slotData["locationsId"].ToString());
-         //   var locationItems = JsonConvert.DeserializeObject<List<int>>(slotData["locationsItem"].ToString());
-            Locations = Helpers.GetLocations();
+            _options = JsonConvert.DeserializeObject<Dictionary<string, object>>(slotData["options"].ToString());
+
             MonitorLocations(Locations);
-            Options = new ArchipelagoOptions()
-            {
-                ExpMultiplier = (int)(long)options["abs_multiplier"],
-                GoldMultiplier = (int)(long)options["gilda_multiplier"]
-            };
 
             CurrentSession.Items.ItemReceived += (helper) =>
             {
@@ -70,6 +78,10 @@ namespace DC2AP.Archipelago
             };
             IsLoggedIn = true;
             return;
+        }
+        public async void PopulateLocations(List<Location> locations)
+        {
+            Locations = locations;
         }
         private async void MonitorLocations(List<Location> locations)
         {

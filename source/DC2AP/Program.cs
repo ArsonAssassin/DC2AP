@@ -1,4 +1,6 @@
-﻿using DC2AP.Archipelago;
+﻿using Archipelago.PCSX2;
+using Archipelago.PCSX2.Models;
+using Archipelago.PCSX2.Util;
 using DC2AP.Models;
 using Newtonsoft.Json;
 using System;
@@ -96,7 +98,7 @@ namespace DC2AP
 
         private static async Task Initialise()
         {
-            IsConnected = await ConnectAsync();
+            IsConnected = await ConnectAsync("Player1");
             
             PopulateLists();
             UpdateGameState();
@@ -153,16 +155,13 @@ namespace DC2AP
             return chests;
         }
 
-        static async Task<bool> ConnectAsync()
+        static async Task<bool> ConnectAsync(string playerName, string password = null)
         {
-            Console.WriteLine("Connecting to PCSX2");
-            var pid = Memory.PCSX2_PROCESSID;
-            if (pid == 0)
+            PCSX2Client client = new PCSX2Client();
+            var pcsx2Connected = client.Connect();
+            if (!pcsx2Connected)
             {
-                Console.WriteLine("PCSX2 not found.");
-                Console.WriteLine("Press any key to exit.");
-                Console.Read();
-                System.Environment.Exit(0);
+                Console.WriteLine("An error occurred whilst connecting to PCSX2, please ensure the application is open and the game is loaded.");
                 return false;
             }
             GameVersion = Memory.ReadInt(0x203694D0) == 1701667175 ? "PAL" : Memory.ReadInt(0x20364BD0) == 1701667175 ? "US" : "";
@@ -178,8 +177,10 @@ namespace DC2AP
 
             Console.WriteLine($"Connecting to Archipelago");
             Client = new ArchipelagoClient();
-            await Client.Connect("localhost:38281");
-            await Client.Login("Player1");
+            await Client.Connect("localhost:38281", "Dark Cloud 2");
+            var locations = Helpers.GetLocations();
+            Client.PopulateLocations(locations);
+            await Client.Login(playerName, password);
             Client.ItemReceived += (e, args) =>
             {
                 if (args.Item.Id <= 428)
@@ -298,12 +299,12 @@ namespace DC2AP
                 currentAddress += 0x00000004;
                 enemy.Family = Memory.ReadShort(currentAddress).ToString();
                 currentAddress += Addresses.Instance.ShortOffset;
-                var absMultiplied = Memory.ReadShort(currentAddress) *  Client.Options.ExpMultiplier;
-                Memory.Write(currentAddress, (short)absMultiplied);
+            //    var absMultiplied = Memory.ReadShort(currentAddress) *  Client.Options.ExpMultiplier;
+            //    Memory.Write(currentAddress, (short)absMultiplied);
                 enemy.ABS = Memory.ReadShort(currentAddress).ToString();
                 currentAddress += Addresses.Instance.ShortOffset;
-                var gildaMultiplied = Memory.ReadShort(currentAddress) * Client.Options.GoldMultiplier;
-                Memory.Write(currentAddress, (short)gildaMultiplied);
+            //    var gildaMultiplied = Memory.ReadShort(currentAddress) * Client.Options.GoldMultiplier;
+           //    Memory.Write(currentAddress, (short)gildaMultiplied);
                 enemy.Gilda = Memory.ReadShort(currentAddress).ToString();
                 currentAddress += Addresses.Instance.ShortOffset;
                 enemy.Unknown2 = BitConverter.ToString(Memory.ReadByteArray(currentAddress, 6));

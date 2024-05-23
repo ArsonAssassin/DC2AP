@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DC2AP
+namespace Archipelago.PCSX2.Util
 {
     public class HexToIntConverter : JsonConverter
     {
