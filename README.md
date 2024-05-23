@@ -2,7 +2,7 @@
 
 Working on this in 2 parts. First is a class library to manage communication with Archipelago and PCSX2. Second is the actual Dark Cloud 2 implementation. The idea is that other PS2 games might be adapted using the class library.
 
-#Setup
+# Setup
 Reference the class library in your project, then use the following template to get started
 
 ```
@@ -38,7 +38,7 @@ Login using the playerName and password set up in your AP instance.
 Handle the ItemReceived event to add your logic for what should be done when an item is received from AP.
 Call Client.SendLocation(locationId) when you want to manually trigger a location to be sent, otherwise this will be handled automatically by the location list you populated earlier.
 
-##Locations
+## Locations
 Locations is a list of a Location POCO which must match those in the APWorld. The format is as seen below
 
 ```
@@ -51,7 +51,7 @@ Locations is a list of a Location POCO which must match those in the APWorld. Th
 ```
 LocationCheckType lets you define what type of memory address value we listen for changes on. for example, a CheckType of Bit means we are looking for an individual bit to be set to 1. a CheckType of Int means we are looking at an Integer in memory and waiting for the value to match CheckValue. CheckValue is a string so that other types can be used in the future, but only Bit and Int are implemented currently.
 
-##Options
+## Options
 If you have options defined in your APWorld that you want to use, these are exposed via a Dictionary<string, object> as ArchipelagoClient.Options
 
 #Reading Memory
