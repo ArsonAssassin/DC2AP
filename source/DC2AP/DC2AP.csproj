@@ -25,12 +25,9 @@
 
   <ItemGroup>
     <PackageReference Include="Archipelago.MultiClient.Net" Version="5.0.6" />
+    <PackageReference Include="Archipelago.PCSX2" Version="0.0.1" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="System.Text.Encoding.CodePages" Version="8.0.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Archipelago.PCSX2\Archipelago.PCSX2.csproj" />
   </ItemGroup>
 
 </Project>
