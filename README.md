@@ -12,7 +12,7 @@ var pcsx2Connected = client.Connect();
 Client = new ArchipelagoClient();
 await Client.Connect("localhost:38281", "Dark Cloud 2");
 var locations = Helpers.GetLocations();
-Client.PopulateLocations();
+Client.PopulateLocations(locations);
 await Client.Login(playerName, password);
 Client.ItemReceived += (e, args) =>
 {
