@@ -48,7 +48,6 @@ namespace Archipelago.PCSX2.Util
             {
                 currentValue = Memory.ReadByte(address);
                 Thread.Sleep(10);
-                Console.WriteLine("Current Chapter: " + currentValue);
             }
         }
         public static async Task MonitorAddressBit(int address, int bit)

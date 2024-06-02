@@ -188,5 +188,25 @@ namespace Archipelago.PCSX2.Util
         {
             return Write(address, BitConverter.GetBytes(value));
         }
+        public static bool WriteBit(int address, int bitPosition, bool value)
+        {
+            if (bitPosition < 0 || bitPosition > 7)
+            {
+                throw new ArgumentOutOfRangeException(nameof(bitPosition), "Bit position must be between 0 and 7.");
+            }
+
+            byte currentByte = ReadByte(address); 
+
+            if (value)
+            {
+                currentByte = (byte)(currentByte | (1 << bitPosition));
+            }
+            else
+            {
+                currentByte = (byte)(currentByte & ~(1 << bitPosition));
+            }
+
+            return WriteByte(address, currentByte);
+        }
     }
 }

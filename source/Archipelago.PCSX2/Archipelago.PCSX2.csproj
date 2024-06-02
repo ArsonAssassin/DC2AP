@@ -2,7 +2,7 @@
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>0.0.1</Version>
+    <Version>0.0.3</Version>
     <Authors>ArsonAssassin</Authors>
     <Product>Archipelago.PCSX2</Product>
     <PackageId>Archipelago.PCSX2</PackageId>

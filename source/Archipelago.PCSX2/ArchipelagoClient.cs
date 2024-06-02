@@ -7,10 +7,13 @@ using Archipelago.PCSX2.Util;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
+#pragma warning disable CS4014 
 namespace Archipelago.PCSX2
 {
     public class ArchipelagoClient
@@ -21,12 +24,17 @@ namespace Archipelago.PCSX2
         public ArchipelagoSession CurrentSession { get; set; }
         private List<Location> Locations { get; set; }
         private string GameName { get; set;}
+        private string Seed { get; set; }
         private Dictionary<string, object> _options;
         public Dictionary<string, object> Options { get { return _options; } }
+        public GameState GameState { get; set; }
+        private string ApplicationDirectory =>  Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+        
         public async Task Connect(string host, string gameName)
         {
             CurrentSession = ArchipelagoSessionFactory.CreateSession(host);
             var roomInfo = await CurrentSession.ConnectAsync();
+            Seed = roomInfo.SeedName;
             Console.WriteLine($"Connected to room {roomInfo.SeedName}");
             Console.WriteLine($"Available Players: {JsonConvert.SerializeObject(roomInfo.Players)}");
             GameName = gameName;
@@ -64,7 +72,10 @@ namespace Archipelago.PCSX2
             var currentSlot = CurrentSession.ConnectionInfo.Slot;
             var slotData = await CurrentSession.DataStorage.GetSlotDataAsync(currentSlot);
             _options = JsonConvert.DeserializeObject<Dictionary<string, object>>(slotData["options"].ToString());
-
+            
+            IsLoggedIn = true;
+            LoadGameState();
+            AppDomain.CurrentDomain.ProcessExit += (sender, e) => SaveGameState();
             MonitorLocations(Locations);
 
             CurrentSession.Items.ItemReceived += (helper) =>
@@ -74,9 +85,9 @@ namespace Archipelago.PCSX2
                 var newItem = new Item() { Id = (int)item.Item, Quantity = 1 };
                 ItemReceived?.Invoke(this, new ItemReceivedEventArgs() { Item = newItem });
                 helper.DequeueItem();
+                GameState.ReceivedItems.Add(newItem);
 
             };
-            IsLoggedIn = true;
             return;
         }
         public async void PopulateLocations(List<Location> locations)
@@ -92,27 +103,66 @@ namespace Archipelago.PCSX2
                     Task.Factory.StartNew(async () =>
                     {
                         await Helpers.MonitorAddressBit(location.Address, location.AddressBit);
-                        SendLocation(location.Id);
+                        SendLocation(location);
                     });
+
                 }
                 else if(location.CheckType == LocationCheckType.Int)
                 {
                     Task.Factory.StartNew(async () =>
                     {
                         await Helpers.MonitorAddress(location.Address, int.Parse(location.CheckValue));
-                        SendLocation(location.Id);
+                        SendLocation(location);
                     });
                 }
             }
         }
-        public async void SendLocation(long id)
+        public async void SendLocation(Location location)
         {
             if (!(IsConnected && IsLoggedIn))
             {
                 Console.WriteLine("Must be connected and logged in to send locations.");
                 return;
             }
-            await CurrentSession.Locations.CompleteLocationChecksAsync(new[] { id });
+            await CurrentSession.Locations.CompleteLocationChecksAsync(new[] { (long)location.Id });
+            GameState.CompletedLocations.Add(location);
+        }
+
+        private void SaveGameState()
+        {
+            if(IsConnected && IsLoggedIn)
+            {
+                var fileName = $"{GameName}_{CurrentSession.ConnectionInfo.Slot}_{Seed}.json";
+                var filePath = Path.Combine(ApplicationDirectory, fileName);
+
+                string content = JsonConvert.SerializeObject(GameState);
+                File.WriteAllText(filePath, content);
+
+
+            }
+        }
+        private void LoadGameState()
+        {
+            if (IsConnected && IsLoggedIn)
+            {
+                var fileName = $"{GameName}_{CurrentSession.ConnectionInfo.Slot}_{Seed}.json";
+                var filePath = Path.Combine(ApplicationDirectory, fileName);
+
+                if (File.Exists(filePath))
+                {
+                    string content = File.ReadAllText(filePath);
+                    try
+                    {
+                        var obj = JsonConvert.DeserializeObject<GameState>(content);
+                        GameState = obj;
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("Cannot load saved data, Json file is in an unexpected format.");
+                    }
+                }
+                else GameState = new GameState();
+            }
         }
     }
 }
