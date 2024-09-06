@@ -69,14 +69,22 @@ location_tables = {
         DC2LocationData("PB: Battle Wrench",                        "Battle Wrench",                    DC2LocationCategory.MISC),
     ],
     "Underground Water Channel": [
-        DC2LocationData("UWC: Floor 1",                             "Dungeon 0 Floor 0 Complete",       DC2LocationCategory.FLOOR),
-        DC2LocationData("UWC: Chapter 1 Complete",                  "Chapter 1 Complete",               DC2LocationCategory.EVENT),
+        DC2LocationData("UWC: Floor 1",                             "null",                             DC2LocationCategory.FLOOR),
+        DC2LocationData("UWC: Floor 2",                             "null",                             DC2LocationCategory.FLOOR),
+        DC2LocationData("UWC: Floor 3",                             "null",                             DC2LocationCategory.FLOOR),
+        DC2LocationData("UWC: Pump Room",                           "null",                             DC2LocationCategory.FLOOR),
+        DC2LocationData("UWC: Linda",                               "null",                             DC2LocationCategory.FLOOR),
+        DC2LocationData("UWC: Floor 4",                             "null",                             DC2LocationCategory.FLOOR),
+        DC2LocationData("UWC: Floor 5",                             "null",                             DC2LocationCategory.FLOOR),
+        DC2LocationData("UWC: Halloween",                           "null",                             DC2LocationCategory.FLOOR),
+        DC2LocationData("UWC: Chapter 1 Complete",                  "null",                             DC2LocationCategory.EVENT),
     ],
     "Sindain": [
-        DC2LocationData("S: Grape Juice",                           "Grape Juice",                        DC2LocationCategory.MISC),
+        DC2LocationData("S: Grape Juice",                           "Grape Juice",                      DC2LocationCategory.MISC),
     ],
     "Rainbow Butterfly Wood": [    
-        DC2LocationData("RBW: Chapter 2 Complete",                  "Chapter 2 Complete",               DC2LocationCategory.EVENT),
+        DC2LocationData("RBW: Floor 1",                             "null",                             DC2LocationCategory.EVENT),
+        DC2LocationData("RBW: Chapter 2 Complete",                  "null",                             DC2LocationCategory.EVENT),
     ],
     
 }

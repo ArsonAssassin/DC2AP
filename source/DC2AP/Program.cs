@@ -1,6 +1,7 @@
 ﻿using Archipelago.PCSX2;
-using Archipelago.PCSX2.Models;
-using Archipelago.PCSX2.Util;
+using Archipelago.Core;
+using Archipelago.Core.Models;
+using Archipelago.Core.Util;
 using DC2AP.Models;
 using Newtonsoft.Json;
 using System;
@@ -9,7 +10,9 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Reflection.PortableExecutable;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Text;
+using System.Linq;
 
 namespace DC2AP
 {
@@ -21,7 +24,7 @@ namespace DC2AP
         public static List<QuestId> QuestList { get; set; }
         public static List<Dungeon> DungeonList { get; set; }
         public static bool IsConnected = false;
-        public static GameState CurrentGameState = new GameState();
+        public static Models.GameState CurrentGameState = new Models.GameState();
         public static PlayerState CurrentPlayerState = new PlayerState();
         public static ArchipelagoClient Client { get; set; }
         public static async Task Main()
@@ -29,10 +32,10 @@ namespace DC2AP
             Console.SetBufferSize(Console.BufferWidth, 32766);
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
-            Console.WriteLine("DC2AP - Dark Cloud 2 Archipelago Randomizer");
+
+            Console.WriteLine("DC2AP - Dark Cloud 2 Archipelago Randomizer -- By ArsonAssassin --");
 
             await Initialise();
-
             Console.WriteLine("Beginning main loop.");
             while (true)
             {
@@ -78,11 +81,11 @@ namespace DC2AP
                 }
 
                 //Handle exiting the game
-
-                if (Memory.ReadInt(Addresses.Instance.CurrentExitFlag) != Addresses.Instance.exitFlagCheck)
+                var exitFlagCheck = 1701667175;
+                if (Memory.ReadInt(Addresses.Instance.CurrentExitFlag) != exitFlagCheck)
                 {
                     Thread.Sleep(1000);
-                    if (Memory.ReadInt(Addresses.Instance.CurrentExitFlag) != Addresses.Instance.exitFlagCheck)
+                    if (Memory.ReadInt(Addresses.Instance.CurrentExitFlag) != exitFlagCheck)
                     {
                         System.Environment.Exit(0);
                     }
@@ -108,9 +111,26 @@ namespace DC2AP
             {
                 Console.WriteLine($"Game State changed: {JsonConvert.SerializeObject(args, Formatting.Indented)}");
             };
-            CurrentPlayerState.InventoryChanged += (obj, args) =>
+            CurrentPlayerState.InventoryChanged += async (obj, args) =>
             {
                 Console.WriteLine($"Inventory changed: {JsonConvert.SerializeObject(args, Formatting.Indented)}");
+                if (!args.IsArchipelagoUpdate)
+                {
+                    foreach(Item item in args.NewItems)
+                    {
+                        if (item.IsProgression)
+                        {
+                            Helpers.RemoveAllItem(item, CurrentPlayerState);
+                            var itemId = item.Id;
+                            var location = Helpers.GetLocationFromProgressionItem(itemId);
+                            if (location != -1)
+                            {
+                                var locationId = Client.CurrentSession.Locations.AllLocations.FirstOrDefault(x => x == location);
+                                Client.SendLocation(new Location() { Id = (int)locationId });
+                            }
+                        }
+                    }
+                }
             };
             CurrentPlayerState.PropertyChanged += (obj, args) =>
             {
@@ -164,7 +184,11 @@ namespace DC2AP
                 Console.WriteLine("An error occurred whilst connecting to PCSX2, please ensure the application is open and the game is loaded.");
                 return false;
             }
-            GameVersion = Memory.ReadInt(0x203694D0) == 1701667175 ? "PAL" : Memory.ReadInt(0x20364BD0) == 1701667175 ? "US" : "";
+            Console.WriteLine($"Connecting to Archipelago");
+            Client = new ArchipelagoClient(client);
+            var palAddress = Memory.ReadInt(0x203694D0);
+            var usAddress = Memory.ReadInt(0x20364BD0);
+            GameVersion = palAddress == 1701667175 ? "PAL" : usAddress == 1701667175 ? "US" : "";
             if (string.IsNullOrWhiteSpace(GameVersion))
             {
                 Console.WriteLine("Dark cloud 2 is not loaded, please load the game and try again.");
@@ -175,14 +199,13 @@ namespace DC2AP
             }
             Console.WriteLine($"Connected to Dark Cloud 2 ({GameVersion})");
 
-            Console.WriteLine($"Connecting to Archipelago");
-            Client = new ArchipelagoClient();
             await Client.Connect("localhost:38281", "Dark Cloud 2");
+            await Client.Login(playerName, password);
             var locations = Helpers.GetLocations();
             Client.PopulateLocations(locations);
-            await Client.Login(playerName, password);
             Client.ItemReceived += (e, args) =>
             {
+                args.Item.Id = Helpers.ToGameId(args.Item.Id);
                 if (args.Item.Id <= 428)
                 {
                     args.Item.Name = ItemList.First(x => x.Id == args.Item.Id).Name;
@@ -225,10 +248,10 @@ namespace DC2AP
                 }
             }
         }
-        static Chest ReadChest(int startAddress, bool isDouble = false)
+        static Chest ReadChest(uint startAddress, bool isDouble = false)
         {
             Chest chest = new Chest() { IsDoubleChest = isDouble };
-            var currentAddress = startAddress + 0x00000004;
+            var currentAddress = startAddress + Addresses.Instance.IntOffset;
             chest.Item1 = Memory.ReadShort(currentAddress);
             currentAddress += Addresses.Instance.ShortOffset;
             if (isDouble) chest.Item2 = Memory.ReadShort(currentAddress);
@@ -238,18 +261,18 @@ namespace DC2AP
             if (isDouble) chest.Quantity2 = Memory.ReadShort(currentAddress);
             return chest;
         }
-        static void AddChestItem(int startAddress, int id, int quantity)
+        static void AddChestItem(uint startAddress, int id, int quantity)
         {
-            startAddress += 0x00000004;
+            startAddress += Addresses.Instance.IntOffset;
             Console.WriteLine($"Setting Chest contents to {id}");
             Memory.Write(startAddress, BitConverter.GetBytes(id));
-            startAddress += 0x00000004;
+            startAddress += Addresses.Instance.IntOffset;
             Memory.Write(startAddress, BitConverter.GetBytes(quantity));
             Console.WriteLine("Added item!");
         }
-        static void AddDoubleChestItems(int startAddress, int id1, int quantity1, int id2, int quantity2)
+        static void AddDoubleChestItems(uint startAddress, int id1, int quantity1, int id2, int quantity2)
         {
-            startAddress += 0x00000004;
+            startAddress += Addresses.Instance.IntOffset;
             var currentItem = Memory.ReadByte(startAddress);
             Console.WriteLine($"replacing {currentItem} with {id1}");
             Memory.Write(startAddress, BitConverter.GetBytes(id1));
@@ -264,7 +287,7 @@ namespace DC2AP
         }
 
 
-        static async Task MonitorAddressRange(int address, int length)
+        static async Task MonitorAddressRange(uint address, int length)
         {
             var initialValue = Memory.ReadString(address, length);
             var currentValue = initialValue;
@@ -280,7 +303,7 @@ namespace DC2AP
         {
             List<Enemy> enemies = new List<Enemy>();
             var currentAddress = Addresses.Instance.EnemyStartAddress;
-            currentAddress += 0x00000004;
+            currentAddress += Addresses.Instance.IntOffset;
             for (int i = 0; i < 280; i++)
             {
                 Enemy enemy = new Enemy();
@@ -290,13 +313,13 @@ namespace DC2AP
                 currentAddress += 0x00000020;
                 var modelType = Memory.ReadInt(currentAddress).ToString();
                 enemy.ModelType = Helpers.GetModelType(modelType);
-                currentAddress += 0x00000004;
+                currentAddress += Addresses.Instance.IntOffset;
                 enemy.Sound = Memory.ReadInt(currentAddress).ToString();
-                currentAddress += 0x00000004;
+                currentAddress += Addresses.Instance.IntOffset;
                 enemy.Unknown1 = Memory.ReadInt(currentAddress).ToString();
-                currentAddress += 0x00000004;
+                currentAddress += Addresses.Instance.IntOffset;
                 enemy.HP = Memory.ReadInt(currentAddress).ToString();
-                currentAddress += 0x00000004;
+                currentAddress += Addresses.Instance.IntOffset;
                 enemy.Family = Memory.ReadShort(currentAddress).ToString();
                 currentAddress += Addresses.Instance.ShortOffset;
             //    var absMultiplied = Memory.ReadShort(currentAddress) *  Client.Options.ExpMultiplier;
@@ -312,7 +335,7 @@ namespace DC2AP
                 enemy.Rage = Memory.ReadShort(currentAddress).ToString();
                 currentAddress += Addresses.Instance.ShortOffset;
                 enemy.Unknown3 = BitConverter.ToString(Memory.ReadByteArray(currentAddress, 4));
-                currentAddress += 0x00000004;
+                currentAddress += Addresses.Instance.IntOffset;
                 enemy.Damage = Memory.ReadShort(currentAddress).ToString();
                 currentAddress += Addresses.Instance.ShortOffset;
                 enemy.Defense = Memory.ReadShort(currentAddress).ToString();
@@ -324,13 +347,13 @@ namespace DC2AP
                 enemy.Effectiveness = BitConverter.ToString(Memory.ReadByteArray(currentAddress, 24));
                 currentAddress += 0x00000018;
                 enemy.Unknown4 = BitConverter.ToString(Memory.ReadByteArray(currentAddress, 4));
-                currentAddress += 0x00000004;
+                currentAddress += Addresses.Instance.IntOffset;
                 enemy.IsRidepodEnemy = Memory.ReadByte(currentAddress).ToString();
                 currentAddress += Addresses.Instance.ShortOffset;
                 enemy.UnusedBits = BitConverter.ToString(Memory.ReadByteArray(currentAddress, 2));
                 currentAddress += Addresses.Instance.ShortOffset;
                 enemy.Minions = BitConverter.ToString(Memory.ReadByteArray(currentAddress, 4));
-                currentAddress += 0x00000004;
+                currentAddress += Addresses.Instance.IntOffset;
 
                 var itemSlot1 = Memory.ReadShort(currentAddress);
                 currentAddress += Addresses.Instance.ShortOffset;
@@ -393,6 +416,7 @@ namespace DC2AP
                 var itemQuantity = Memory.ReadShort(itemQuantityAddress);
                 item.Quantity = itemQuantity;
                 item.Name = ItemList.First(x => x.Id == item.Id).Name;
+                item.IsProgression = ItemList.FirstOrDefault(x => x.Id == itemId).isProgression;
                 if (debug) Console.WriteLine($"Inventory slot {i}: {item.Name}, {item.Id} x {item.Quantity}");
                 startAddress += 0x0000006C;
                 inventory.Add(item);
@@ -420,7 +444,7 @@ namespace DC2AP
             }
             return dungeons;
         }
-        public static Floor ReadFloor(int currentAddress, bool debug = false)
+        public static Floor ReadFloor(uint currentAddress, bool debug = false)
         {
             if (debug) Console.WriteLine($"Starting floor read at {currentAddress.ToString("X8")}");
             Floor floor = new Floor();

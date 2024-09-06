@@ -1,4 +1,4 @@
-﻿using Archipelago.PCSX2.Models;
+﻿using Archipelago.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -17,7 +17,7 @@ namespace DC2AP.Models
         public int Gilda { get; set; }
         public int MedalCount { get; set; }
         private ObservableCollection<Item> inventory;
-
+        public bool IsReceivingArchipelagoItem { get; set; }
         public ObservableCollection<Item> Inventory
         {
             get => inventory;
@@ -46,7 +46,7 @@ namespace DC2AP.Models
             }
             return -1;
         }
-        public event NotifyCollectionChangedEventHandler? InventoryChanged;
+        public event EventHandler<InventoryChangedEventArgs>? InventoryChanged;
         public event PropertyChangedEventHandler? PropertyChanged;
         public void OnPropertyChanged([CallerMemberName] string propertyName = "")
         {
@@ -57,7 +57,41 @@ namespace DC2AP.Models
             inventory = new ObservableCollection<Item>(Enumerable.Range(0, 144).Select(_ => new Item()));
             inventory.CollectionChanged += (obj, args) =>
             {
-                InventoryChanged?.Invoke(obj, args);
+                InventoryChangedEventArgs newArgs = null;
+                if (((args.Action == NotifyCollectionChangedAction.Add || args.Action == NotifyCollectionChangedAction.Remove) && args.NewStartingIndex == null) || args.Action == NotifyCollectionChangedAction.Reset)
+                {
+                    for (int i = 0; i < args.NewItems.Count; i++)
+                    {
+                        newArgs = new InventoryChangedEventArgs(args.Action, args.NewItems[i]);
+                    }
+                }
+                else if (args.Action == NotifyCollectionChangedAction.Add || args.Action == NotifyCollectionChangedAction.Remove)
+                {
+                    for (int i = 0; i < args.NewItems.Count; i++)
+                    {
+                        newArgs = new InventoryChangedEventArgs(args.Action, args.NewItems[i], args.NewStartingIndex);
+                    }
+                }
+                else if (args.Action == NotifyCollectionChangedAction.Replace)
+                {
+                    for (int i = 0; i < args.NewItems.Count; i++)
+                    {
+                        newArgs = new InventoryChangedEventArgs(args.Action, args.NewItems[i], args.OldItems[i], args.NewStartingIndex);
+                    }
+                }
+                else if (args.Action == NotifyCollectionChangedAction.Move)
+                {
+                    for (int i = 0; i < args.NewItems.Count; i++)
+                    {
+                        newArgs = new InventoryChangedEventArgs(args.Action, args.NewItems[i], args.NewStartingIndex, args.OldStartingIndex);
+                    }
+                }
+                if(newArgs == null) return;
+                newArgs.IsArchipelagoUpdate = IsReceivingArchipelagoItem;
+
+                InventoryChanged?.Invoke(obj, newArgs);
+                IsReceivingArchipelagoItem = false;
+
             };
         }
     }

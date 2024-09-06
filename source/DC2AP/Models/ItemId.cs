@@ -10,5 +10,7 @@ namespace DC2AP.Models
     {
         public string Name { get; set; }
         public int Id { get; set; }
+        public bool isProgression { get; set; }
+        public long locationId { get; set; }
     }
 }

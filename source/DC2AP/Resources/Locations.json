@@ -1,86 +1,233 @@
 [
   {
     "Name": "PB: Miracle chest 1",
-    "Id": 1,
+    "Id": 694201000,
     "Address": "0x21E01B70",
     "AddressBit": 1,
-    "CheckType":  0
+    "CheckType": 0
   },
   {
     "Name": "PB: Miracle chest 2",
-    "Id": 2,
+    "Id": 694201001,
     "Address": "0x21E01AB0",
     "AddressBit": 1,
     "CheckType": 0
   },
   {
     "Name": "PB: Miracle chest 3",
-    "Id": 3,
+    "Id": 694201002,
     "Address": "0x21E01AB0",
     "AddressBit": 2,
     "CheckType": 0
   },
   {
     "Name": "UWC: Floor 1",
-    "Id": 4,
+    "Id": 694202000,
     "Address": "0x21E1DE22",
     "AddressBit": 1,
     "CheckType": 0
   },
   {
     "Name": "UWC: Floor 2",
-    "Id": 5,
+    "Id": 694202001,
     "Address": "0x21E1DE36",
     "AddressBit": 1,
     "CheckType": 0
   },
   {
     "Name": "UWC: Floor 3",
-    "Id": 6,
+    "Id": 694202002,
     "Address": "0x21E1DE4A",
     "AddressBit": 1,
     "CheckType": 0
   },
   {
     "Name": "UWC: Pump Room",
-    "Id": 7,
+    "Id": 694202003,
     "Address": "0x21E1DE5E",
     "AddressBit": 0,
     "CheckType": 0
   },
   {
     "Name": "UWC: Linda",
-    "Id": 8,
+    "Id": 694202004,
     "Address": "0x21E0181D",
     "AddressBit": 4,
     "CheckType": 0
   },
   {
     "Name": "UWC: Floor 4",
-    "Id": 9,
+    "Id": 694202005,
     "Address": "0x21E1DE72",
     "AddressBit": 1,
     "CheckType": 0
   },
   {
     "Name": "UWC: Floor 5",
-    "Id": 10,
+    "Id": 694202006,
     "Address": "0x21E1DE86",
     "AddressBit": 1,
     "CheckType": 0
   },
   {
     "Name": "UWC: Halloween",
-    "Id": 11,
+    "Id": 694202007,
     "Address": "0x21E0181D",
     "AddressBit": 7,
     "CheckType": 0
   },
   {
     "Name": "UWC: Chapter 1 Complete",
-    "Id": 12,
+    "Id": 694202008,
     "Address": "0x21E03218",
     "CheckType": 1,
     "CheckValue": "2"
+  },
+  {
+    "Name": "S: Miracle Chest 1",
+    "Id": 694203000,
+    "Address": "0x21E01BA0",
+    "CheckType": 0,
+    "AddressBit": 1
+  },
+  {
+    "Name": "S: Miracle Chest 2",
+    "Id": 694203001,
+    "Address": "0x21E01BA0",
+    "CheckType": 0,
+    "AddressBit": 2
+  },
+  {
+    "Name": "S: Miracle Chest 3",
+    "Id": 694203002,
+    "Address": "0x21E01BA0",
+    "CheckType": 0,
+    "AddressBit": 3
+  },
+  {
+    "Name": "S: Miracle Chest 4",
+    "Id": 694203003,
+    "Address": "0x21E01BA0",
+    "CheckType": 0,
+    "AddressBit": 4
+  },
+  {
+    "Name": "S: Miracle Chest 5",
+    "Id": 694203004,
+    "Address": "0x21E01BA0",
+    "CheckType": 0,
+    "AddressBit": 5
+  },
+  {
+    "Name": "S: Miracle Chest 6",
+    "Id": 694203005,
+    "Address": "0x21E01BA0",
+    "CheckType": 0,
+    "AddressBit": 6
+  },
+  {
+    "Name": "S: Miracle Chest 7",
+    "Id": 694203006,
+    "Address": "0x21E01BA0",
+    "CheckType": 0,
+    "AddressBit": 7
+  },
+  {
+    "Name": "S: Miracle Chest 8",
+    "Id": 694203007,
+    "Address": "0x21E01BA1",
+    "CheckType": 0,
+    "AddressBit": 0
+  },
+  {
+    "Name": "S: Miracle Chest 9",
+    "Id": 694203008,
+    "Address": "0x21E01BA1",
+    "CheckType": 0,
+    "AddressBit": 1
+  },
+  {
+    "Name": "S: Miracle Chest 10",
+    "Id": 694203009,
+    "Address": "0x21E01BA1",
+    "CheckType": 0,
+    "AddressBit": 2
+  },
+  {
+    "Name": "S: Miracle Chest 11",
+    "Id": 694203010,
+    "Address": "0x21E01BA1",
+    "CheckType": 0,
+    "AddressBit": 3
+  },
+  {
+    "Name": "S: Miracle Chest 12",
+    "Id": 694203011,
+    "Address": "0x21E01BA1",
+    "CheckType": 0,
+    "AddressBit": 4
+  },
+  {
+    "Name": "S: Miracle Chest 13",
+    "Id": 694203012,
+    "Address": "0x21E01BA1",
+    "CheckType": 0,
+    "AddressBit": 5
+  },
+  {
+    "Name": "S: Miracle Chest 14",
+    "Id": 694203013,
+    "Address": "0x21E01BA1",
+    "CheckType": 0,
+    "AddressBit": 6
+  },
+  {
+    "Name": "S: Miracle Chest 15",
+    "Id": 694203014,
+    "Address": "0x21E01BA1",
+    "CheckType": 0,
+    "AddressBit": 7
+  },
+  {
+    "Name": "S: Miracle Chest 16",
+    "Id": 694203015,
+    "Address": "0x21E01BA2",
+    "CheckType": 0,
+    "AddressBit": 0
+  },
+  {
+    "Name": "RBW: Floor 1",
+    "Id": 694204000,
+    "Address": "0x21E1DED6",
+    "CheckType": 0,
+    "AddressBit": 1
+  },
+  {
+    "Name": "RBW: Floor 2",
+    "Id": 694204001,
+    "Address": "0x21E1DEEA",
+    "CheckType": 0,
+    "AddressBit": 1
+  },
+  {
+    "Name": "RBW: Floor 3",
+    "Id": 694204002,
+    "Address": "0x21E1DEFE",
+    "CheckType": 0,
+    "AddressBit": 1
+  },
+  {
+    "Name": "RBW: Floor 4",
+    "Id": 694204003,
+    "Address": "0x21E1DF12",
+    "CheckType": 0,
+    "AddressBit": 1
+  },
+  {
+    "Name": "RBW: Floor 5",
+    "Id": 694204004,
+    "Address": "0x21E1DF26",
+    "CheckType": 0,
+    "AddressBit": 1
   }
 ]

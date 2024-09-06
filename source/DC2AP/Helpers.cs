@@ -1,5 +1,6 @@
-﻿using Archipelago.PCSX2.Models;
-using Archipelago.PCSX2.Util;
+﻿using Archipelago.Core.Models;
+using Archipelago.Core.Util;
+using Archipelago.MultiClient.Net.Enums;
 using DC2AP.Models;
 using Newtonsoft.Json;
 using System;
@@ -57,13 +58,21 @@ namespace DC2AP
                 return jsonFile;
             }
         }
-
+        public static int ToAPId(int gameId)
+        {
+            return gameId + 694200000;
+        }
+        public static int ToGameId(int apId)
+        {
+            return apId - 694200000;
+        }
         private static bool GetBitValue(byte value, int bitIndex)
         {
             return (value & (1 << bitIndex)) != 0;
         }
-        public static void AddItem(Item item, PlayerState playerState)
+        public static void AddItem(Item item, PlayerState playerState, bool IsArchipelago = true)
         {
+            playerState.IsReceivingArchipelagoItem = IsArchipelago;
             var alreadyHave = playerState.Inventory.Any(x => x.Id == item.Id);
             if (alreadyHave)
             {
@@ -78,19 +87,52 @@ namespace DC2AP
                 var slotNum = playerState.GetFirstSlot(0);
                 var address = GetItemSlotAddress(slotNum);
                 WriteItem(item, address);
+
             }
         }
-        public static void WriteItem(Item item, int address)
-        {            
+        public static void RemoveItem(Item item, PlayerState playerState)
+        {
+            var slot = playerState.GetFirstSlot(item.Id);
+            if (slot == -1) return; //Player does not have that item
+            var address = GetItemSlotAddress(slot);
+            var currentQuantity = Memory.ReadShort(address + 0x0000000E);
+            item.Quantity = currentQuantity - 1;
+            if (item.Quantity == 0)
+            {
+                RemoveAllItem(item, playerState);
+            }
+            else
+            {
+                WriteItem(item, address);
+            }
+        }
+        public static void RemoveAllItem(Item item, PlayerState playerState)
+        {
+            var slot = playerState.GetFirstSlot(item.Id);
+            if (slot == -1) return; //Player does not have that item
+            var address = GetItemSlotAddress(slot);
+
+            WriteItem(new Item() { Id = 0, Quantity = 0, IsProgression = false, Name = "null" }, address);
+        }
+        public static void WriteItem(Item item, uint address)
+        {
             Memory.Write(address, (ushort)item.Id);
             Memory.Write(address + 0x0000000E, (ushort)item.Quantity);
         }
-        public static int GetItemSlotAddress(int slotNum)
+        public static uint GetItemSlotAddress(int slotNum)
         {
             var startAddress = Addresses.Instance.InventoryStartAddress;
-            var offset = 0x0000006c * (slotNum);
-            var slotAddress = startAddress + offset;
+            uint offset = (uint)(0x0000006c * (slotNum));
+            uint slotAddress = startAddress + offset;
             return slotAddress;
+        }
+        public static long GetLocationFromProgressionItem(int progressionId)
+        {
+            var itemList = GetItemIds();
+            var current = itemList.FirstOrDefault(x => x.Id == progressionId);
+            if (current == null) return -1;
+            return current.locationId;
+
         }
         public static string GetHabitat(string id)
         {

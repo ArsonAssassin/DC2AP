@@ -530,10 +530,6 @@ _all_items = [DC2ItemData(row[0], row[1], row[2]) for row in [
     ("Sun Badge",                      427, DC2ItemCategory.MISC), 
     ("Moon Badge",                     428, DC2ItemCategory.MISC), 
     
-    ("Dungeon 0 Floor 0 Complete",     None, DC2ItemCategory.EVENT),    
-    ("Chapter 1 Complete",             None, DC2ItemCategory.EVENT),  
-    ("Dungeon 1 Floor 0 Complete",     None, DC2ItemCategory.EVENT),     
-    ("Chapter 2 Complete",             None, DC2ItemCategory.EVENT),   
     
 ]]
 

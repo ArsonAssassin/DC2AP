@@ -1349,7 +1349,7 @@
   },
   {
     "id": 337,
-    "name": "key handle"
+    "name": "key handle",
   },
   {
     "id": 338,
@@ -1481,7 +1481,9 @@
   },
   {
     "id": 370,
-    "name": "grape juice"
+    "name": "grape juice",
+    "isProgression": true,
+    "locationId": 694203016
   },
   {
     "id": 371,
