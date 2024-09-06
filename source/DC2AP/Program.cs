@@ -35,7 +35,25 @@ namespace DC2AP
 
             Console.WriteLine("DC2AP - Dark Cloud 2 Archipelago Randomizer -- By ArsonAssassin --");
 
-            await Initialise();
+            Console.WriteLine("Enter Host:");
+            var host = Console.ReadLine();
+            if (string.IsNullOrWhiteSpace(host))
+            {
+                host = "localhost";
+            }
+            Console.WriteLine("Enter Slot:");
+            var slot = Console.ReadLine();
+            if (string.IsNullOrWhiteSpace(slot))
+            {
+                Console.WriteLine("No slot entered");
+                Console.WriteLine("Press any key to exit");
+                Console.Read();
+                System.Environment.Exit(0);
+            }
+            Console.WriteLine("Enter Password:");
+            var pass = Console.ReadLine();
+
+            await Initialise(host, slot, pass);
             Console.WriteLine("Beginning main loop.");
             while (true)
             {
@@ -99,9 +117,9 @@ namespace DC2AP
             }
         }
 
-        private static async Task Initialise()
+        private static async Task Initialise(string host, string slot, string pass)
         {
-            IsConnected = await ConnectAsync("Player1");
+            IsConnected = await ConnectAsync(host, slot, pass);
             
             PopulateLists();
             UpdateGameState();
@@ -175,7 +193,7 @@ namespace DC2AP
             return chests;
         }
 
-        static async Task<bool> ConnectAsync(string playerName, string password = null)
+        static async Task<bool> ConnectAsync(string host, string playerName, string password = null)
         {
             PCSX2Client client = new PCSX2Client();
             var pcsx2Connected = client.Connect();
@@ -199,7 +217,7 @@ namespace DC2AP
             }
             Console.WriteLine($"Connected to Dark Cloud 2 ({GameVersion})");
 
-            await Client.Connect("localhost:38281", "Dark Cloud 2");
+            await Client.Connect(host, "Dark Cloud 2");
             await Client.Login(playerName, password);
             var locations = Helpers.GetLocations();
             Client.PopulateLocations(locations);
