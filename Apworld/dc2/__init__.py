@@ -11,6 +11,7 @@ from .Items import DarkCloud2Item, DC2ItemCategory, item_dictionary, key_item_na
 from .Locations import DarkCloud2Location, DC2LocationCategory, location_tables, location_dictionary
 from .Options import dark_cloud_options
 
+import random
 
 class DarkCloud2Web(WebWorld):
     bug_report_page = ""
@@ -37,8 +38,8 @@ class DarkCloud2World(World):
     option_definitions = dark_cloud_options
     topology_present: bool = True
     web = DarkCloud2Web()
-    data_version = 1
-    base_id = 100000
+    data_version = 0
+    base_id = 694200000
     enabled_location_categories: Set[DC2LocationCategory]
     required_client_version = (0, 4, 6)
     item_name_to_id = DarkCloud2Item.get_name_to_id()
@@ -58,7 +59,7 @@ class DarkCloud2World(World):
 
     def generate_early(self):
         self.enabled_location_categories.add(DC2LocationCategory.FLOOR)
-        self.enabled_location_categories.add(DC2LocationCategory.DUNGEON)
+        #self.enabled_location_categories.add(DC2LocationCategory.DUNGEON)
         self.enabled_location_categories.add(DC2LocationCategory.RECRUIT)
         self.enabled_location_categories.add(DC2LocationCategory.GEORAMA)
         self.enabled_location_categories.add(DC2LocationCategory.MIRACLE_CHEST)
@@ -103,6 +104,7 @@ class DarkCloud2World(World):
 
         for location in location_table:
             if location.category in self.enabled_location_categories:
+            
                 new_location = DarkCloud2Location(
                     self.player,
                     location.name,
@@ -141,7 +143,6 @@ class DarkCloud2World(World):
         
         itempool_by_category = {category: [] for category in self.enabled_location_categories}
 
-        # Gather all default items on randomized locations
         num_required_extra_items = 0
         for location in self.multiworld.get_locations(self.player):
             if location.category in itempool_by_category:
@@ -154,13 +155,10 @@ class DarkCloud2World(World):
         for category in self.enabled_location_categories:
             itempool += [self.create_item(name) for name in itempool_by_category[category]]
 
-        # A list of items we can replace
         removable_items = [item for item in itempool if item.classification != ItemClassification.progression]
 
         guaranteed_items = self.multiworld.guaranteed_items[self.player].value
         for item_name in guaranteed_items:
-            # Break early just in case nothing is removable (if user is trying to guarantee more
-            # items than the pool can hold, for example)
             if len(removable_items) == 0:
                 break
 
@@ -171,14 +169,11 @@ class DarkCloud2World(World):
                     continue
 
                 if num_required_extra_items > 0:
-                    # We can just add them instead of using "Soul of an Intrepid Hero" later
                     num_required_extra_items -= 1
                 else:
                     if len(removable_items) == 0:
                         break
 
-                    # Try to construct a list of items with the same category that can be removed
-                    # If none exist, just remove something at random
                     removable_shortlist = [
                         item for item
                         in removable_items
@@ -202,8 +197,7 @@ class DarkCloud2World(World):
 
     def create_item(self, name: str) -> Item:
         useful_categories = {
-            DC2ItemCategory.GEORAMA_RESOURCE,
-            DC2ItemCategory.CONSUMABLE,
+            DC2ItemCategory.GEORAMA_RESOURCE, DC2ItemCategory.GEM, DC2ItemCategory.COIN
         }
         data = self.item_name_to_id[name]
 
@@ -218,18 +212,38 @@ class DarkCloud2World(World):
 
 
     def get_filler_item_name(self) -> str:
-        return "null"
+        chance = random.randint(0, 1000)
+        if chance > 990:
+            #Get coin
+            coinItems = {key: value for key, value in item_dictionary.items() if value.category == DC2ItemCategory.COIN}
+            return random.choice(list(coinItems.keys()))
+        elif chance > 940:
+            weaponItems = {key: value for key, value in item_dictionary.items() if value.category == DC2ItemCategory.WEAPON_MAX_L or value.category == DC2ItemCategory.WEAPON_MAX_R or value.category == DC2ItemCategory.WEAPON_MAX_L or value.category == DC2ItemCategory.WEAPON_MONICA_R or value.category == DC2ItemCategory.WEAPON_MONICA_L} 
+            return random.choice(list(weaponItems.keys()))
+            #Get weapon
+        elif chance > 890:
+            #Get gem
+            gemItems = {key: value for key, value in item_dictionary.items() if value.category == DC2ItemCategory.GEM}
+            return random.choice(list(gemItems.keys()))
+        elif chance > 800:
+            #get pack
+            return "Weapon Powder"
+        else:
+            consumableItems = {key: value for key, value in item_dictionary.items() if value.category == DC2ItemCategory.CONSUMABLE} 
+            return random.choice(list(consumableItems.keys()))
+            #get consumable
 
 
     def set_rules(self) -> None:
         # Define the access rules to the entrances
-        set_rule(self.multiworld.get_entrance("Sindain", self.player),
-                 lambda state: state.has("Chapter 1 Complete", self.player))    
-        set_rule(self.multiworld.get_entrance("Rainbow Butterfly Wood", self.player),
-                 lambda state: state.has("Grape Juice", self.player))     
+       # set_rule(self.multiworld.get_entrance("Sindain", self.player),
+       #          lambda state: state.has("Chapter 1 Complete", self.player))     
+                 
+
+       
         self.multiworld.completion_condition[self.player] = lambda state: \
-            state.has("Chapter 1 Complete", self.player) and \
-            state.has("Chapter 2 Complete", self.player)
+            state.has("Grape Juice", self.player) #and \
+            #state.has("Chapter 2 Complete", self.player)
 
 
     def fill_slot_data(self) -> Dict[str, object]:

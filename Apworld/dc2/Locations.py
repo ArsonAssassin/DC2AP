@@ -42,8 +42,8 @@ class DarkCloud2Location(Location):
 
     @staticmethod
     def get_name_to_id() -> dict:
-        base_id = 100000
-        table_offset = 100
+        base_id = 694201000
+        table_offset = 1000
 
         table_order = [
             "Palm Brinks",
@@ -64,27 +64,48 @@ class DarkCloud2Location(Location):
 
 location_tables = {
     "Palm Brinks": [
-        DC2LocationData("PB: Wrench",                               "Wrench",                           DC2LocationCategory.MISC),
-        DC2LocationData("PB: Circus Ticket",                        "Circus Ticket",                    DC2LocationCategory.SKIP),
-        DC2LocationData("PB: Battle Wrench",                        "Battle Wrench",                    DC2LocationCategory.MISC),
+        DC2LocationData("PB: Miracle chest 1",                      "Fruit of Eden",                    DC2LocationCategory.MIRACLE_CHEST),
+        DC2LocationData("PB: Miracle chest 2",                      "Potato Pie",                       DC2LocationCategory.MIRACLE_CHEST),
+        DC2LocationData("PB: Miracle chest 3",                      "Fruit of Eden",                    DC2LocationCategory.MIRACLE_CHEST),
     ],
     "Underground Water Channel": [
-        DC2LocationData("UWC: Floor 1",                             "null",                             DC2LocationCategory.FLOOR),
-        DC2LocationData("UWC: Floor 2",                             "null",                             DC2LocationCategory.FLOOR),
-        DC2LocationData("UWC: Floor 3",                             "null",                             DC2LocationCategory.FLOOR),
-        DC2LocationData("UWC: Pump Room",                           "null",                             DC2LocationCategory.FLOOR),
-        DC2LocationData("UWC: Linda",                               "null",                             DC2LocationCategory.FLOOR),
-        DC2LocationData("UWC: Floor 4",                             "null",                             DC2LocationCategory.FLOOR),
-        DC2LocationData("UWC: Floor 5",                             "null",                             DC2LocationCategory.FLOOR),
-        DC2LocationData("UWC: Halloween",                           "null",                             DC2LocationCategory.FLOOR),
-        DC2LocationData("UWC: Chapter 1 Complete",                  "null",                             DC2LocationCategory.EVENT),
+        DC2LocationData("UWC: Floor 1",                             "null",       DC2LocationCategory.FLOOR),        
+        DC2LocationData("UWC: Floor 2",                             "null",       DC2LocationCategory.FLOOR),         
+        DC2LocationData("UWC: Floor 3",                             "null",       DC2LocationCategory.FLOOR),    
+        DC2LocationData("UWC: Pump Room",                           "null",       DC2LocationCategory.FLOOR),         
+        DC2LocationData("UWC: Linda",                               "null",       DC2LocationCategory.BOSS),   
+        DC2LocationData("UWC: Floor 4",                             "null",       DC2LocationCategory.FLOOR),
+        DC2LocationData("UWC: Floor 5",                             "null",       DC2LocationCategory.FLOOR),
+        DC2LocationData("UWC: Halloween",                           "null",       DC2LocationCategory.BOSS),
+        DC2LocationData("UWC: Chapter 1 Complete",                  "null",       DC2LocationCategory.EVENT),
     ],
-    "Sindain": [
+    "Sindain": [    
+        DC2LocationData("S: Miracle chest 1",                      "Fruit of Eden",                    DC2LocationCategory.MIRACLE_CHEST),
+        DC2LocationData("S: Miracle chest 2",                      "Potato Pie",                       DC2LocationCategory.MIRACLE_CHEST),
+        DC2LocationData("S: Miracle chest 3",                      "Fruit of Eden",                    DC2LocationCategory.MIRACLE_CHEST),        
+        DC2LocationData("S: Miracle chest 4",                      "Fruit of Eden",                    DC2LocationCategory.MIRACLE_CHEST),
+        DC2LocationData("S: Miracle chest 5",                      "Potato Pie",                       DC2LocationCategory.MIRACLE_CHEST),
+        DC2LocationData("S: Miracle chest 6",                      "Fruit of Eden",                    DC2LocationCategory.MIRACLE_CHEST),        
+        DC2LocationData("S: Miracle chest 7",                      "Fruit of Eden",                    DC2LocationCategory.MIRACLE_CHEST),
+        DC2LocationData("S: Miracle chest 8",                      "Potato Pie",                       DC2LocationCategory.MIRACLE_CHEST),
+        DC2LocationData("S: Miracle chest 9",                      "Fruit of Eden",                    DC2LocationCategory.MIRACLE_CHEST),        
+        DC2LocationData("S: Miracle chest 10",                      "Fruit of Eden",                    DC2LocationCategory.MIRACLE_CHEST),
+        DC2LocationData("S: Miracle chest 11",                      "Potato Pie",                       DC2LocationCategory.MIRACLE_CHEST),
+        DC2LocationData("S: Miracle chest 12",                      "Fruit of Eden",                    DC2LocationCategory.MIRACLE_CHEST),
+        DC2LocationData("S: Miracle chest 13",                      "Fruit of Eden",                    DC2LocationCategory.MIRACLE_CHEST),        
+        DC2LocationData("S: Miracle chest 14",                      "Fruit of Eden",                    DC2LocationCategory.MIRACLE_CHEST),
+        DC2LocationData("S: Miracle chest 15",                      "Potato Pie",                       DC2LocationCategory.MIRACLE_CHEST),
+        DC2LocationData("S: Miracle chest 16",                      "Fruit of Eden",                    DC2LocationCategory.MIRACLE_CHEST),
+        
         DC2LocationData("S: Grape Juice",                           "Grape Juice",                      DC2LocationCategory.MISC),
     ],
     "Rainbow Butterfly Wood": [    
-        DC2LocationData("RBW: Floor 1",                             "null",                             DC2LocationCategory.EVENT),
-        DC2LocationData("RBW: Chapter 2 Complete",                  "null",                             DC2LocationCategory.EVENT),
+        DC2LocationData("RBW: Floor 1",                             "null",       DC2LocationCategory.FLOOR),   
+        DC2LocationData("RBW: Floor 2",                             "null",       DC2LocationCategory.FLOOR),   
+        DC2LocationData("RBW: Floor 3",                             "null",       DC2LocationCategory.FLOOR),   
+        DC2LocationData("RBW: Floor 4",                             "null",       DC2LocationCategory.FLOOR),   
+        DC2LocationData("RBW: Floor 5",                             "null",       DC2LocationCategory.FLOOR),   
+        DC2LocationData("RBW: Chapter 2 Complete",                  "null",               DC2LocationCategory.EVENT),
     ],
     
 }

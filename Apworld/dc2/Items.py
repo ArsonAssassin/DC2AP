@@ -14,8 +14,9 @@ class DC2ItemCategory(IntEnum):
     GEORAMA_RESOURCE = 6
     GEOSTONE = 7
     MISC = 8,
-    EVENT = 9,
-    SKIP = 10
+    SKIP = 9,
+    COIN = 10,
+    GEM = 11
 
 
 class DC2ItemData(NamedTuple):
@@ -29,16 +30,12 @@ class DarkCloud2Item(Item):
 
     @staticmethod
     def get_name_to_id() -> dict:
-        base_id = 0
+        base_id = 694200000
         return {item_data.name: id for id, item_data in enumerate(_all_items, base_id)}
 
 
 key_item_names = {
-    "Wrench",
-    "Battle Wrench",
-    "Circus Ticket",
-    "Chapter 1 Complete",
-    "Chapter 2 Complete",
+    "Grape Juice",
 }
 
 
@@ -250,31 +247,31 @@ _all_items = [DC2ItemData(row[0], row[1], row[2]) for row in [
     
     ("[line1]",                        185, DC2ItemCategory.SKIP),
     
-    ("Garnet",                         186, DC2ItemCategory.MISC),
-    ("Amethyst",                       187, DC2ItemCategory.MISC),
-    ("Aquamarine",                     188, DC2ItemCategory.MISC),
-    ("Diamond",                        189, DC2ItemCategory.MISC),
-    ("Emerald",                        190, DC2ItemCategory.MISC),
-    ("Pearl",                          191, DC2ItemCategory.MISC),
-    ("Ruby",                           192, DC2ItemCategory.MISC),
-    ("Peridot",                        193, DC2ItemCategory.MISC),
-    ("Sapphire",                       194, DC2ItemCategory.MISC),
-    ("Opal",                           195, DC2ItemCategory.MISC),
-    ("Topaz",                          196, DC2ItemCategory.MISC),
-    ("Turquoise",                      197, DC2ItemCategory.MISC),
-    ("Sun Stone",                      198, DC2ItemCategory.MISC),
-    ("Moon Stone",                     199, DC2ItemCategory.MISC),
+    ("Garnet",                         186, DC2ItemCategory.GEM),
+    ("Amethyst",                       187, DC2ItemCategory.GEM),
+    ("Aquamarine",                     188, DC2ItemCategory.GEM),
+    ("Diamond",                        189, DC2ItemCategory.GEM),
+    ("Emerald",                        190, DC2ItemCategory.GEM),
+    ("Pearl",                          191, DC2ItemCategory.GEM),
+    ("Ruby",                           192, DC2ItemCategory.GEM),
+    ("Peridot",                        193, DC2ItemCategory.GEM),
+    ("Sapphire",                       194, DC2ItemCategory.GEM),
+    ("Opal",                           195, DC2ItemCategory.GEM),
+    ("Topaz",                          196, DC2ItemCategory.GEM),
+    ("Turquoise",                      197, DC2ItemCategory.GEM),
+    ("Sun Stone",                      198, DC2ItemCategory.GEM),
+    ("Moon Stone",                     199, DC2ItemCategory.GEM),
     
-    ("Wealth Coin",                    200, DC2ItemCategory.MISC),
-    ("Dark Coin",                      201, DC2ItemCategory.MISC),
-    ("Indestructible Coin",            202, DC2ItemCategory.MISC),
-    ("Poison Coin",                    203, DC2ItemCategory.MISC),
-    ("Time Coin",                      204, DC2ItemCategory.MISC),
-    ("Bandit Coin",                    205, DC2ItemCategory.MISC),
-    ("Absorption Coin",                206, DC2ItemCategory.MISC),
-    ("Healing Coin",                   207, DC2ItemCategory.MISC),
-    ("Bull's-eye Coin",                208, DC2ItemCategory.MISC),
-    ("Experience Coin",                209, DC2ItemCategory.MISC),
+    ("Wealth Coin",                    200, DC2ItemCategory.COIN),
+    ("Dark Coin",                      201, DC2ItemCategory.COIN),
+    ("Indestructible Coin",            202, DC2ItemCategory.COIN),
+    ("Poison Coin",                    203, DC2ItemCategory.COIN),
+    ("Time Coin",                      204, DC2ItemCategory.COIN),
+    ("Bandit Coin",                    205, DC2ItemCategory.COIN),
+    ("Absorption Coin",                206, DC2ItemCategory.COIN),
+    ("Healing Coin",                   207, DC2ItemCategory.COIN),
+    ("Bull's-eye Coin",                208, DC2ItemCategory.COIN),
+    ("Experience Coin",                209, DC2ItemCategory.COIN),
     
     ("Rolling Log",                    210, DC2ItemCategory.GEORAMA_RESOURCE),
     ("Sturdy Rock",                    211, DC2ItemCategory.GEORAMA_RESOURCE),
@@ -528,9 +525,7 @@ _all_items = [DC2ItemData(row[0], row[1], row[2]) for row in [
     ("null5",                           426, DC2ItemCategory.SKIP), 
     
     ("Sun Badge",                      427, DC2ItemCategory.MISC), 
-    ("Moon Badge",                     428, DC2ItemCategory.MISC), 
-    
-    
+    ("Moon Badge",                     428, DC2ItemCategory.MISC),   
 ]]
 
 item_descriptions = {
