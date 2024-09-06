@@ -4,8 +4,6 @@ VisualStudioVersion = 17.9.34701.34
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DC2AP", "DC2AP.csproj", "{5AE85C02-C8C2-4B65-ADC0-8DFBBA78D8D0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Archipelago.Core", "..\..\..\Archipelago.Core\Archipelago.Core.csproj", "{D4B2277B-859E-4DE3-A68B-CFEFECEEF2BC}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -16,10 +14,6 @@ Global
 		{5AE85C02-C8C2-4B65-ADC0-8DFBBA78D8D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5AE85C02-C8C2-4B65-ADC0-8DFBBA78D8D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5AE85C02-C8C2-4B65-ADC0-8DFBBA78D8D0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D4B2277B-859E-4DE3-A68B-CFEFECEEF2BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D4B2277B-859E-4DE3-A68B-CFEFECEEF2BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D4B2277B-859E-4DE3-A68B-CFEFECEEF2BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D4B2277B-859E-4DE3-A68B-CFEFECEEF2BC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
