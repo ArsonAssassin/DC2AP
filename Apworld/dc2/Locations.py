@@ -226,7 +226,6 @@ location_tables = {
         DC2LocationData("LWL: Miracle chest 22",                     "Peridot",                         DC2LocationCategory.MIRACLE_CHEST),
         DC2LocationData("LWL: Miracle chest 23",                     "Sapphire",                        DC2LocationCategory.MIRACLE_CHEST),
 
-        DC2LocationData("LWL: Aquarium",                            "Aquarium",                          DC2LocationCategory.MISC),
         DC2LocationData("LWL: Electric Worm",                       "Electric Worm",                     DC2LocationCategory.MISC),
         DC2LocationData("LWL: Shell Talkie",                        "Shell Talkie",                      DC2LocationCategory.MISC),
     ],
@@ -369,7 +368,9 @@ location_tables = {
         DC2LocationData("MFP: Floor 21 - Elemental Party",           "null",                           DC2LocationCategory.FLOOR),
         DC2LocationData("MFP: Floor 22 - Wandering Knight's Soul",   "null",                           DC2LocationCategory.FLOOR),
         DC2LocationData("MFP: Floor 23 - Beware Carelessness",       "null",                           DC2LocationCategory.FLOOR),
-        DC2LocationData("MFP: Floor 24 - Final Battle",              "null",                           DC2LocationCategory.FLOOR)
+        DC2LocationData("MFP: Floor 24 - Final Battle",              "null",                           DC2LocationCategory.FLOOR),
+
+        DC2LocationData("MFP: Flower of the Sun",                    "Flower of the Sun",              DC2LocationCategory.MISC)
     ],
     
 }
