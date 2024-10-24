@@ -1,15 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>net8.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="ItemIds.json" />
     <None Remove="Resources\Dungeons.json" />
+    <None Remove="Resources\ItemIds.json" />
     <None Remove="Resources\Locations.json" />
     <None Remove="Resources\QuestIds.json" />
   </ItemGroup>
@@ -24,10 +25,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Archipelago.Core" Version="0.0.11" />
-    <PackageReference Include="Archipelago.PCSX2" Version="0.0.5" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="System.Text.Encoding.CodePages" Version="8.0.0" />
+    <PackageReference Include="Archipelago.Core" Version="0.1.10" />
+    <PackageReference Include="Archipelago.Core.GUI" Version="0.0.16" />
+    <PackageReference Include="Archipelago.PCSX2" Version="0.1.0" />
   </ItemGroup>
 
 </Project>

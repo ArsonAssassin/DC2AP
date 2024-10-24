@@ -14,6 +14,7 @@ using System.Runtime.InteropServices.JavaScript;
 using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using Item = Archipelago.Core.Models.Item;
 
 namespace DC2AP
 {
@@ -76,7 +77,7 @@ namespace DC2AP
             var alreadyHave = playerState.Inventory.Any(x => x.Id == item.Id);
             if (alreadyHave)
             {
-                var slotNum = playerState.GetFirstSlot(item.Id);
+                var slotNum = playerState.GetFirstSlot((int)item.Id);
                 var address = GetItemSlotAddress(slotNum);
                 var currentQuantity = Memory.ReadShort(address + 0x0000000E);
                 item.Quantity += currentQuantity;
@@ -92,7 +93,7 @@ namespace DC2AP
         }
         public static void RemoveItem(Item item, PlayerState playerState)
         {
-            var slot = playerState.GetFirstSlot(item.Id);
+            var slot = playerState.GetFirstSlot((int)item.Id);
             if (slot == -1) return; //Player does not have that item
             var address = GetItemSlotAddress(slot);
             var currentQuantity = Memory.ReadShort(address + 0x0000000E);
@@ -108,7 +109,7 @@ namespace DC2AP
         }
         public static void RemoveAllItem(Item item, PlayerState playerState)
         {
-            var slot = playerState.GetFirstSlot(item.Id);
+            var slot = playerState.GetFirstSlot((int)item.Id);
             if (slot == -1) return; //Player does not have that item
             var address = GetItemSlotAddress(slot);
 
@@ -133,6 +134,199 @@ namespace DC2AP
             if (current == null) return -1;
             return current.locationId;
 
+        }
+        static Chest ReadChest(uint startAddress, bool isDouble = false)
+        {
+            Chest chest = new Chest() { IsDoubleChest = isDouble };
+            var currentAddress = startAddress + Addresses.Instance.IntOffset;
+            chest.Item1 = Memory.ReadShort(currentAddress);
+            currentAddress += Addresses.Instance.ShortOffset;
+            if (isDouble) chest.Item2 = Memory.ReadShort(currentAddress);
+            currentAddress += Addresses.Instance.ShortOffset;
+            chest.Quantity1 = Memory.ReadShort(currentAddress);
+            currentAddress += Addresses.Instance.ShortOffset;
+            if (isDouble) chest.Quantity2 = Memory.ReadShort(currentAddress);
+            return chest;
+        }
+        static void AddChestItem(uint startAddress, int id, int quantity)
+        {
+            startAddress += Addresses.Instance.IntOffset;
+            Console.WriteLine($"Setting Chest contents to {id}");
+            Memory.Write(startAddress, BitConverter.GetBytes(id));
+            startAddress += Addresses.Instance.IntOffset;
+            Memory.Write(startAddress, BitConverter.GetBytes(quantity));
+            Console.WriteLine("Added item!");
+        }
+        static void AddDoubleChestItems(uint startAddress, int id1, int quantity1, int id2, int quantity2)
+        {
+            startAddress += Addresses.Instance.IntOffset;
+            var currentItem = Memory.ReadByte(startAddress);
+            Console.WriteLine($"replacing {currentItem} with {id1}");
+            Memory.Write(startAddress, BitConverter.GetBytes(id1));
+            startAddress += Addresses.Instance.ShortOffset;
+            var currentItem2 = Memory.ReadByte(startAddress);
+            Console.WriteLine($"replacing {currentItem2} with {id2}");
+            Memory.Write(startAddress, BitConverter.GetBytes(id2));
+            startAddress += Addresses.Instance.ShortOffset;
+            Memory.Write(startAddress, BitConverter.GetBytes(quantity1));
+            startAddress += Addresses.Instance.ShortOffset;
+            Memory.Write(startAddress, BitConverter.GetBytes(quantity2));
+        }
+        public static List<Chest> ReadChests()
+        {
+            List<Chest> chests = new List<Chest>();
+            var chestStartAddress = Addresses.Instance.DungeonAreaChestAddress[Memory.ReadByte(Addresses.Instance.CurrentDungeon)];
+            var currentChestAddress = chestStartAddress;
+            var chestId = 0;
+            while (chestId != 1)
+            {
+                chestId = Memory.ReadByte(currentChestAddress);
+                var chest = ReadChest(currentChestAddress, chestId >= 128);
+                chests.Add(chest);
+                currentChestAddress += 0x00000070;
+            }
+            Console.WriteLine("End of chests");
+            return chests;
+        }
+        public static Floor ReadFloor(uint currentAddress, bool debug = false)
+        {
+            if (debug) Console.WriteLine($"Starting floor read at {currentAddress.ToString("X8")}");
+            Floor floor = new Floor();
+            var data = new BitArray(Memory.ReadByteArray(currentAddress, 2));
+            data[0] = true;
+            byte[] newBytes = new byte[2];
+            data.CopyTo(newBytes, 0);
+            Memory.WriteByteArray(currentAddress, newBytes);
+            currentAddress += Addresses.Instance.ShortOffset;
+            if (debug) Console.WriteLine($"Reading {currentAddress.ToString("X8")}");
+            var monstersKilled = Memory.ReadShort(currentAddress);
+            currentAddress += Addresses.Instance.ShortOffset;
+            if (debug) Console.WriteLine($"Reading {currentAddress.ToString("X8")}");
+            var timesVisited = Memory.ReadShort(currentAddress);
+
+            floor.IsUnlocked = data[0].ToString();
+            floor.IsFinished = data[1].ToString();
+            var unknown1 = data[2].ToString();
+            floor.SpecialMedalCompleted = data[3].ToString();
+
+            floor.ClearMedalCompleted = data[4].ToString();
+            floor.FishMedalCompleted = data[5].ToString();
+            var unknown3 = data[6].ToString();
+            floor.SphedaMedalCompleted = data[7].ToString();
+
+            floor.GotGeostone = data[8].ToString();
+            floor.DownloadedGeostone = data[9].ToString();
+            floor.KilledAllMonsters = data[10].ToString();
+
+            floor.MonstersKilled = monstersKilled;
+            floor.TimesVisited = timesVisited;
+
+         
+            return floor;
+        }
+
+        public static List<Enemy> ReadEnemies(bool debug = false)
+        {
+            var itemList = GetItemIds();
+            var dungeonList = GetDungeons();
+            List<Enemy> enemies = new List<Enemy>();
+            var currentAddress = Addresses.Instance.EnemyStartAddress;
+            currentAddress += Addresses.Instance.IntOffset;
+            for (int i = 0; i < 280; i++)
+            {
+                Enemy enemy = new Enemy();
+                enemy.Name = Memory.ReadString(currentAddress, 32);
+                currentAddress += 0x00000020;
+                enemy.ModelAI = BitConverter.ToString(Memory.ReadByteArray(currentAddress, 32));
+                currentAddress += 0x00000020;
+                var modelType = Memory.ReadInt(currentAddress).ToString();
+                enemy.ModelType = Helpers.GetModelType(modelType);
+                currentAddress += Addresses.Instance.IntOffset;
+                enemy.Sound = Memory.ReadInt(currentAddress).ToString();
+                currentAddress += Addresses.Instance.IntOffset;
+                enemy.Unknown1 = Memory.ReadInt(currentAddress).ToString();
+                currentAddress += Addresses.Instance.IntOffset;
+                enemy.HP = Memory.ReadInt(currentAddress).ToString();
+                currentAddress += Addresses.Instance.IntOffset;
+                enemy.Family = Memory.ReadShort(currentAddress).ToString();
+                currentAddress += Addresses.Instance.ShortOffset;
+                //    var absMultiplied = Memory.ReadShort(currentAddress) *  Client.Options.ExpMultiplier;
+                //    Memory.Write(currentAddress, (short)absMultiplied);
+                enemy.ABS = Memory.ReadShort(currentAddress).ToString();
+                currentAddress += Addresses.Instance.ShortOffset;
+                //    var gildaMultiplied = Memory.ReadShort(currentAddress) * Client.Options.GoldMultiplier;
+                //    Memory.Write(currentAddress, (short)gildaMultiplied);
+                enemy.Gilda = Memory.ReadShort(currentAddress).ToString();
+                currentAddress += Addresses.Instance.ShortOffset;
+                enemy.Unknown2 = BitConverter.ToString(Memory.ReadByteArray(currentAddress, 6));
+                currentAddress += 0x00000006;
+                enemy.Rage = Memory.ReadShort(currentAddress).ToString();
+                currentAddress += Addresses.Instance.ShortOffset;
+                enemy.Unknown3 = BitConverter.ToString(Memory.ReadByteArray(currentAddress, 4));
+                currentAddress += Addresses.Instance.IntOffset;
+                enemy.Damage = Memory.ReadShort(currentAddress).ToString();
+                currentAddress += Addresses.Instance.ShortOffset;
+                enemy.Defense = Memory.ReadShort(currentAddress).ToString();
+                currentAddress += Addresses.Instance.ShortOffset;
+                enemy.BossFlag = Memory.ReadShort(currentAddress).ToString();
+                currentAddress += Addresses.Instance.ShortOffset;
+                enemy.Weaknesses = BitConverter.ToString(Memory.ReadByteArray(currentAddress, 16));
+                currentAddress += 0x00000010;
+                enemy.Effectiveness = BitConverter.ToString(Memory.ReadByteArray(currentAddress, 24));
+                currentAddress += 0x00000018;
+                enemy.Unknown4 = BitConverter.ToString(Memory.ReadByteArray(currentAddress, 4));
+                currentAddress += Addresses.Instance.IntOffset;
+                enemy.IsRidepodEnemy = Memory.ReadByte(currentAddress).ToString();
+                currentAddress += Addresses.Instance.ShortOffset;
+                enemy.UnusedBits = BitConverter.ToString(Memory.ReadByteArray(currentAddress, 2));
+                currentAddress += Addresses.Instance.ShortOffset;
+                enemy.Minions = BitConverter.ToString(Memory.ReadByteArray(currentAddress, 4));
+                currentAddress += Addresses.Instance.IntOffset;
+
+                var itemSlot1 = Memory.ReadShort(currentAddress);
+                currentAddress += Addresses.Instance.ShortOffset;
+                var itemSlot2 = Memory.ReadShort(currentAddress);
+                currentAddress += Addresses.Instance.ShortOffset;
+                var itemSlot3 = Memory.ReadShort(currentAddress);
+                currentAddress += Addresses.Instance.ShortOffset;
+
+                enemy.Items = new List<ItemId>();
+                if (itemSlot1 != 0x00)
+                {
+                    var id = itemList.First(x => x.Id == itemSlot1);
+                    enemy.Items.Add(id);
+                }
+                if (itemSlot2 != 0x00)
+                {
+                    var id = itemList.First(x => x.Id == itemSlot2);
+                    enemy.Items.Add(id);
+                }
+                if (itemSlot3 != 0x00)
+                {
+                    var id = itemList.First(x => x.Id == itemSlot3);
+                    enemy.Items.Add(id);
+                }
+                enemy.Unknown6 = BitConverter.ToString(Memory.ReadByteArray(currentAddress, 10));
+                currentAddress += 0x0000000A;
+                var dungeon = Memory.ReadShort(currentAddress).ToString();
+                enemy.Dungeon = dungeonList.First(x => x.id == int.Parse(dungeon)).Name;
+                currentAddress += Addresses.Instance.ShortOffset;
+                enemy.BestiarySpot = Memory.ReadShort(currentAddress).ToString();
+                currentAddress += Addresses.Instance.ShortOffset;
+                enemy.SharedHP = Memory.ReadShort(currentAddress).ToString();
+                currentAddress += Addresses.Instance.ShortOffset;
+                enemy.Unknown7 = Memory.ReadShort(currentAddress).ToString();
+                currentAddress += Addresses.Instance.ShortOffset;
+                enemies.Add(enemy);
+
+                if (debug) Console.WriteLine($"Discovered enemy: {JsonConvert.SerializeObject(enemy, Formatting.Indented)}");
+
+
+                currentAddress += 0x00000004;
+            }
+
+            if (debug) Console.WriteLine($"Found {enemies.Count} enemies");
+            return enemies;
         }
         public static string GetHabitat(string id)
         {
@@ -294,6 +488,11 @@ namespace DC2AP
                     return "Bat";
             }
             return "";
+        }
+
+        internal static int GetLocationFromProgressionItem(long itemId)
+        {
+            throw new NotImplementedException();
         }
     }
 }
