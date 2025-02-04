@@ -1,33 +1,78 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>WinExe</OutputType>
-    <TargetFramework>net8.0-windows</TargetFramework>
-    <Nullable>enable</Nullable>
-    <UseWindowsForms>true</UseWindowsForms>
-    <ImplicitUsings>enable</ImplicitUsings>
-  </PropertyGroup>
+	<PropertyGroup>
+    <TargetFramework>net8.0-windows10.0.19041.0</TargetFramework>
+    <WindowsPackageType>None</WindowsPackageType>
 
-  <ItemGroup>
-    <None Remove="Resources\Dungeons.json" />
-    <None Remove="Resources\ItemIds.json" />
-    <None Remove="Resources\Locations.json" />
-    <None Remove="Resources\QuestIds.json" />
-  </ItemGroup>
 
-  <ItemGroup>
-    <EmbeddedResource Include="Resources\Dungeons.json" />
-    <EmbeddedResource Include="Resources\ItemIds.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Locations.json" />
-    <EmbeddedResource Include="Resources\QuestIds.json" />
-  </ItemGroup>
+		<OutputType>Exe</OutputType>
+		<RootNamespace>DC2AP</RootNamespace>
+		<UseMaui>true</UseMaui>
+		<SingleProject>true</SingleProject>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
 
-  <ItemGroup>
-    <PackageReference Include="Archipelago.Core" Version="0.1.10" />
-    <PackageReference Include="Archipelago.Core.GUI" Version="0.0.16" />
-    <PackageReference Include="Archipelago.PCSX2" Version="0.1.0" />
-  </ItemGroup>
+		<!-- Display name -->
+		<ApplicationTitle>DC2AP</ApplicationTitle>
+
+		<!-- App Identifier -->
+		<ApplicationId>com.arsonassassin.dc2ap</ApplicationId>
+
+		<!-- Versions -->
+		<ApplicationDisplayVersion>0.0.1</ApplicationDisplayVersion>
+		<ApplicationVersion>1</ApplicationVersion>
+
+    <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
+    <TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
+    <Title>DC2AP</Title>
+    <PublishSingleFile>true</PublishSingleFile>
+    <EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
+    <SelfContained>true</SelfContained>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <PublishAppxPackage>false</PublishAppxPackage>
+    <WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<!-- App Icon -->
+		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />
+
+		<!-- Splash Screen -->
+		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" BaseSize="128,128" />
+
+		<!-- Images -->
+		<MauiImage Include="Resources\Images\*" />
+		<MauiImage Update="Resources\Images\dotnet_bot.png" Resize="True" BaseSize="300,185" />
+
+		<!-- Custom Fonts -->
+		<MauiFont Include="Resources\Fonts\*" />
+
+		<!-- Raw Assets (also remove the "Resources\Raw" prefix) -->
+		<MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Remove="Resources\background.jpg" />
+	  <None Remove="Resources\Dungeons.json" />
+	  <None Remove="Resources\ItemIds.json" />
+	  <None Remove="Resources\Locations.json" />
+	  <None Remove="Resources\QuestIds.json" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Include="Resources\background.jpg" />
+	  <EmbeddedResource Include="Resources\Dungeons.json" />
+	  <EmbeddedResource Include="Resources\ItemIds.json" />
+	  <EmbeddedResource Include="Resources\Locations.json" />
+	  <EmbeddedResource Include="Resources\QuestIds.json" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Archipelago.Core" Version="0.3.1" />
+		<PackageReference Include="Archipelago.Core.MauiGUI" Version="0.0.20" />
+		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
+		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="$(MauiVersion)" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.1" />
+	</ItemGroup>
 
 </Project>

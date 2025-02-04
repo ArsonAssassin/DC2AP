@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DC2AP.Models
 {
-    public class ItemId
+    public class DarkCloud2Item
     {
         public string Name { get; set; }
         public int Id { get; set; }
