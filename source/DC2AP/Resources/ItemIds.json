@@ -1209,7 +1209,8 @@
   },
   {
     "id": 302,
-    "name": "fishing rod"
+    "name": "fishing rod",
+    "isProgression": true
   },
   {
     "id": 303,
@@ -1417,7 +1418,8 @@
   },
   {
     "id": 354,
-    "name": "fire horn"
+    "name": "fire horn",
+    "isProgression": true
   },
   {
     "id": 355,
@@ -1441,11 +1443,13 @@
   },
   {
     "id": 360,
-    "name": "electric worm"
+    "name": "electric worm",
+    "isProgression": true
   },
   {
     "id": 361,
-    "name": "lafrescia seed"
+    "name": "lafrescia seed",
+    "isProgression": true
   },
   {
     "id": 362,
@@ -1453,27 +1457,33 @@
   },
   {
     "id": 363,
-    "name": "white windflower"
+    "name": "white windflower",
+    "isProgression": true
   },
   {
     "id": 364,
-    "name": "miracle dumplings"
+    "name": "miracle dumplings",
+    "isProgression": true
   },
   {
     "id": 365,
-    "name": "earth gem"
+    "name": "earth gem",
+    "isProgression": true
   },
   {
     "id": 366,
-    "name": "water gem"
+    "name": "water gem",
+    "isProgression": true
   },
   {
     "id": 367,
-    "name": "wind gem"
+    "name": "wind gem",
+    "isProgression": true
   },
   {
     "id": 368,
-    "name": "fire gem"
+    "name": "fire gem",
+    "isProgression": true
   },
   {
     "id": 369,
@@ -1487,23 +1497,28 @@
   },
   {
     "id": 371,
-    "name": "starglass"
+    "name": "starglass",
+    "isProgression": true
   },
   {
     "id": 372,
-    "name": "time bomb"
+    "name": "time bomb",
+    "isProgression": true
   },
   {
     "id": 373,
-    "name": "shell talkie"
+    "name": "shell talkie",
+    "isProgression": true
   },
   {
     "id": 374,
-    "name": "flower of the sun"
+    "name": "flower of the sun",
+    "isProgression": true
   },
   {
     "id": 375,
-    "name": "secret dragon remedy"
+    "name": "secret dragon remedy",
+    "isProgression": true
   },
   {
     "id": 376,

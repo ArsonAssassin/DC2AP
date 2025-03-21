@@ -3,6 +3,7 @@ using Archipelago.Core.Util;
 using Archipelago.MultiClient.Net.Enums;
 using DC2AP.Models;
 using Newtonsoft.Json;
+using Serilog;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -152,21 +153,21 @@ namespace DC2AP
         static void AddChestItem(uint startAddress, int id, int quantity)
         {
             startAddress += Addresses.IntOffset;
-            Console.WriteLine($"Setting Chest contents to {id}");
+            Log.Logger.Information($"Setting Chest contents to {id}");
             Memory.Write(startAddress, BitConverter.GetBytes(id));
             startAddress += Addresses.IntOffset;
             Memory.Write(startAddress, BitConverter.GetBytes(quantity));
-            Console.WriteLine("Added item!");
+            Log.Logger.Information("Added item!");
         }
         static void AddDoubleChestItems(uint startAddress, int id1, int quantity1, int id2, int quantity2)
         {
             startAddress += Addresses.IntOffset;
             var currentItem = Memory.ReadByte(startAddress);
-            Console.WriteLine($"replacing {currentItem} with {id1}");
+            Log.Logger.Information($"replacing {currentItem} with {id1}");
             Memory.Write(startAddress, BitConverter.GetBytes(id1));
             startAddress += Addresses.ShortOffset;
             var currentItem2 = Memory.ReadByte(startAddress);
-            Console.WriteLine($"replacing {currentItem2} with {id2}");
+            Log.Logger.Information($"replacing {currentItem2} with {id2}");
             Memory.Write(startAddress, BitConverter.GetBytes(id2));
             startAddress += Addresses.ShortOffset;
             Memory.Write(startAddress, BitConverter.GetBytes(quantity1));
@@ -186,12 +187,12 @@ namespace DC2AP
                 chests.Add(chest);
                 currentChestAddress += 0x00000070;
             }
-            Console.WriteLine("End of chests");
+            Log.Logger.Information("End of chests");
             return chests;
         }
         public static Floor ReadFloor(uint currentAddress, bool debug = false)
         {
-            if (debug) Console.WriteLine($"Starting floor read at {currentAddress.ToString("X8")}");
+            if (debug) Log.Logger.Information($"Starting floor read at {currentAddress.ToString("X8")}");
             Floor floor = new Floor();
             var data = new BitArray(Memory.ReadByteArray(currentAddress, 2));
             data[0] = true;
@@ -199,10 +200,10 @@ namespace DC2AP
             data.CopyTo(newBytes, 0);
             Memory.WriteByteArray(currentAddress, newBytes);
             currentAddress += Addresses.ShortOffset;
-            if (debug) Console.WriteLine($"Reading {currentAddress.ToString("X8")}");
+            if (debug) Log.Logger.Information($"Reading {currentAddress.ToString("X8")}");
             var monstersKilled = Memory.ReadShort(currentAddress);
             currentAddress += Addresses.ShortOffset;
-            if (debug) Console.WriteLine($"Reading {currentAddress.ToString("X8")}");
+            if (debug) Log.Logger.Information($"Reading {currentAddress.ToString("X8")}");
             var timesVisited = Memory.ReadShort(currentAddress);
 
             floor.IsUnlocked = data[0].ToString();
@@ -238,6 +239,17 @@ namespace DC2AP
                 currentAddress += 0xB8;
             }
             return enemies;
+        }
+        public static void ShuffleEnemies(List<Enemy> enemies)
+        {
+            var newOrder = enemies.ToArray();
+            new Random().Shuffle(newOrder);
+            var currentAddress = Addresses.EnemyStartAddress + Addresses.IntOffset;
+            foreach (var enemy in newOrder)
+            {
+                Memory.WriteObject(currentAddress, enemy);
+                currentAddress += 0xB8;
+            }
         }
         //public static List<Enemy> ReadEnemies(bool debug = false)
         //{
@@ -333,13 +345,13 @@ namespace DC2AP
         //        currentAddress += Addresses.ShortOffset;
         //        enemies.Add(enemy);
 
-        //        if (debug) Console.WriteLine($"Discovered enemy: {JsonConvert.SerializeObject(enemy, Formatting.Indented)}");
+        //        if (debug) Log.Logger.Information($"Discovered enemy: {JsonConvert.SerializeObject(enemy, Formatting.Indented)}");
 
 
         //        currentAddress += 0x00000004;
         //    }
 
-        //    if (debug) Console.WriteLine($"Found {enemies.Count} enemies");
+        //    if (debug) Log.Logger.Information($"Found {enemies.Count} enemies");
         //    return enemies;
         //}
         public static string GetHabitat(string id)
@@ -506,7 +518,34 @@ namespace DC2AP
 
         internal static int GetLocationFromProgressionItem(long itemId)
         {
-            throw new NotImplementedException();
+            var locations = GetLocations();
+            Dictionary<string, int> locationToItemDict = new Dictionary<string, int>()
+            {
+                { "Grape Juice", 370 },
+                { "Lafrescia Seed", 361 },
+                { "Fishing Rod", 302 },
+                { "Earth Gem", 365 },
+                { "Starglass", 371 },
+                { "Miracle Dumplings", 364 },
+                { "White Windflower", 363 },
+                { "Wind Gem", 367 },
+                { "Electrim Worm", 370 },
+                { "Shell Talkie", 373 },
+                { "Secret Dragon Remedy", 375 },
+                { "Water Gem", 366 },
+                { "Time Bomb", 372 },
+                { "Fire Horn", 354 },
+                { "Fire Gem", 368 },
+                { "Flower of the Sun", 374 },
+
+            };
+            if (locationToItemDict.Any(x => x.Value == itemId))
+            {
+                var locationName = locationToItemDict.First(x => x.Value == itemId).Key;
+                var location = locations.First(x => x.Name.ToLower().Contains(locationName.ToLower()));
+                if (location != null) return location.Id;
+            }
+            return -1;
         }
     }
 }

@@ -7,9 +7,9 @@ from Options import Toggle
 from worlds.AutoWorld import World, WebWorld
 from worlds.generic.Rules import set_rule, add_rule, add_item_rule
 
-from .Items import DarkCloud2Item, DC2ItemCategory, item_dictionary, key_item_names, item_descriptions
-from .Locations import DarkCloud2Location, DC2LocationCategory, location_tables, location_dictionary
-from .Options import dark_cloud_options
+from .Items import DarkCloud2Item, DC2ItemCategory, item_dictionary, key_item_names, item_descriptions, BuildItemPool
+from .Locations import DarkCloud2Location, DC2LocationCategory, location_tables, location_dictionary, location_skip_categories
+from .Options import DC2Option
 
 import random
 
@@ -35,19 +35,20 @@ class DarkCloud2World(World):
     """
 
     game: str = "Dark Cloud 2"
-    option_definitions = dark_cloud_options
+    options_dataclass = DC2Option
+    options: DC2Option
     topology_present: bool = True
     web = DarkCloud2Web()
     data_version = 0
     base_id = 694200000
     enabled_location_categories: Set[DC2LocationCategory]
-    required_client_version = (0, 4, 6)
+    required_client_version = (0, 5, 1)
     item_name_to_id = DarkCloud2Item.get_name_to_id()
     location_name_to_id = DarkCloud2Location.get_name_to_id()
     item_name_groups = {
     }
     item_descriptions = item_descriptions
-
+    explicit_indirect_conditions = False
 
     def __init__(self, multiworld: MultiWorld, player: int):
         super().__init__(multiworld, player)
@@ -67,6 +68,7 @@ class DarkCloud2World(World):
         self.enabled_location_categories.add(DC2LocationCategory.MISC)
         self.enabled_location_categories.add(DC2LocationCategory.GEOSTONE)
         self.enabled_location_categories.add(DC2LocationCategory.EVENT)
+        self.enabled_location_categories.add(DC2LocationCategory.KEY_ITEM)
 
 
     def create_regions(self):
@@ -77,34 +79,58 @@ class DarkCloud2World(World):
             "Palm Brinks",
             "Underground Water Channel",
             "Sindain",
-            "Rainbow Butterfly Wood"
+            "Rainbow Butterfly Wood",
+            "Jurak Mall",
+            "Balance Valley",
+            "Starlight Canyon",
+            "Starlight Temple",
+            "Veniccio",
+            "Ocean's Roar Cave",
+            "Lunatic Wisdom Laboratories",
+            "Heim Rada",
+            "Mount Gundor",
+            "Gundorada Workshop",
+            "Moon Flower Palace"
         ]})
         
 
         # Connect Regions
-        def create_connection(from_region: str, to_region: str):
-            connection = Entrance(self.player, f"{to_region}", regions[from_region])
+        def create_connection(from_region: str, to_region: str, rule = None):
+            connection = Entrance(self.player, f"{from_region} -> {to_region}", regions[from_region])
             regions[from_region].exits.append(connection)
-            connection.connect(regions[to_region])
-
-        regions["Menu"].exits.append(Entrance(self.player, "New Game", regions["Menu"]))
-        self.multiworld.get_entrance("New Game", self.player).connect(regions["Palm Brinks"])
+            connection.connect(regions[to_region], rule)
+        
+        create_connection("Menu", "Palm Brinks")
 
         create_connection("Palm Brinks", "Underground Water Channel")
         
         create_connection("Palm Brinks", "Sindain")
+        create_connection("Palm Brinks", "Balance Valley")
+        create_connection("Palm Brinks", "Veniccio")
+        create_connection("Palm Brinks", "Heim Rada")
+        create_connection("Palm Brinks", "Moon Flower Palace")
         
         create_connection("Sindain", "Rainbow Butterfly Wood")
-        create_connection("Sindain", "Palm Brinks")
+        create_connection("Sindain", "Jurak Mall")
+        
+        create_connection("Balance Valley", "Starlight Canyon")
+        create_connection("Balance Valley", "Starlight Temple")
+        
+        create_connection("Veniccio", "Ocean's Roar Cave")
+        create_connection("Veniccio", "Lunatic Wisdom Laboratories")        
+        
+        create_connection("Heim Rada", "Mount Gundor")
+        create_connection("Heim Rada", "Gundorada Workshop")
         
         
     # For each region, add the associated locations retrieved from the corresponding location_table
     def create_region(self, region_name, location_table) -> Region:
         new_region = Region(region_name, self.player, self.multiworld)
-
+        #print("location table size: " + str(len(location_table)))
         for location in location_table:
-            if location.category in self.enabled_location_categories:
-            
+            #print("Creating location: " + location.name)
+            if location.category in self.enabled_location_categories and location.category not in location_skip_categories:
+                #print("Adding location: " + location.name + " with default item " + location.default_item)
                 new_location = DarkCloud2Location(
                     self.player,
                     location.name,
@@ -116,9 +142,9 @@ class DarkCloud2World(World):
             else:
                 # Replace non-randomized progression items with events
                 event_item = self.create_item(location.default_item)
-                if event_item.classification != ItemClassification.progression:
-                    continue
-
+                #if event_item.classification != ItemClassification.progression:
+                #    continue
+                #print("Adding Location: " + location.name + " as an event with default item " + location.default_item)
                 new_location = DarkCloud2Location(
                     self.player,
                     location.name,
@@ -129,79 +155,67 @@ class DarkCloud2World(World):
                 )
                 event_item.code = None
                 new_location.place_locked_item(event_item)
-
-            if region_name == "Menu":
-                add_item_rule(new_location, lambda item: not item.advancement)
+                #print("Placing event: " + event_item.name + " in location: " + location.name)
 
             new_region.locations.append(new_location)
-
+        #print("created " + str(len(new_region.locations)) + " locations")
         self.multiworld.regions.append(new_region)
+        #print("adding region: " + region_name)
         return new_region
 
 
     def create_items(self):
-        
-        itempool_by_category = {category: [] for category in self.enabled_location_categories}
-
-        num_required_extra_items = 0
-        for location in self.multiworld.get_locations(self.player):
-            if location.category in itempool_by_category:
-                if item_dictionary[location.default_item_name].category == DC2ItemCategory.SKIP:
-                    num_required_extra_items += 1
-                else:
-                    itempool_by_category[location.category].append(location.default_item_name)
-
+        skip_items: List[DarkCloud2Item] = []
         itempool: List[DarkCloud2Item] = []
-        for category in self.enabled_location_categories:
-            itempool += [self.create_item(name) for name in itempool_by_category[category]]
+        itempoolSize = 0
+        
+        #print("Creating items")
+        for location in self.multiworld.get_locations(self.player):            
+            item_data = item_dictionary[location.default_item_name]
+            if item_data.category in location_skip_categories:               
+                #print("Adding skip item: " + location.default_item_name)
+                skip_items.append(self.create_item(location.default_item_name))
+            elif location.category in self.enabled_location_categories:
+                #print("Adding item: " + location.default_item_name)
+                itempoolSize += 1
+                itempool.append(self.create_item(location.default_item_name))
+        
+        #print("Requesting itempool size: " + str(itempoolSize))
+        foo = BuildItemPool(itempoolSize, self.options)
+        #print("Created item pool size: " + str(len(foo)))
 
         removable_items = [item for item in itempool if item.classification != ItemClassification.progression]
+        #print("marked " + str(len(removable_items)) + " items as removable")
+        
+        for item in removable_items:
+            #print("removable item: " + item.name)
+            itempool.remove(item)
+            itempool.append(self.create_item(foo.pop().name))
 
-        guaranteed_items = self.multiworld.guaranteed_items[self.player].value
-        for item_name in guaranteed_items:
-            if len(removable_items) == 0:
-                break
-
-            num_existing_copies = len([item for item in itempool if item.name == item_name])
-            for _ in range(guaranteed_items[item_name]):
-                if num_existing_copies > 0:
-                    num_existing_copies -= 1
-                    continue
-
-                if num_required_extra_items > 0:
-                    num_required_extra_items -= 1
-                else:
-                    if len(removable_items) == 0:
-                        break
-
-                    removable_shortlist = [
-                        item for item
-                        in removable_items
-                        if item_dictionary[item.name].category == item_dictionary[item_name].category
-                    ]
-                    if len(removable_shortlist) == 0:
-                        removable_shortlist = removable_items
-
-                    removed_item = self.multiworld.random.choice(removable_shortlist)
-                    removable_items.remove(removed_item) # To avoid trying to replace the same item twice
-                    itempool.remove(removed_item)
-
-                itempool.append(self.create_item(item_name))
-
-        # Extra filler items for locations containing SKIP items
-        itempool += [self.create_filler() for _ in range(num_required_extra_items)]
-
-        # Add items to itempool
+        # Add regular items to itempool
         self.multiworld.itempool += itempool
+
+        # Handle SKIP items separately
+        #for skip_item in skip_items:
+        #    location = next(loc for loc in self.multiworld.get_locations(self.player) if loc.default_item_name == skip_item.name)
+        #    location.place_locked_item(skip_item)
+            #self.multiworld.itempool.append(skip_item)
+            #print("Placing skip item: " + skip_item.name + " in location: " + location.name)
+        
+        #print("Final Item pool: ")
+        #for item in self.multiworld.itempool:
+            #print(item.name)
+
+
 
 
     def create_item(self, name: str) -> Item:
         useful_categories = {
-            DC2ItemCategory.GEORAMA_RESOURCE, DC2ItemCategory.GEM, DC2ItemCategory.COIN
+           # DC2ItemCategory.GEORAMA_RESOURCE, DC2ItemCategory.GEM, DC2ItemCategory.COIN
         }
         data = self.item_name_to_id[name]
 
-        if name in key_item_names:
+        if name in key_item_names:# or item_dictionary[name].category in [DC2ItemCategory.KEY_ITEM]:
             item_classification = ItemClassification.progression
         elif item_dictionary[name].category in useful_categories:
             item_classification = ItemClassification.useful
@@ -212,46 +226,39 @@ class DarkCloud2World(World):
 
 
     def get_filler_item_name(self) -> str:
-        chance = random.randint(0, 1000)
-        if chance > 990:
-            #Get coin
-            coinItems = {key: value for key, value in item_dictionary.items() if value.category == DC2ItemCategory.COIN}
-            return random.choice(list(coinItems.keys()))
-        elif chance > 940:
-            weaponItems = {key: value for key, value in item_dictionary.items() if value.category == DC2ItemCategory.WEAPON_MAX_L or value.category == DC2ItemCategory.WEAPON_MAX_R or value.category == DC2ItemCategory.WEAPON_MAX_L or value.category == DC2ItemCategory.WEAPON_MONICA_R or value.category == DC2ItemCategory.WEAPON_MONICA_L} 
-            return random.choice(list(weaponItems.keys()))
-            #Get weapon
-        elif chance > 890:
-            #Get gem
-            gemItems = {key: value for key, value in item_dictionary.items() if value.category == DC2ItemCategory.GEM}
-            return random.choice(list(gemItems.keys()))
-        elif chance > 800:
-            #get pack
-            return "Weapon Powder"
-        else:
-            consumableItems = {key: value for key, value in item_dictionary.items() if value.category == DC2ItemCategory.CONSUMABLE} 
-            return random.choice(list(consumableItems.keys()))
-            #get consumable
-
+        return "Bread"
 
     def set_rules(self) -> None:
         # Define the access rules to the entrances
-       # set_rule(self.multiworld.get_entrance("Sindain", self.player),
-       #          lambda state: state.has("Chapter 1 Complete", self.player))     
-                 
-
+        #set_rule(self.multiworld.get_entrance("Palm Brinks -> Sindain", self.player), lambda state: state.has("Chapter 1 Complete", self.player))     
+        set_rule(self.multiworld.get_entrance("Sindain -> Rainbow Butterfly Wood", self.player), lambda state: state.has("Grape Juice", self.player)) 
+        #set_rule(self.multiworld.get_entrance("Palm Brinks -> Balance Valley", self.player), lambda state: state.has("Chapter 2 Complete", self.player))   
+        #set_rule(self.multiworld.get_entrance("Palm Brinks -> Veniccio", self.player), lambda state: state.has("Chapter 3 Complete", self.player))   
+        #set_rule(self.multiworld.get_entrance("Palm Brinks -> Heim Rada", self.player), lambda state: state.has("Chapter 4 Complete", self.player))     
+        #set_rule(self.multiworld.get_entrance("Palm Brinks -> Moon Flower Palace", self.player), lambda state: state.has("Chapter 5 Complete", self.player))            
+                  
+        set_rule(self.multiworld.get_entrance("Sindain -> Jurak Mall", self.player), lambda state: state.has("Grape Juice", self.player)) 
+        
+        # Chapter 1 floors        
+        #set_rule(self.multiworld.get_location("UWC: Floor 1 - To the Outside World", self.player), lambda state: True)
+        #set_rule(self.multiworld.get_location("UWC: Floor 2 - Battle with Rats", self.player), lambda state: state.can_reach_location("UWC: Floor 1 - To the Outside World", self.player))
+        #set_rule(self.multiworld.get_location("UWC: Floor 3 - Ghosts in the Channel", self.player), lambda state: state.can_reach_location("UWC: Floor 2 - Battle with Rats", self.player))
+        #set_rule(self.multiworld.get_location("UWC: Pump Room", self.player), lambda state: state.can_reach_location("UWC: Floor 3 - Ghosts in the Channel", self.player))
+        #set_rule(self.multiworld.get_location("UWC: Linda", self.player), lambda state: state.can_reach_location("UWC: Floor 3 - Ghosts in the Channel", self.player))
+        #set_rule(self.multiworld.get_location("UWC: Floor 4 - Steve's Battle", self.player), lambda state: state.can_reach_location("UWC: Pump Room", self.player))
+        #set_rule(self.multiworld.get_location("UWC: Floor 5 - Ghost in the Channel", self.player), lambda state: state.can_reach_location("UWC: Floor 4 - Steve's Battle", self.player))
+        #set_rule(self.multiworld.get_location("UWC: Halloween", self.player), lambda state: state.can_reach_location("UWC: Floor 5 - Ghost in the Channel", self.player))
+        #set_rule(self.multiworld.get_location("UWC: Chapter 1 Complete", self.player), lambda state: state.can_reach_location("UWC: Halloween", self.player))
        
-        self.multiworld.completion_condition[self.player] = lambda state: \
-            state.has("Grape Juice", self.player) #and \
-            #state.has("Chapter 2 Complete", self.player)
+       # Chapter 2 floors       
+        set_rule(self.multiworld.get_location("RBW: Fish Monster Swamp", self.player), lambda state: state.has("Fishing Rod", self.player))
+       
+        self.multiworld.completion_condition[self.player] = lambda state: state.can_reach_location("MG: Chapter 5 Complete", self.player)
 
 
     def fill_slot_data(self) -> Dict[str, object]:
         slot_data: Dict[str, object] = {}
-
-
         name_to_dc2_code = {item.name: item.dc2_code for item in item_dictionary.values()}
-        
         # Create the mandatory lists to generate the player's output file
         items_id = []
         items_address = []
@@ -259,15 +266,14 @@ class DarkCloud2World(World):
         locations_address = []
         locations_target = []
         for location in self.multiworld.get_filled_locations():
-            # Skip events
-            if location.item.code is None:
-                continue
-
             if location.item.player == self.player:
+                #we are the receiver of the item
                 items_id.append(location.item.code)
                 items_address.append(name_to_dc2_code[location.item.name])
 
+
             if location.player == self.player:
+                #we are the sender of the location check
                 locations_address.append(item_dictionary[location_dictionary[location.name].default_item].dc2_code)
                 locations_id.append(location.address)
                 if location.item.player == self.player:
