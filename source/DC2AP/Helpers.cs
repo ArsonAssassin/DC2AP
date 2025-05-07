@@ -23,10 +23,7 @@ namespace DC2AP
     public static class Helpers
     {
 
-        public static T Random<T>(this IEnumerable<T> list) where T : struct
-        {
-            return list.ToList()[new Random().Next(0, list.Count())];
-        }
+
         public static List<DarkCloud2Item> GetItemIds()
         {
             var json = OpenEmbeddedResource("DC2AP.Resources.ItemIds.json");
@@ -117,16 +114,16 @@ namespace DC2AP
 
             WriteItem(new Item() { Id = 0, Quantity = 0, IsProgression = false, Name = "null" }, address);
         }
-        public static void WriteItem(Item item, uint address)
+        public static void WriteItem(Item item, ulong address)
         {
             Memory.Write(address, (ushort)item.Id);
             Memory.Write(address + 0x0000000E, (ushort)item.Quantity);
         }
-        public static uint GetItemSlotAddress(int slotNum)
+        public static ulong GetItemSlotAddress(int slotNum)
         {
             var startAddress = Addresses.InventoryStartAddress;
-            uint offset = (uint)(0x0000006c * (slotNum));
-            uint slotAddress = startAddress + offset;
+            ulong offset = (uint)(0x0000006c * (slotNum));
+            ulong slotAddress = startAddress + offset;
             return slotAddress;
         }
         public static long GetLocationFromProgressionItem(int progressionId)
@@ -137,7 +134,7 @@ namespace DC2AP
             return current.locationId;
 
         }
-        static Chest ReadChest(uint startAddress, bool isDouble = false)
+        static Chest ReadChest(ulong startAddress, bool isDouble = false)
         {
             Chest chest = new Chest() { IsDoubleChest = isDouble };
             var currentAddress = startAddress + Addresses.IntOffset;
@@ -150,7 +147,7 @@ namespace DC2AP
             if (isDouble) chest.Quantity2 = Memory.ReadShort(currentAddress);
             return chest;
         }
-        static void AddChestItem(uint startAddress, int id, int quantity)
+        static void AddChestItem(ulong startAddress, int id, int quantity)
         {
             startAddress += Addresses.IntOffset;
             Log.Logger.Information($"Setting Chest contents to {id}");
@@ -159,7 +156,7 @@ namespace DC2AP
             Memory.Write(startAddress, BitConverter.GetBytes(quantity));
             Log.Logger.Information("Added item!");
         }
-        static void AddDoubleChestItems(uint startAddress, int id1, int quantity1, int id2, int quantity2)
+        static void AddDoubleChestItems(ulong startAddress, int id1, int quantity1, int id2, int quantity2)
         {
             startAddress += Addresses.IntOffset;
             var currentItem = Memory.ReadByte(startAddress);
@@ -190,7 +187,7 @@ namespace DC2AP
             Log.Logger.Information("End of chests");
             return chests;
         }
-        public static Floor ReadFloor(uint currentAddress, bool debug = false)
+        public static Floor ReadFloor(ulong currentAddress, bool debug = false)
         {
             if (debug) Log.Logger.Information($"Starting floor read at {currentAddress.ToString("X8")}");
             Floor floor = new Floor();

@@ -22,7 +22,6 @@ namespace DC2AP
         public static List<Enemy> EnemyList { get; set; }
         public static List<QuestId> QuestList { get; set; }
         public static List<Dungeon> DungeonList { get; set; }
-        public static Models.GameState CurrentGameState = new Models.GameState();
         public static PlayerState CurrentPlayerState = new PlayerState();
         private static readonly object _lockObject = new object();
         public App()
@@ -51,7 +50,7 @@ namespace DC2AP
                 Client.MessageReceived -= Client_MessageReceived;
                 Client.CancelMonitors();
             }
-            PCSX2Client client = new PCSX2Client();
+            var client = new GenericGameClient("pcsx2-qt");
             var connected = client.Connect();
             if (!connected)
             {
@@ -62,8 +61,10 @@ namespace DC2AP
 
             Client = new ArchipelagoClient(client);
 
-            var palAddress = Memory.ReadInt(0x203694D0);
-            var usAddress = Memory.ReadInt(0x20364BD0);
+            Memory.GlobalOffset = Memory.GetPCSX2Offset();
+
+            var palAddress = Memory.ReadInt(0x003694D0);
+            var usAddress = Memory.ReadInt(0x00364BD0);
             var gameVersion = palAddress == 1701667175 ? "PAL" : usAddress == 1701667175 ? "US" : "";
             if (string.IsNullOrWhiteSpace(gameVersion))
             {
@@ -90,13 +91,9 @@ namespace DC2AP
             await Client.Login(e.Slot, !string.IsNullOrWhiteSpace(e.Password) ? e.Password : null);
 
             PopulateLists();
-            UpdateGameState();
             UpdatePlayerState();
 
-            CurrentGameState.PropertyChanged += (obj, args) =>
-            {
-                Log.Logger.Information($"Game State changed: {JsonConvert.SerializeObject(args, Formatting.Indented)}");
-            };
+
             CurrentPlayerState.InventoryChanged += async (obj, args) =>
             {
                 Log.Logger.Information($"Inventory changed: {JsonConvert.SerializeObject(args, Formatting.Indented)}");
@@ -139,22 +136,19 @@ namespace DC2AP
         }
         static void PopulateLists()
         {
-            Log.Logger.Information("Building Item List");
+            Log.Logger.Debug("Building Item List");
             ItemList = Helpers.GetItemIds();
-            Log.Logger.Information("Building Quest List");
+            Log.Logger.Debug("Building Quest List");
             QuestList = Helpers.GetQuestIds();
-            Log.Logger.Information("Building Dungeon List");
+            Log.Logger.Debug("Building Dungeon List");
             DungeonList = PopulateDungeons();
-            Log.Logger.Information("Building Enemy List");
+            Log.Logger.Debug("Building Enemy List");
             EnemyList = Helpers.ReadEnemies();
-        }
-        static void UpdateGameState()
-        {
-            CurrentGameState.CurrentFloor = Memory.ReadByte(Addresses.CurrentFloor);
-            CurrentGameState.CurrentDungeon = Memory.ReadByte(Addresses.CurrentDungeon);
         }
         static void UpdatePlayerState()
         {
+            CurrentPlayerState.CurrentFloor = Memory.ReadByte(Addresses.CurrentFloor);
+            CurrentPlayerState.CurrentDungeon = Memory.ReadByte(Addresses.CurrentDungeon);
             CurrentPlayerState.Gilda = Memory.ReadInt(Addresses.PlayerGilda);
             CurrentPlayerState.MedalCount = Memory.ReadShort(Addresses.PlayerMedals);
             var tempInv = ReadInventory();
@@ -166,7 +160,7 @@ namespace DC2AP
                 }
             }
         }
-        public static List<Item> ReadInventory(bool debug = false)
+        public static List<Item> ReadInventory()
         {
             List<Item> inventory = new List<Item>();
 
@@ -183,13 +177,13 @@ namespace DC2AP
                 item.Quantity = itemQuantity;
                 item.Name = ItemList.First(x => x.Id == item.Id).Name;
                 item.IsProgression = ItemList.FirstOrDefault(x => x.Id == itemId).isProgression;
-                if (debug) Log.Logger.Information($"Inventory slot {i}: {item.Name}, {item.Id} x {item.Quantity}");
+                Log.Logger.Debug($"Inventory slot {i}: {item.Name}, {item.Id} x {item.Quantity}");
                 startAddress += 0x0000006C;
                 inventory.Add(item);
             }
             return inventory;
         }
-        public static List<Dungeon> PopulateDungeons(bool debug = false)
+        public static List<Dungeon> PopulateDungeons()
         {
             List<Dungeon> dungeons = Helpers.GetDungeons();
 
@@ -203,7 +197,7 @@ namespace DC2AP
                     Floor floor = Helpers.ReadFloor(currentAddress);
                     currentAddress += 0x0000014;
                     dungeon.Floors.Add(floor);
-                    if (debug) Log.Logger.Information(JsonConvert.SerializeObject(floor, Formatting.Indented));
+                    Log.Logger.Debug(JsonConvert.SerializeObject(floor, Formatting.Indented));
                 }
                 currentAddress += 0x0000014;
             }

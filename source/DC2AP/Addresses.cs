@@ -10,23 +10,25 @@ namespace DC2AP
     public static class Addresses
     {
 
-        public static uint ShortOffset = 0x02;
-        public static uint IntOffset = 0x04;
+        public static ulong PCSX2Offset;
 
-        public static uint CurrentFloor = 0x21ECD638;
-        public static uint CurrentDungeon = 0x20376638;
-        public static uint[] DungeonAreaChestAddress = { 0x20E656A0, 0x20E65D60, 0x20E67220, 0x20E67620, 0x20E681A0, 0x20E679A0, 0x20E68960 };
-        public static uint DungeonCheckAddress = 0x21E9F6E0;
+        public static ulong ShortOffset = 0x02;
+        public static ulong IntOffset = 0x04;
 
-        public static uint DungeonStartAddress = 0x21E1DE22;
+        public static ulong CurrentFloor = 0x01ECD638;
+        public static ulong CurrentDungeon = 0x00376638;
+        public static ulong[] DungeonAreaChestAddress = { 0x00E656A0, 0x00E65D60, 0x00E67220, 0x00E67620, 0x00E681A0, 0x00E679A0, 0x00E68960 };
+        public static ulong DungeonCheckAddress = 0x01E9F6E0;
 
-        public static uint ExitFlag = 0x20364BD0;
+        public static ulong DungeonStartAddress = 0x01E1DE22;
 
-        public static uint PreviousFloor;
-        public static uint CurrentExitFlag;
+        public static ulong ExitFlag = 0x00364BD0;
+
+        public static ulong PreviousFloor;
+        public static ulong CurrentExitFlag;
 
 
-        public static uint EnemyStartAddress = 0x2033D9E0;
+        public static ulong EnemyStartAddress = 0x0033D9E0;
 
         public static uint[] tier1weapons = { 1, 2, 9, 15, 22, 23, 24, 90 };
         public static uint[] tier2weapons = { 10, 11, 18, 25, 28, 31 };
@@ -36,9 +38,9 @@ namespace DC2AP
         public static uint[] tier6weapons = { 8, 19, 30, 33, 38 };
         public static uint[] tier7weapons = { 20, 21, 34, 39, 40 };
 
-        public static uint PlayerGilda = 0x21E6384C;
-        public static uint PlayerMedals = 0x21E63850;
-        public static uint InventoryStartAddress = 0x21E1EAB2;
+        public static ulong PlayerGilda = 0x01E6384C;
+        public static ulong PlayerMedals = 0x01E63850;
+        public static ulong InventoryStartAddress = 0x01E1EAB2;
 
     }
 }

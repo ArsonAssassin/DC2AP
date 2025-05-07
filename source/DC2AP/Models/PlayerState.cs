@@ -16,6 +16,33 @@ namespace DC2AP.Models
         public string Name { get; set; }
         public int Gilda { get; set; }
         public int MedalCount { get; set; }
+        private int currentDungeon;
+        private int currentFloor;
+
+        public int CurrentDungeon
+        {
+            get => currentDungeon;
+            set
+            {
+                if (currentDungeon != value)
+                {
+                    currentDungeon = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+        public int CurrentFloor
+        {
+            get => currentFloor;
+            set
+            {
+                if (currentFloor != value)
+                {
+                    currentFloor = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
         private ObservableCollection<Item> inventory;
         public bool IsReceivingArchipelagoItem { get; set; }
         public ObservableCollection<Item> Inventory
