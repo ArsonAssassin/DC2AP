@@ -2,239 +2,1746 @@
   {
     "Name": "PB: Miracle chest 1",
     "Id": 694201000,
-    "Address": "0x21E01B70",
+    "Address": "0x01E01B70",
     "AddressBit": 1,
     "CheckType": 0
   },
   {
     "Name": "PB: Miracle chest 2",
     "Id": 694201001,
-    "Address": "0x21E01AB0",
+    "Address": "0x01E01AB0",
     "AddressBit": 1,
     "CheckType": 0
   },
   {
     "Name": "PB: Miracle chest 3",
     "Id": 694201002,
-    "Address": "0x21E01AB0",
+    "Address": "0x01E01AB0",
     "AddressBit": 2,
     "CheckType": 0
   },
   {
-    "Name": "UWC: Floor 1",
+    "Name": "UWC: Floor 1 - To the Outside World",
     "Id": 694202000,
-    "Address": "0x21E1DE22",
+    "Address": "0x01E1DE22",
     "AddressBit": 1,
     "CheckType": 0
   },
   {
-    "Name": "UWC: Floor 2",
+    "Name": "UWC: Floor 2 - Battle with Rats",
     "Id": 694202001,
-    "Address": "0x21E1DE36",
+    "Address": "0x01E1DE36",
     "AddressBit": 1,
     "CheckType": 0
   },
   {
-    "Name": "UWC: Floor 3",
+    "Name": "UWC: Floor 3 - Ghosts in the Channel",
     "Id": 694202002,
-    "Address": "0x21E1DE4A",
+    "Address": "0x01E1DE4A",
     "AddressBit": 1,
     "CheckType": 0
   },
   {
     "Name": "UWC: Pump Room",
     "Id": 694202003,
-    "Address": "0x21E1DE5E",
-    "AddressBit": 0,
+    "Address": "0x01E1DE5E",
+    "AddressBit": 1,
     "CheckType": 0
   },
   {
     "Name": "UWC: Linda",
     "Id": 694203000,
-    "Address": "0x21E0181D",
+    "Address": "0x01E0181D",
     "AddressBit": 4,
     "CheckType": 0
   },
   {
-    "Name": "UWC: Floor 4",
+    "Name": "UWC: Floor 4 - Steve's Battle",
     "Id": 694202004,
-    "Address": "0x21E1DE72",
+    "Address": "0x01E1DE72",
     "AddressBit": 1,
     "CheckType": 0
   },
   {
-    "Name": "UWC: Floor 5",
+    "Name": "UWC: Floor 5 - Ghost in the Channel",
     "Id": 694202005,
-    "Address": "0x21E1DE86",
+    "Address": "0x01E1DE86",
     "AddressBit": 1,
     "CheckType": 0
   },
   {
     "Name": "UWC: Halloween",
     "Id": 694203001,
-    "Address": "0x21E0181D",
+    "Address": "0x01E0181D",
     "AddressBit": 7,
     "CheckType": 0
   },
   {
     "Name": "UWC: Chapter 1 Complete",
     "Id": 694202006,
-    "Address": "0x21E03218",
+    "Address": "0x01E03218",
     "CheckType": 1,
-    "CheckValue": "2"
+    "CheckValue": "1",
+    "CompareType": 1
   },
   {
-    "Name": "JM: Miracle Chest 1",
+    "Name": "S: Grape Juice",
+    "Id": 694204000,
+    "Address": "0x01E03218",
+    "CheckType": 1,
+    "CheckValue": "8",
+    "CompareType": 1
+  },
+  {
+    "Name": "JM: Miracle chest 1",
     "Id": 694201003,
-    "Address": "0x21E01BA0",
-    "CheckType": 0,
-    "AddressBit": 1
+    "Address": "0x01E01BA0",
+    "AddressBit": 1,
+    "CheckType": 0
   },
   {
-    "Name": "JM: Miracle Chest 2",
+    "Name": "JM: Miracle chest 2",
     "Id": 694201004,
-    "Address": "0x21E01BA0",
-    "CheckType": 0,
-    "AddressBit": 2
+    "Address": "0x01E01BA0",
+    "AddressBit": 2,
+    "CheckType": 0
   },
   {
-    "Name": "JM: Miracle Chest 3",
+    "Name": "JM: Miracle chest 3",
     "Id": 694201005,
-    "Address": "0x21E01BA0",
-    "CheckType": 0,
-    "AddressBit": 3
+    "Address": "0x01E01BA0",
+    "AddressBit": 3,
+    "CheckType": 0
   },
   {
-    "Name": "JM: Miracle Chest 4",
+    "Name": "JM: Miracle chest 4",
     "Id": 694201006,
-    "Address": "0x21E01BA0",
-    "CheckType": 0,
-    "AddressBit": 4
+    "Address": "0x01E01BA0",
+    "AddressBit": 4,
+    "CheckType": 0
   },
   {
-    "Name": "JM: Miracle Chest 5",
+    "Name": "JM: Miracle chest 5",
     "Id": 694201007,
-    "Address": "0x21E01BA0",
-    "CheckType": 0,
-    "AddressBit": 5
+    "Address": "0x01E01BA0",
+    "AddressBit": 5,
+    "CheckType": 0
   },
   {
-    "Name": "JM: Miracle Chest 6",
+    "Name": "JM: Miracle chest 6",
     "Id": 694201008,
-    "Address": "0x21E01BA0",
-    "CheckType": 0,
-    "AddressBit": 6
+    "Address": "0x01E01BA0",
+    "AddressBit": 6,
+    "CheckType": 0
   },
   {
-    "Name": "JM: Miracle Chest 7",
+    "Name": "JM: Miracle chest 7",
     "Id": 694201009,
-    "Address": "0x21E01BA0",
-    "CheckType": 0,
-    "AddressBit": 7
+    "Address": "0x01E01BA0",
+    "AddressBit": 7,
+    "CheckType": 0
   },
   {
-    "Name": "JM: Miracle Chest 8",
+    "Name": "JM: Miracle chest 8",
     "Id": 694201010,
-    "Address": "0x21E01BA1",
-    "CheckType": 0,
-    "AddressBit": 0
+    "Address": "0x01E01BA1",
+    "AddressBit": 0,
+    "CheckType": 0
   },
   {
-    "Name": "JM: Miracle Chest 9",
+    "Name": "JM: Miracle chest 9",
     "Id": 694201011,
-    "Address": "0x21E01BA1",
-    "CheckType": 0,
-    "AddressBit": 1
+    "Address": "0x01E01BA1",
+    "AddressBit": 1,
+    "CheckType": 0
   },
   {
-    "Name": "JM: Miracle Chest 10",
+    "Name": "JM: Miracle chest 10",
     "Id": 694201012,
-    "Address": "0x21E01BA1",
-    "CheckType": 0,
-    "AddressBit": 2
+    "Address": "0x01E01BA1",
+    "AddressBit": 2,
+    "CheckType": 0
   },
   {
-    "Name": "JM: Miracle Chest 11",
+    "Name": "JM: Miracle chest 11",
     "Id": 694201013,
-    "Address": "0x21E01BA1",
-    "CheckType": 0,
-    "AddressBit": 3
+    "Address": "0x01E01BA1",
+    "AddressBit": 3,
+    "CheckType": 0
   },
   {
-    "Name": "JM: Miracle Chest 12",
+    "Name": "JM: Miracle chest 12",
     "Id": 694201014,
-    "Address": "0x21E01BA1",
-    "CheckType": 0,
-    "AddressBit": 4
+    "Address": "0x01E01BA1",
+    "AddressBit": 4,
+    "CheckType": 0
   },
   {
-    "Name": "JM: Miracle Chest 13",
+    "Name": "JM: Miracle chest 13",
     "Id": 694201015,
-    "Address": "0x21E01BA1",
-    "CheckType": 0,
-    "AddressBit": 5
+    "Address": "0x01E01BA1",
+    "AddressBit": 5,
+    "CheckType": 0
   },
   {
-    "Name": "JM: Miracle Chest 14",
+    "Name": "JM: Miracle chest 14",
     "Id": 694201016,
-    "Address": "0x21E01BA1",
-    "CheckType": 0,
-    "AddressBit": 6
+    "Address": "0x01E01BA1",
+    "AddressBit": 6,
+    "CheckType": 0
   },
   {
-    "Name": "JM: Miracle Chest 15",
+    "Name": "JM: Miracle chest 15",
     "Id": 694201017,
-    "Address": "0x21E01BA1",
-    "CheckType": 0,
-    "AddressBit": 7
+    "Address": "0x01E01BA1",
+    "AddressBit": 7,
+    "CheckType": 0
   },
   {
-    "Name": "JM: Miracle Chest 16",
+    "Name": "JM: Miracle chest 16",
     "Id": 694201018,
-    "Address": "0x21E01BA2",
-    "CheckType": 0,
-    "AddressBit": 0
+    "Address": "0x01E01BA2",
+    "AddressBit": 0,
+    "CheckType": 0
   },
   {
-    "Name": "RBW: Floor 1",
+    "Name": "JM: Lafrescia Seed",
+    "Id": 694204001,
+    "Address": "0x01E03218",
+    "CheckType": 1,
+    "CheckValue": "8",
+    "CompareType": 1
+  },
+  {
+    "Name": "RBW: Floor 1 - Frightening Forest",
     "Id": 694202007,
-    "Address": "0x21E1DED6",
-    "CheckType": 0,
-    "AddressBit": 1
+    "Address": "0x01E1DED6",
+    "AddressBit": 1,
+    "CheckType": 0
   },
   {
-    "Name": "RBW: Floor 2",
+    "Name": "RBW: Floor 2 - Strange Tree",
     "Id": 694202008,
-    "Address": "0x21E1DEEA",
-    "CheckType": 0,
-    "AddressBit": 1
+    "Address": "0x01E1DEEA",
+    "AddressBit": 1,
+    "CheckType": 0
   },
   {
-    "Name": "RBW: Floor 3",
+    "Name": "RBW: Floor 3 - Rolling Shells",
     "Id": 694202009,
-    "Address": "0x21E1DEFE",
-    "CheckType": 0,
-    "AddressBit": 1
+    "Address": "0x01E1DEFE",
+    "AddressBit": 1,
+    "CheckType": 0
   },
   {
     "Name": "RBW: Fish Monster Swamp",
     "Id": 694202010,
-    "Address": "0x21E1DEFE",
-    "CheckType": 0,
-    "AddressBit": 1
+    "Address": "0x01E1DF3A",
+    "AddressBit": 1,
+    "CheckType": 0
   },
   {
-    "Name": "RBW: Floor 4",
+    "Name": "RBW: Floor 4 - This is a Geostone?",
     "Id": 694202011,
-    "Address": "0x21E1DF12",
-    "CheckType": 0,
-    "AddressBit": 1
+    "Address": "0x01E1DF12",
+    "AddressBit": 1,
+    "CheckType": 0
   },
   {
-    "Name": "RBW: Floor 5",
+    "Name": "RBW: Floor 5 - Noise in the Forest",
     "Id": 694202012,
-    "Address": "0x21E1DF26",
-    "CheckType": 0,
-    "AddressBit": 1
-  }
+    "Address": "0x01E1DF26",
+    "AddressBit": 1,
+    "CheckType": 0
+  },
+  {
+    "Name": "RBW: Floor 6 - I'm a Pixie",
+    "Id": 694202013,
+    "Address": "0x01E1DF4E",
+    "AddressBit": 1,
+    "CheckType": 0
+  },
+  {
+    "Name": "RBW: Floor 7 - Legendary Killer Snake",
+    "Id": 694202014,
+    "Address": "0x01E1DF62",
+    "AddressBit": 1,
+    "CheckType": 0
+  },
+  {
+    "Name": "RBW: Floor 8 - Grotesque Spider Lady",
+    "Id": 694202015,
+    "Address": "0x01E1DFC6",
+    "AddressBit": 1,
+    "CheckType": 0
+  },
+  {
+    "Name": "RBW: Rainbow Butterfly",
+    "Id": 694203002,
+    "Address": "0x01E03218",
+    "CheckType": 1,
+    "CheckValue": "8",
+    "CompareType": 1
+  },
+  {
+    "Name": "RBW: Chapter 2 Complete",
+    "Id": 694202016,
+    "Address": "0x01E03218",
+    "CheckType": 1,
+    "CheckValue": "2",
+    "CompareType": 1
+  },
+  {
+    "Name": "RBW: Floor 9 - Looking for the Earth Gem",
+    "Id": 694202017,
+    "Address": "0x01E1DF76",
+    "AddressBit": 1,
+    "CheckType": 0
+  },
+  {
+    "Name": "RBW: Floor 10 - Something Rare Here!",
+    "Id": 694202018,
+    "Address": "0x01E1DF8A",
+    "AddressBit": 1,
+    "CheckType": 0
+  },
+  {
+    "Name": "RBW: Floor 11 - Scary Tree",
+    "Id": 694202019,
+    "Address": "0x01E1DF9E",
+    "AddressBit": 1,
+    "CheckType": 0
+  },
+  {
+    "Name": "RBW: Trentos",
+    "Id": 694203003,
+    "Address": "0x01E03218",
+    "CheckType": 1,
+    "CheckValue": "8",
+    "CompareType": 1
+  },
+  {
+    "Name": "RBW: Fishing Rod",
+    "Id": 694204002,
+    "Address": "0x01E03218",
+    "CheckType": 1,
+    "CheckValue": "8",
+    "CompareType": 1
+  },
+  {
+    "Name": "RBW: Earth Gem",
+    "Id": 694204003,
+    "Address": "0x01E03218",
+    "CheckType": 1,
+    "CheckValue": "8",
+    "CompareType": 1
+  },
+  //{
+  //  "Name": "ST: Miracle chest 1",
+  //  "Id": 694201019,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "ST: Miracle chest 2",
+  //  "Id": 694201020,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "ST: Miracle chest 3",
+  //  "Id": 694201021,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "ST: Miracle chest 4",
+  //  "Id": 694201022,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "ST: Miracle chest 5",
+  //  "Id": 694201023,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "ST: Miracle chest 6",
+  //  "Id": 694201024,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "ST: Miracle chest 7",
+  //  "Id": 694201025,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "ST: Miracle chest 8",
+  //  "Id": 694201026,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "ST: Miracle chest 9",
+  //  "Id": 694201027,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "ST: Miracle chest 10",
+  //  "Id": 694201028,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "ST: Miracle chest 11",
+  //  "Id": 694201029,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "ST: Miracle chest 12",
+  //  "Id": 694201030,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "ST: Miracle chest 13",
+  //  "Id": 694201031,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "ST: Miracle chest 14",
+  //  "Id": 694201032,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "ST: Miracle chest 15",
+  //  "Id": 694201033,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "ST: Miracle chest 16",
+  //  "Id": 694201034,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "ST: Miracle chest 17",
+  //  "Id": 694201035,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "ST: Miracle chest 18",
+  //  "Id": 694201036,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "ST: Miracle chest 19",
+  //  "Id": 694201037,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "ST: Miracle chest 20",
+  //  "Id": 694201038,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "ST: Miracle chest 21",
+  //  "Id": 694201039,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "ST: Miracle chest 22",
+  //  "Id": 694201040,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  {
+    "Name": "ST: Starglass",
+    "Id": 694204004,
+    "Address": "0x01E03218",
+    "CheckType": 1,
+    "CheckValue": "8",
+    "CompareType": 1
+  },
+  {
+    "Name": "ST: Miracle Dumplings",
+    "Id": 694204005,
+    "Address": "0x01E03218",
+    "CheckType": 1,
+    "CheckValue": "8",
+    "CompareType": 1
+  },
+  {
+    "Name": "SC: Floor 1 - Headlong Dash",
+    "Id": 694202020,
+    "Address": "0x01E1E016",
+    "AddressBit": 1,
+    "CheckType": 0
+  },
+  {
+    "Name": "SC: Floor 2 - Fire and Ice Don't Mix",
+    "Id": 694202021,
+    "Address": "0x01E1E02A",
+    "AddressBit": 1,
+    "CheckType": 0
+  },
+  {
+    "Name": "SC: Floor 3 - Earth-Shaking Demon",
+    "Id": 694202022,
+    "Address": "0x01E1E03E",
+    "AddressBit": 1,
+    "CheckType": 0
+  },
+  {
+    "Name": "SC: Floor 4 - Powerful Yo-Yo Robot",
+    "Id": 694202023,
+    "Address": "0x01E1E052",
+    "AddressBit": 1,
+    "CheckType": 0
+  },
+  {
+    "Name": "SC: Floor 5 - Elephant Army in the Valley",
+    "Id": 694202024,
+    "Address": "0x01E1E066",
+    "AddressBit": 1,
+    "CheckType": 0
+  },
+  {
+    "Name": "SC: Floor 6 - Dangerous Treasure Chest",
+    "Id": 694202025,
+    "Address": "0x01E1E07A",
+    "AddressBit": 1,
+    "CheckType": 0
+  },
+  {
+    "Name": "SC: Floor 7 - Little Dragon Counterattack",
+    "Id": 694202026,
+    "Address": "0x01E1E08E",
+    "AddressBit": 1,
+    "CheckType": 0
+  },
+  {
+    "Name": "SC: Barga's Valley",
+    "Id": 694202027,
+    "Address": "0x01E1E0A2",
+    "AddressBit": 1,
+    "CheckType": 0
+  },
+  {
+    "Name": "SC: Floor 8 - Warrior in Starlight Canyon",
+    "Id": 694202028,
+    "Address": "0x01E1E0B6",
+    "AddressBit": 1,
+    "CheckType": 0
+  },
+  {
+    "Name": "SC: Floor 9 - Smiling Fairy Village",
+    "Id": 694202029,
+    "Address": "0x01E1E0CA",
+    "AddressBit": 1,
+    "CheckType": 0
+  },
+  {
+    "Name": "SC: Floor 10 - Cursed Mask",
+    "Id": 694202030,
+    "Address": "0x01E1E0DE",
+    "AddressBit": 1,
+    "CheckType": 0
+  },
+  {
+    "Name": "SC: Floor 11 - We're the Roly-Poly Brothers",
+    "Id": 694202031,
+    "Address": "0x01E1E142",
+    "AddressBit": 1,
+    "CheckType": 0
+  },
+  {
+    "Name": "SC: Floor 12 - Dragon Slayer",
+    "Id": 694202032,
+    "Address": "0x01E1E156",
+    "AddressBit": 1,
+    "CheckType": 0
+  },
+  {
+    "Name": "SC: Memo Eater",
+    "Id": 694203004,
+    "Address": "0x01E03218",
+    "CheckType": 1,
+    "CheckValue": "8",
+    "CompareType": 1
+  },
+  {
+    "Name": "SC: Floor 13 - Rama Priests Like Cheese",
+    "Id": 694202033,
+    "Address": "0x01E1E17E",
+    "AddressBit": 1,
+    "CheckType": 0
+  },
+  {
+    "Name": "SC: Floor 14 - Nature's Threat",
+    "Id": 694202034,
+    "Address": "0x01E1E192",
+    "AddressBit": 1,
+    "CheckType": 0
+  },
+  {
+    "Name": "SC: Floor 15 - Moon Baron",
+    "Id": 694202035,
+    "Address": "0x01E1E1A6",
+    "AddressBit": 1,
+    "CheckType": 0
+  },
+  {
+    "Name": "SC: Floor 16 - Lighthouse Appears",
+    "Id": 694202036,
+    "Address": "0x01E1E1BA",
+    "AddressBit": 1,
+    "CheckType": 0
+  },
+  {
+    "Name": "SC: Gaspard",
+    "Id": 694202037,
+    "Address": "0x01E03218",
+    "CheckType": 1,
+    "CheckValue": "8",
+    "CompareType": 1
+  },
+  {
+    "Name": "SC: Chapter 3 Complete",
+    "Id": 694202038,
+    "Address": "0x01E03218",
+    "CheckType": 1,
+    "CheckValue": "3",
+    "CompareType": 1
+  },
+  {
+    "Name": "SC: Floor 17 - Looking for the Wind Gem",
+    "Id": 694202039,
+    "Address": "0x01E10F2",
+    "AddressBit": 1,
+    "CheckType": 0
+  },
+  {
+    "Name": "SC: Floor 18 - Evil Spirit in the Valley",
+    "Id": 694202040,
+    "Address": "0x01E1E106",
+    "AddressBit": 1,
+    "CheckType": 0
+  },
+  {
+    "Name": "SC: Floor 19 - Brave Warriors in the Valley",
+    "Id": 694202041,
+    "Address": "0x01E1E11A",
+    "AddressBit": 1,
+    "CheckType": 0
+  },
+  {
+    "Name": "SC: Lapis Garter",
+    "Id": 694203005,
+    "Address": "0x01E03218",
+    "CheckType": 1,
+    "CheckValue": "8",
+    "CompareType": 1
+  },
+  {
+    "Name": "SC: White Windflower",
+    "Id": 694204006,
+    "Address": "0x01E03218",
+    "CheckType": 1,
+    "CheckValue": "8",
+    "CompareType": 1
+  },
+  {
+    "Name": "SC: Wind Gem",
+    "Id": 694204007,
+    "Address": "0x01E03218",
+    "CheckType": 1,
+    "CheckValue": "8",
+    "CompareType": 1
+  },
+  //{
+  //  "Name": "LWL: Miracle chest 1",
+  //  "Id": 694201041,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "LWL: Miracle chest 2",
+  //  "Id": 694201042,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "LWL: Miracle chest 3",
+  //  "Id": 694201043,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "LWL: Miracle chest 4",
+  //  "Id": 694201044,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "LWL: Miracle chest 5",
+  //  "Id": 694201045,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "LWL: Miracle chest 6",
+  //  "Id": 694201046,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "LWL: Miracle chest 7",
+  //  "Id": 694201047,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "LWL: Miracle chest 8",
+  //  "Id": 694201048,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "LWL: Miracle chest 9",
+  //  "Id": 694201049,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "LWL: Miracle chest 10",
+  //  "Id": 694201050,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "LWL: Miracle chest 11",
+  //  "Id": 694201051,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "LWL: Miracle chest 12",
+  //  "Id": 694201052,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "LWL: Miracle chest 13",
+  //  "Id": 694201053,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "LWL: Miracle chest 14",
+  //  "Id": 694201054,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "LWL: Miracle chest 15",
+  //  "Id": 694201055,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "LWL: Miracle chest 16",
+  //  "Id": 694201056,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "LWL: Miracle chest 17",
+  //  "Id": 694201057,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "LWL: Miracle chest 18",
+  //  "Id": 694201058,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "LWL: Miracle chest 19",
+  //  "Id": 694201059,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "LWL: Miracle chest 20",
+  //  "Id": 694201060,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "LWL: Miracle chest 21",
+  //  "Id": 694201061,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "LWL: Miracle chest 22",
+  //  "Id": 694201062,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "LWL: Miracle chest 23",
+  //  "Id": 694201063,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  {
+    "Name": "LWL: Electric Worm",
+    "Id": 694204008,
+    "Address": "0x01E03218",
+    "CheckType": 1,
+    "CheckValue": "8",
+    "CompareType": 1
+  },
+  {
+    "Name": "LWL: Shell Talkie",
+    "Id": 694204009,
+    "Address": "0x01E03218",
+    "CheckType": 1,
+    "CheckValue": "8",
+    "CompareType": 1
+  },
+  {
+    "Name": "ORC: Floor 1 - Pirates!",
+    "Id": 694202042,
+    "Address": "0x01E1E20A",
+    "AddressBit": 1,
+    "CheckType": 0
+  },
+  {
+    "Name": "ORC: Floor 2 - Tons of Fish",
+    "Id": 694202043,
+    "Address": "0x01E1E21E",
+    "AddressBit": 1,
+    "CheckType": 0
+  },
+  {
+    "Name": "ORC: Floor 3 - Tank and Boss",
+    "Id": 694202044,
+    "Address": "0x01E1E232",
+    "AddressBit": 1,
+    "CheckType": 0
+  },
+  {
+    "Name": "ORC: Floor 4 - Water Monster",
+    "Id": 694202045,
+    "Address": "0x01E1E25A",
+    "AddressBit": 1,
+    "CheckType": 0
+  },
+  {
+    "Name": "ORC: Floor 5 - Scary Auntie Medusa",
+    "Id": 694202046,
+    "Address": "0x01E1E25A",
+    "AddressBit": 1,
+    "CheckType": 0
+  },
+  {
+    "Name": "ORC: Floor 6 - Sand Molers",
+    "Id": 694202047,
+    "Address": "0x01E1E26E",
+    "AddressBit": 1,
+    "CheckType": 0
+  },
+  {
+    "Name": "ORC: Floor 7 - Bat Den",
+    "Id": 694202048,
+    "Address": "0x01E1E282",
+    "AddressBit": 1,
+    "CheckType": 0
+  },
+  {
+    "Name": "ORC: Floor 8 - Pirates' Hideout",
+    "Id": 694202049,
+    "Address": "0x01E1E296",
+    "AddressBit": 1,
+    "CheckType": 0
+  },
+  {
+    "Name": "ORC: Cave of Ancient Murals",
+    "Id": 694202050,
+    "Address": "0x01E1E2AA",
+    "AddressBit": 1,
+    "CheckType": 0
+  },
+  {
+    "Name": "ORC: Floor 9 - Wandering Zappy",
+    "Id": 694202051,
+    "Address": "0x01E1E2BE",
+    "AddressBit": 1,
+    "CheckType": 0
+  },
+  {
+    "Name": "ORC: Floor 10 - Banquet of the Dead",
+    "Id": 694202052,
+    "Address": "0x01E1E322",
+    "AddressBit": 1,
+    "CheckType": 0
+  },
+  {
+    "Name": "ORC: Floor 11 - Improvements",
+    "Id": 694202053,
+    "Address": "0x01E1E336",
+    "AddressBit": 1,
+    "CheckType": 0
+  },
+  {
+    "Name": "ORC: Floor 12 - Return of the Serpent",
+    "Id": 694202054,
+    "Address": "0x01E1E34A",
+    "AddressBit": 1,
+    "CheckType": 0
+  },
+  {
+    "Name": "ORC: Floor 13 - Cursed Sea",
+    "Id": 694202055,
+    "Address": "0x01E1E35E",
+    "AddressBit": 1,
+    "CheckType": 0
+  },
+  //{
+  //  "Name": "ORC: Floor 14 - Sea of Atrocity",
+  //  "Id": 694202056,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "ORC: Dr. Jaming",
+  //  "Id": 694203006,
+  //  "Address": "0x01E03218",
+  //  "CheckType": 1,
+  //  "CheckValue": "8",
+  //  "CompareType": 1
+  //},
+  {
+    "Name": "ORC: Chapter 4 Complete",
+    "Id": 694202057,
+    "Address": "0x01E03218",
+    "CheckType": 1,
+    "CheckValue": "4",
+    "CompareType": 1
+  },
+  //{
+  //  "Name": "ORC: Floor 15 - Looking for the Water Gem",
+  //  "Id": 694202058,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "ORC: Floor 16 - Pirates' Revenge",
+  //  "Id": 694202059,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "ORC: Floor 17 - Death Ocean",
+  //  "Id": 694202060,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "ORC: Sea Dragon",
+  //  "Id": 694203007,
+  //  "Address": "0x01E03218",
+  //  "CheckType": 1,
+  //  "CheckValue": "8",
+  //  "CompareType": 1
+  //},
+  //{
+  //  "Name": "ORC: Secret Dragon Remedy",
+  //  "Id": 694204010,
+  //  "Address": "0x01E03218",
+  //  "CheckType": 1,
+  //  "CheckValue": "8",
+  //  "CompareType": 1
+  //},
+  //{
+  //  "Name": "ORC: Water Gem",
+  //  "Id": 694204011,
+  //  "Address": "0x01E03218",
+  //  "CheckType": 1,
+  //  "CheckValue": "8",
+  //  "CompareType": 1
+  //},
+  //{
+  //  "Name": "GW: Miracle chest 1",
+  //  "Id": 694201064,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "GW: Miracle chest 2",
+  //  "Id": 694201065,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "GW: Miracle chest 3",
+  //  "Id": 694201066,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "GW: Miracle chest 4",
+  //  "Id": 694201067,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "GW: Miracle chest 5",
+  //  "Id": 694201068,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "GW: Miracle chest 6",
+  //  "Id": 694201069,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "GW: Miracle chest 7",
+  //  "Id": 694201070,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "GW: Miracle chest 8",
+  //  "Id": 694201071,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "GW: Miracle chest 9",
+  //  "Id": 694201072,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "GW: Miracle chest 10",
+  //  "Id": 694201073,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "GW: Miracle chest 11",
+  //  "Id": 694201074,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "GW: Miracle chest 12",
+  //  "Id": 694201075,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "GW: Miracle chest 13",
+  //  "Id": 694201076,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "GW: Miracle chest 14",
+  //  "Id": 694201077,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "GW: Miracle chest 15",
+  //  "Id": 694201078,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "GW: Miracle chest 16",
+  //  "Id": 694201079,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "GW: Miracle chest 17",
+  //  "Id": 694201080,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "GW: Miracle chest 18",
+  //  "Id": 694201081,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "GW: Miracle chest 19",
+  //  "Id": 694201082,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "GW: Miracle chest 20",
+  //  "Id": 694201083,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "GW: Miracle chest 21",
+  //  "Id": 694201084,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "GW: Miracle chest 22",
+  //  "Id": 694201085,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "GW: Miracle chest 23",
+  //  "Id": 694201086,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "GW: Miracle chest 24",
+  //  "Id": 694201087,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "GW: Miracle chest 25",
+  //  "Id": 694201088,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "GW: Time Bomb",
+  //  "Id": 694204012,
+  //  "Address": "0x01E03218",
+  //  "CheckType": 1,
+  //  "CheckValue": "8",
+  //  "CompareType": 1
+  //},
+  //{
+  //  "Name": "GW: Fire Horn",
+  //  "Id": 694204013,
+  //  "Address": "0x01E03218",
+  //  "CheckType": 1,
+  //  "CheckValue": "8",
+  //  "CompareType": 1
+  //},
+  //{
+  //  "Name": "MG: Floor 1 - Battle with Griffon's Army",
+  //  "Id": 694202061,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "MG: Floor 2 - Mt. Gundor Wind",
+  //  "Id": 694202062,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "MG: Floor 3 - Little Dragons on the Mountain",
+  //  "Id": 694202063,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "MG: Floor 4 - Steam Goyone",
+  //  "Id": 694202064,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "MG: Floor 5 - Mountain Baddie Appears",
+  //  "Id": 694202065,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "MG: Floor 6 - Magmanoff",
+  //  "Id": 694202066,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "MG: Floor 7 - Danger Zone",
+  //  "Id": 694202067,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "MG: Floor 8 - Secret of Fire Mountain",
+  //  "Id": 694202068,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "MG: Floor 9 - Deathtrap",
+  //  "Id": 694202069,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "MG: Floor 10 - Desperation on the Mountain",
+  //  "Id": 694202070,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "MG: Floor 11 - Pains in the Neck",
+  //  "Id": 694202071,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "MG: Mount Gundor Peak",
+  //  "Id": 694202072,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "MG: Floor 12 - Walking the Path of Flames",
+  //  "Id": 694202073,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "MG: Floor 13 - Burning Undead",
+  //  "Id": 694202074,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "MG: Floor 14 - Fire Dragon",
+  //  "Id": 694202075,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "MG: Floor 15 - Treasure Chest Danger Zone",
+  //  "Id": 694202076,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "MG: Floor 16 - Road to the River of Flames",
+  //  "Id": 694202077,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "MG: Gaspard",
+  //  "Id": 694203008,
+  //  "Address": "0x01E03218",
+  //  "CheckType": 1,
+  //  "CheckValue": "8",
+  //  "CompareType": 1
+  //},
+  {
+    "Name": "MG: Chapter 5 Complete",
+    "Id": 694202078,
+    "Address": "0x01E03218",
+    "CheckType": 1,
+    "CheckValue": "5",
+    "CompareType": 1
+  },
+  //{
+  //  "Name": "MG: Floor 17 - Looking for the Fire Gem",
+  //  "Id": 694202079,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "MG: Floor 18 - Explosive Hot Spring",
+  //  "Id": 694202080,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "MG: Floor 19 - Crazy Mountain",
+  //  "Id": 694202081,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "MG: Inferno",
+  //  "Id": 694203009,
+  //  "Address": "0x01E03218",
+  //  "CheckType": 1,
+  //  "CheckValue": "8",
+  //  "CompareType": 1
+  //},
+  //{
+  //  "Name": "MG: Fire Gem",
+  //  "Id": 694204014,
+  //  "Address": "0x01E03218",
+  //  "CheckType": 1,
+  //  "CheckValue": "8",
+  //  "CompareType": 1
+  //},
+  //{
+  //  "Name": "MFP: Miracle chest 1",
+  //  "Id": 694201089,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "MFP: Miracle chest 2",
+  //  "Id": 694201090,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "MFP: Miracle chest 3",
+  //  "Id": 694201091,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "MFP: Miracle chest 4",
+  //  "Id": 694201092,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "MFP: Miracle chest 5",
+  //  "Id": 694201093,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "MFP: Miracle chest 6",
+  //  "Id": 694201094,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "MFP: Miracle chest 7",
+  //  "Id": 694201095,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "MFP: Miracle chest 8",
+  //  "Id": 694201096,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "MFP: Miracle chest 9",
+  //  "Id": 694201097,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "MFP: Miracle chest 10",
+  //  "Id": 694201098,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "MFP: Miracle chest 11",
+  //  "Id": 694201099,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "MFP: Miracle chest 12",
+  //  "Id": 694201100,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "MFP: Miracle chest 13",
+  //  "Id": 694201101,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "MFP: Miracle chest 14",
+  //  "Id": 694201102,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "MFP: Miracle chest 15",
+  //  "Id": 694201103,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "MFP: Miracle chest 16",
+  //  "Id": 694201104,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "MFP: Miracle chest 17",
+  //  "Id": 694201105,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "MFP: Miracle chest 18",
+  //  "Id": 694201106,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "MFP: Miracle chest 19",
+  //  "Id": 694201107,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "MFP: Miracle chest 20",
+  //  "Id": 694201108,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "MFP: Miracle chest 21",
+  //  "Id": 694201109,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "MFP: Miracle chest 22",
+  //  "Id": 694201110,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "MFP: Floor 1 - Ancient Wind",
+  //  "Id": 694202082,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "MFP: Floor 2 - Card Warriors Gather",
+  //  "Id": 694202083,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "MFP: Floor 3 - Dangerous Treasure",
+  //  "Id": 694202084,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "MFP: Floor 4 - Zombie Zone",
+  //  "Id": 694202085,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "MFP: Floor 5 - Feeling Out of Place",
+  //  "Id": 694202086,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "MFP: Floor 6 - Living Statue",
+  //  "Id": 694202087,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "MFP: Floor 7 - Danger Zone",
+  //  "Id": 694202088,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "MFP: Floor 8 - Scary Women",
+  //  "Id": 694202089,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "MFP: Floor 9 - Hell Elephant",
+  //  "Id": 694202090,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "MFP: Floor 10 - Crush the Undead",
+  //  "Id": 694202091,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "MFP: Garden",
+  //  "Id": 694202092,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "MFP: Floor 11 - Missing Gem Dealer",
+  //  "Id": 694202093,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "MFP: Floor 12 - Max's Longest Day",
+  //  "Id": 694202094,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "MFP: Floor 13 - Hell's Corridor",
+  //  "Id": 694202095,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "MFP: Floor 14 - Monica All Alone",
+  //  "Id": 694202096,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "MFP: Floor 15 - Raging Spirits",
+  //  "Id": 694202097,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "MFP: Floor 16 - Lonely Machine",
+  //  "Id": 694202098,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "MFP: Floor 17 - Nobility",
+  //  "Id": 694202099,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "MFP: Floor 18 - Palace Watchdog",
+  //  "Id": 694202100,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "MFP: Floor 19 - Road to Memories",
+  //  "Id": 694202101,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "MFP: Alexandra's Room",
+  //  "Id": 694202102,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "MFP: Floor 20 - Final Trump Card",
+  //  "Id": 694202103,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "MFP: Floor 21 - Elemental Party",
+  //  "Id": 694202104,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "MFP: Floor 22 - Wandering Knight's Soul",
+  //  "Id": 694202105,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "MFP: Floor 23 - Beware Carelessness",
+  //  "Id": 694202106,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "MFP: Floor 24 - Final Battle",
+  //  "Id": 694202107,
+  //  "Address": "0x00000000",
+  //  "AddressBit": 0,
+  //  "CheckType": 0
+  //},
+  //{
+  //  "Name": "MFP: Flower of the Sun",
+  //  "Id": 694204015,
+  //  "Address": "0x01E03218",
+  //  "CheckType": 1,
+  //  "CheckValue": "8",
+  //  "CompareType": 1
+  //}
 ]

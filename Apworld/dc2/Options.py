@@ -80,16 +80,16 @@ class EnableEnemyRandomiserOption(DefaultOnToggle):
 
 @dataclass
 class DC2Option(PerGameCommonOptions):
-    fishsanity: FishsanityOption
-    sphedasanity: SphedasanityOption
-    medalsanity: MedalsanityOption
-    georamasanity: GeoramasanityOption
-    photosanity: PhotosanityOption
-    inventionsanity: InventionsanityOption
-    resource_pack_count: IncludeResourcePacksOption
-    weapon_upgrade_pack_count: IncludeWeaponUpgradePacksOption
-    element_pack_count: IncludeElementPacksOption
-    chapter_goal_count: ChapterGoalCountOption
+    #fishsanity: FishsanityOption
+    #sphedasanity: SphedasanityOption
+    #medalsanity: MedalsanityOption
+    #georamasanity: GeoramasanityOption
+    #photosanity: PhotosanityOption
+    #inventionsanity: InventionsanityOption
+    #resource_pack_count: IncludeResourcePacksOption
+    #weapon_upgrade_pack_count: IncludeWeaponUpgradePacksOption
+    #element_pack_count: IncludeElementPacksOption
+    #chapter_goal_count: ChapterGoalCountOption
     abs_multiplier: ABSMultiplierOption
     gilda_multiplier: GildaMultiplierOption
     guaranteed_items: GuaranteedItemsOption

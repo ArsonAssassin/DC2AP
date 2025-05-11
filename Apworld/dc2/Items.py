@@ -1,7 +1,6 @@
 from enum import IntEnum
 from typing import NamedTuple
-import random
-from BaseClasses import Item
+from BaseClasses import Item, MultiWorld
 
 
 class DC2ItemCategory(IntEnum):
@@ -19,7 +18,9 @@ class DC2ItemCategory(IntEnum):
     GEM = 11,
     KEY_ITEM = 12
     EVENT = 13,
-    REPLACE = 14
+    REPLACE = 14,
+    RIDEPOD = 15,
+    MATERIAL = 16,
 
 
 class DC2ItemData(NamedTuple):
@@ -38,7 +39,6 @@ class DarkCloud2Item(Item):
 
 
 key_item_names = {
-    "Grape Juice","Fishing Rod", #"Lafrescia Seed", "Earth Gem", "Starglass", "Miracle Dumplings", "White Windflower", "Wind Gem", "Electric Worm", "Shell Talkie", "Secret Dragon Remedy", "Water Gem", "Time Bomb", "Fire Horn", "Fire Gem", "Flower of the Sun"
 }
 
 
@@ -188,47 +188,47 @@ _all_items = [DC2ItemData(row[0], row[1], row[2]) for row in [
     ("Princess Boots",                 133, DC2ItemCategory.MISC),
     ("Panther Boots",                  134, DC2ItemCategory.MISC),
     
-    ("Drum Can Body",                  135, DC2ItemCategory.MISC),
-    ("Milk Can Body",                  136, DC2ItemCategory.MISC),
-    ("Refrigerator Body",              137, DC2ItemCategory.MISC),
-    ("Wooden Box Body",                138, DC2ItemCategory.MISC),
-    ("Clown Body",                     139, DC2ItemCategory.MISC),
-    ("Samurai Body",                   140, DC2ItemCategory.MISC),
-    ("Super-Alloy Body",               141, DC2ItemCategory.MISC),
-    ("Sun and moon Armor",             142, DC2ItemCategory.MISC),
+    ("Drum Can Body",                  135, DC2ItemCategory.RIDEPOD),
+    ("Milk Can Body",                  136, DC2ItemCategory.RIDEPOD),
+    ("Refrigerator Body",              137, DC2ItemCategory.RIDEPOD),
+    ("Wooden Box Body",                138, DC2ItemCategory.RIDEPOD),
+    ("Clown Body",                     139, DC2ItemCategory.RIDEPOD),
+    ("Samurai Body",                   140, DC2ItemCategory.RIDEPOD),
+    ("Super-Alloy Body",               141, DC2ItemCategory.RIDEPOD),
+    ("Sun and moon Armor",             142, DC2ItemCategory.RIDEPOD),
     
     ("null1",                           143, DC2ItemCategory.REPLACE),
     ("null2",                           144, DC2ItemCategory.REPLACE),
     
-    ("Cannonball Arm",                 145, DC2ItemCategory.MISC),
-    ("Barrel Cannon",                  146, DC2ItemCategory.MISC),
-    ("Drill Arm",                      147, DC2ItemCategory.MISC),
-    ("Missile Pod Arm",                148, DC2ItemCategory.MISC),
-    ("Hammer Arm",                     149, DC2ItemCategory.MISC),
-    ("Machine Gun Arm",                150, DC2ItemCategory.MISC),
-    ("Clown Hand",                     151, DC2ItemCategory.MISC),
-    ("Samurai Arm",                    152, DC2ItemCategory.MISC),
-    ("Laser Arm",                      153, DC2ItemCategory.MISC),
-    ("Nova Cannon",                    154, DC2ItemCategory.MISC),
+    ("Cannonball Arm",                 145, DC2ItemCategory.RIDEPOD),
+    ("Barrel Cannon",                  146, DC2ItemCategory.RIDEPOD),
+    ("Drill Arm",                      147, DC2ItemCategory.RIDEPOD),
+    ("Missile Pod Arm",                148, DC2ItemCategory.RIDEPOD),
+    ("Hammer Arm",                     149, DC2ItemCategory.RIDEPOD),
+    ("Machine Gun Arm",                150, DC2ItemCategory.RIDEPOD),
+    ("Clown Hand",                     151, DC2ItemCategory.RIDEPOD),
+    ("Samurai Arm",                    152, DC2ItemCategory.RIDEPOD),
+    ("Laser Arm",                      153, DC2ItemCategory.RIDEPOD),
+    ("Nova Cannon",                    154, DC2ItemCategory.RIDEPOD),
     
-    ("Iron Leg",                       155, DC2ItemCategory.MISC),
-    ("Catterpillar",                   156, DC2ItemCategory.MISC),
-    ("Bucket Leg",                     157, DC2ItemCategory.MISC),
-    ("Roller Foot",                    158, DC2ItemCategory.MISC),
-    ("Buggy",                          159, DC2ItemCategory.MISC),
-    ("Propeller Leg",                  160, DC2ItemCategory.MISC),
-    ("Multi-feet",                     161, DC2ItemCategory.MISC),
-    ("Jet Hover",                      162, DC2ItemCategory.MISC),
-    ("Clown Foot",                     163, DC2ItemCategory.MISC),
+    ("Iron Leg",                       155, DC2ItemCategory.RIDEPOD),
+    ("Catterpillar",                   156, DC2ItemCategory.RIDEPOD),
+    ("Bucket Leg",                     157, DC2ItemCategory.RIDEPOD),
+    ("Roller Foot",                    158, DC2ItemCategory.RIDEPOD),
+    ("Buggy",                          159, DC2ItemCategory.RIDEPOD),
+    ("Propeller Leg",                  160, DC2ItemCategory.RIDEPOD),
+    ("Multi-feet",                     161, DC2ItemCategory.RIDEPOD),
+    ("Jet Hover",                      162, DC2ItemCategory.RIDEPOD),
+    ("Clown Foot",                     163, DC2ItemCategory.RIDEPOD),
     
     ("null3",                           164, DC2ItemCategory.REPLACE),
     
-    ("Energy Pack",                    165, DC2ItemCategory.MISC),
-    ("Energy Pack (Barrel)",           166, DC2ItemCategory.MISC),
-    ("Bucket Pack",                    167, DC2ItemCategory.MISC),
-    ("Cleaner Pack",                   168, DC2ItemCategory.MISC),
-    ("Energy Pack (Urn)",              169, DC2ItemCategory.MISC),
-    ("Triple-Urn Pack",                170, DC2ItemCategory.MISC),
+    ("Energy Pack",                    165, DC2ItemCategory.RIDEPOD),
+    ("Energy Pack (Barrel)",           166, DC2ItemCategory.RIDEPOD),
+    ("Bucket Pack",                    167, DC2ItemCategory.RIDEPOD),
+    ("Cleaner Pack",                   168, DC2ItemCategory.RIDEPOD),
+    ("Energy Pack (Urn)",              169, DC2ItemCategory.RIDEPOD),
+    ("Triple-Urn Pack",                170, DC2ItemCategory.RIDEPOD),
     
     ("null4",                           171, DC2ItemCategory.REPLACE),
     
@@ -237,16 +237,16 @@ _all_items = [DC2ItemData(row[0], row[1], row[2]) for row in [
     ("Dynamite",                       173, DC2ItemCategory.CONSUMABLE),
     ("Seal-breaking Scroll",           174, DC2ItemCategory.CONSUMABLE),
     
-    ("Flame Crystal",                  175, DC2ItemCategory.MISC),
-    ("Chill Crystal",                  176, DC2ItemCategory.MISC),
-    ("Lightning Crystal",              177, DC2ItemCategory.MISC),
-    ("Hunter Crystal",                 178, DC2ItemCategory.MISC),
-    ("Holy Crystal",                   179, DC2ItemCategory.MISC),
-    ("Destruction Crystal",            180, DC2ItemCategory.MISC),
-    ("Wind Crystal",                   181, DC2ItemCategory.MISC),
-    ("Sea Dragon Crystal",             182, DC2ItemCategory.MISC),
-    ("Power Crystal",                  183, DC2ItemCategory.MISC),
-    ("Protector Crystal",              184, DC2ItemCategory.MISC),
+    ("Flame Crystal",                  175, DC2ItemCategory.MATERIAL),
+    ("Chill Crystal",                  176, DC2ItemCategory.MATERIAL),
+    ("Lightning Crystal",              177, DC2ItemCategory.MATERIAL),
+    ("Hunter Crystal",                 178, DC2ItemCategory.MATERIAL),
+    ("Holy Crystal",                   179, DC2ItemCategory.MATERIAL),
+    ("Destruction Crystal",            180, DC2ItemCategory.MATERIAL),
+    ("Wind Crystal",                   181, DC2ItemCategory.MATERIAL),
+    ("Sea Dragon Crystal",             182, DC2ItemCategory.MATERIAL),
+    ("Power Crystal",                  183, DC2ItemCategory.MATERIAL),
+    ("Protector Crystal",              184, DC2ItemCategory.MATERIAL),
     
     ("[line1]",                        185, DC2ItemCategory.SKIP),
     
@@ -442,9 +442,9 @@ _all_items = [DC2ItemData(row[0], row[1], row[2]) for row in [
     ("Armband Repair Powder",          352, DC2ItemCategory.CONSUMABLE),
     
     ("Circus Ticket",                  353, DC2ItemCategory.MISC),
-    ("Fire Horn",                      354, DC2ItemCategory.MISC),  
+    ("Fire Horn",                      354, DC2ItemCategory.KEY_ITEM),  
     ("Inside Scoop Memo",              355, DC2ItemCategory.MISC),  
-    ("Sundrop",                        356, DC2ItemCategory.MISC),  
+    ("Sundrop",                        356, DC2ItemCategory.KEY_ITEM),  
     ("Photo Album",                    357, DC2ItemCategory.MISC),  
     ("Cooking Stove",                  358, DC2ItemCategory.MISC),  
     ("Help Receiver",                  359, DC2ItemCategory.MISC),  
@@ -488,36 +488,36 @@ _all_items = [DC2ItemData(row[0], row[1], row[2]) for row in [
     ("Improved Bomb",                  390, DC2ItemCategory.CONSUMABLE), 
     ("Final Bomb",                     391, DC2ItemCategory.CONSUMABLE), 
     
-    ("Cannonball Arm II",              392, DC2ItemCategory.MISC), 
-    ("Cannonball Arm III",             393, DC2ItemCategory.MISC), 
-    ("Cannonball Arm IV",              394, DC2ItemCategory.MISC), 
-    ("Barrel Cannon II",               395, DC2ItemCategory.MISC), 
-    ("Barrel Cannon III",              396, DC2ItemCategory.MISC), 
-    ("Barrel Cannon IV",               397, DC2ItemCategory.MISC), 
-    ("Drill Arm II",                   398, DC2ItemCategory.MISC), 
-    ("Drill Arm III",                  399, DC2ItemCategory.MISC), 
-    ("Drill Arm IV",                   400, DC2ItemCategory.MISC), 
-    ("Missile Pod Arm II",             401, DC2ItemCategory.MISC), 
-    ("Missile Pod Arm III",            402, DC2ItemCategory.MISC), 
-    ("Missile Pod Arm IV",             403, DC2ItemCategory.MISC), 
-    ("Hammer Arm II",                  404, DC2ItemCategory.MISC), 
-    ("Hammer Arm III",                 405, DC2ItemCategory.MISC), 
-    ("Hammer Arm IV",                  406, DC2ItemCategory.MISC), 
-    ("Machine Gun Arm II",             407, DC2ItemCategory.MISC), 
-    ("Machine Gun Arm III",            408, DC2ItemCategory.MISC), 
-    ("Machine Gun Arm IV",             409, DC2ItemCategory.MISC), 
-    ("Clown Hand II",                  410, DC2ItemCategory.MISC), 
-    ("Clown Hand III",                 411, DC2ItemCategory.MISC), 
-    ("Clown Hand IV",                  412, DC2ItemCategory.MISC), 
-    ("Samurai Arm II",                 413, DC2ItemCategory.MISC), 
-    ("Samurai Arm III",                414, DC2ItemCategory.MISC), 
-    ("Samurai Arm IV",                 415, DC2ItemCategory.MISC), 
-    ("Laser Arm II",                   416, DC2ItemCategory.MISC), 
-    ("Laser Arm III",                  417, DC2ItemCategory.MISC), 
-    ("Laser Arm IV",                   418, DC2ItemCategory.MISC), 
-    ("Nova Cannon II",                 419, DC2ItemCategory.MISC), 
-    ("Nova Cannon III",                420, DC2ItemCategory.MISC), 
-    ("Nova Cannon IV",                 421, DC2ItemCategory.MISC), 
+    ("Cannonball Arm II",              392, DC2ItemCategory.RIDEPOD), 
+    ("Cannonball Arm III",             393, DC2ItemCategory.RIDEPOD), 
+    ("Cannonball Arm IV",              394, DC2ItemCategory.RIDEPOD), 
+    ("Barrel Cannon II",               395, DC2ItemCategory.RIDEPOD), 
+    ("Barrel Cannon III",              396, DC2ItemCategory.RIDEPOD), 
+    ("Barrel Cannon IV",               397, DC2ItemCategory.RIDEPOD), 
+    ("Drill Arm II",                   398, DC2ItemCategory.RIDEPOD), 
+    ("Drill Arm III",                  399, DC2ItemCategory.RIDEPOD), 
+    ("Drill Arm IV",                   400, DC2ItemCategory.RIDEPOD), 
+    ("Missile Pod Arm II",             401, DC2ItemCategory.RIDEPOD), 
+    ("Missile Pod Arm III",            402, DC2ItemCategory.RIDEPOD), 
+    ("Missile Pod Arm IV",             403, DC2ItemCategory.RIDEPOD), 
+    ("Hammer Arm II",                  404, DC2ItemCategory.RIDEPOD), 
+    ("Hammer Arm III",                 405, DC2ItemCategory.RIDEPOD), 
+    ("Hammer Arm IV",                  406, DC2ItemCategory.RIDEPOD), 
+    ("Machine Gun Arm II",             407, DC2ItemCategory.RIDEPOD), 
+    ("Machine Gun Arm III",            408, DC2ItemCategory.RIDEPOD), 
+    ("Machine Gun Arm IV",             409, DC2ItemCategory.RIDEPOD), 
+    ("Clown Hand II",                  410, DC2ItemCategory.RIDEPOD), 
+    ("Clown Hand III",                 411, DC2ItemCategory.RIDEPOD), 
+    ("Clown Hand IV",                  412, DC2ItemCategory.RIDEPOD), 
+    ("Samurai Arm II",                 413, DC2ItemCategory.RIDEPOD), 
+    ("Samurai Arm III",                414, DC2ItemCategory.RIDEPOD), 
+    ("Samurai Arm IV",                 415, DC2ItemCategory.RIDEPOD), 
+    ("Laser Arm II",                   416, DC2ItemCategory.RIDEPOD), 
+    ("Laser Arm III",                  417, DC2ItemCategory.RIDEPOD), 
+    ("Laser Arm IV",                   418, DC2ItemCategory.RIDEPOD), 
+    ("Nova Cannon II",                 419, DC2ItemCategory.RIDEPOD), 
+    ("Nova Cannon III",                420, DC2ItemCategory.RIDEPOD), 
+    ("Nova Cannon IV",                 421, DC2ItemCategory.RIDEPOD), 
     ("Voice Unit",                     422, DC2ItemCategory.MISC), 
     ("Shield Kit",                     423, DC2ItemCategory.CONSUMABLE), 
     
@@ -544,29 +544,37 @@ item_descriptions = {
 
 item_dictionary = {item_data.name: item_data for item_data in _all_items}
 
-def BuildItemPool(count, options):
+def BuildItemPool(multiworld: MultiWorld, count, options):
     item_pool = []
-    included_itemcount = 0
+    remaining_count = count
 
     if options.guaranteed_items.value:
         for item_name, item_quant in options.guaranteed_items.value.items():
             item = item_dictionary[item_name]
             item_pool += [item] * item_quant
-            included_itemcount += item_quant
-    remaining_count = count - included_itemcount
+            remaining_count = remaining_count - 1
     
     key_items = [item for item in _all_items if item.name in key_item_names or item.category == DC2ItemCategory.KEY_ITEM]
     for item in key_items:
         item_pool.append(item)
         remaining_count = remaining_count - 1
     
-    filler_items = [item for item in _all_items if item.category in [DC2ItemCategory.CONSUMABLE, DC2ItemCategory.GEORAMA_RESOURCE, DC2ItemCategory.WEAPON_MAX_L, DC2ItemCategory.WEAPON_MAX_R, DC2ItemCategory.WEAPON_MONICA_L, DC2ItemCategory.WEAPON_MONICA_R]]
+    consumable_items = [item for item in _all_items if item.category in [DC2ItemCategory.CONSUMABLE, item.category == DC2ItemCategory.MATERIAL, item.category == DC2ItemCategory.GEM, item.category == DC2ItemCategory.COIN]]
+    georama_items = [item for item in _all_items if item.category == DC2ItemCategory.GEORAMA_RESOURCE]
+    weapon_items = [item for item in _all_items if item.category in [DC2ItemCategory.WEAPON_MAX_L, DC2ItemCategory.WEAPON_MAX_R, DC2ItemCategory.WEAPON_MONICA_L, DC2ItemCategory.WEAPON_MONICA_R, DC2ItemCategory.RIDEPOD]]
+
+    for i in range(int(remaining_count * 0.9)):
+        item = multiworld.random.choice(consumable_items)
+        item_pool.append(item)
+        remaining_count = remaining_count - 1
     
-    pool_size = remaining_count   
-       
-    itemList = [item for item in filler_items]
+    for i in range(int(remaining_count * 0.5)):
+        item = multiworld.random.choice(georama_items)
+        item_pool.append(item)
+        remaining_count = remaining_count - 1
+    
     for i in range(remaining_count):        
-        item = random.choice(itemList)
+        item = multiworld.random.choice(weapon_items)
         item_pool.append(item)    
-    random.shuffle(item_pool)
+    multiworld.random.shuffle(item_pool)
     return item_pool
