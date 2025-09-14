@@ -10,23 +10,11 @@ using System.Reflection;
 
 namespace DC2AP.Models
 {
-    public class InventoryChangedEventArgs : NotifyCollectionChangedEventArgs
+    public class InventoryChangedEventArgs : EventArgs
     {
-        public InventoryChangedEventArgs(NotifyCollectionChangedAction action, object item = null)    : base(action, item, action == NotifyCollectionChangedAction.Reset ? -1 : 0)
-        {
-        }
-        public InventoryChangedEventArgs(NotifyCollectionChangedAction action, object item, int index)
-    : base(action, item, index)
-        {
-        }
-        public InventoryChangedEventArgs(NotifyCollectionChangedAction action, object newItem, object oldItem, int index)
-    : base(action, newItem, oldItem, index)
-        {
-        }
-        public InventoryChangedEventArgs(NotifyCollectionChangedAction action, object item, int newIndex, int oldIndex)
-    : base(action, item, newIndex, oldIndex)
-        {
-        }
+        public List<DarkCloud2Item> NewItems { get; set; } = new List<DarkCloud2Item>();
+        public List<DarkCloud2Item> RemovedItems { get; set; } = new List<DarkCloud2Item>();
         public bool IsArchipelagoUpdate { get; set; }
+        public InventoryChangedEventArgs() { }
     }
 }

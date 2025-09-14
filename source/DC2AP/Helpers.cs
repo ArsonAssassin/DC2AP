@@ -37,10 +37,10 @@ namespace DC2AP
             var list = JsonConvert.DeserializeObject<List<Dungeon>>(json);
             return list;
         }
-        public static List<Location> GetLocations()
+        public static List<ILocation> GetLocations()
         {
             var json = OpenEmbeddedResource("DC2AP.Resources.Locations.json");
-            var list = JsonConvert.DeserializeObject<List<Location>>(json);
+            var list = Archipelago.Core.Json.LocationJsonHelper.Instance.DeserializeLocations(json);
             return list;
         }
         public static string OpenEmbeddedResource(string resourceName)
@@ -66,24 +66,14 @@ namespace DC2AP
             return (value & (1 << bitIndex)) != 0;
         }
         public static void AddItem(Item item, PlayerState playerState, bool IsArchipelago = true)
-        {
+        {            
             playerState.IsReceivingArchipelagoItem = IsArchipelago;
             var alreadyHave = playerState.Inventory.Any(x => x.Id == item.Id);
-            if (alreadyHave)
-            {
-                var slotNum = playerState.GetFirstSlot((int)item.Id);
-                var address = GetItemSlotAddress(slotNum);
-                var currentQuantity = Memory.ReadShort(address + 0x0000000E);
-                item.Quantity += currentQuantity;
-                WriteItem(item, address);
-            }
-            else
-            {
-                var slotNum = playerState.GetFirstSlot(0);
-                var address = GetItemSlotAddress(slotNum);
-                WriteItem(item, address);
 
-            }
+            var slotNum = playerState.GetFirstSlot((int)item.Id);
+            var address = GetItemSlotAddress(slotNum);
+            var currentQuantity = Memory.ReadUShort(address + 0x0000000E);
+            WriteItem(item, address, (ushort)(currentQuantity + 1));
         }
         public static void RemoveItem(Item item, PlayerState playerState)
         {
@@ -91,14 +81,13 @@ namespace DC2AP
             if (slot == -1) return; //Player does not have that item
             var address = GetItemSlotAddress(slot);
             var currentQuantity = Memory.ReadShort(address + 0x0000000E);
-            item.Quantity = currentQuantity - 1;
-            if (item.Quantity == 0)
+            if (currentQuantity <= 1)
             {
                 RemoveAllItem(item, playerState);
             }
             else
             {
-                WriteItem(item, address);
+                WriteItem(item, address, (ushort)(currentQuantity - 1));
             }
         }
         public static void RemoveAllItem(Item item, PlayerState playerState)
@@ -107,13 +96,13 @@ namespace DC2AP
             if (slot == -1) return; //Player does not have that item
             var address = GetItemSlotAddress(slot);
 
-            WriteItem(new Item() { Id = 0, Quantity = 0, IsProgression = false, Name = "null" }, address);
+            WriteItem(new Item() { Id = 0, IsProgression = false, Name = "null" }, address, 0);
         }
-        public static void WriteItem(Item item, ulong address)
+        public static void WriteItem(Item item, ulong address, ushort quantity)
         {
             ReadItem(address);
             Memory.Write(address, (ushort)item.Id);
-            Memory.Write(address + 0x0000000F, (ushort)item.Quantity);
+            Memory.Write(address + 0x0000000F, quantity);
         }
         public static void ReadItem(ulong address)
         {

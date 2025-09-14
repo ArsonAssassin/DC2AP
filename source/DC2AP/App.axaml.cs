@@ -20,6 +20,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Concurrency;
 using System.Text.Json;
+using System.Timers;
 
 namespace DC2AP;
 
@@ -31,8 +32,9 @@ public partial class App : Application
     public static List<Enemy> EnemyList { get; set; }
     public static List<QuestId> QuestList { get; set; }
     public static List<Dungeon> DungeonList { get; set; }
-    public static PlayerState CurrentPlayerState = new PlayerState();
+    public static PlayerState CurrentPlayerState;
     private static readonly object _lockObject = new object();
+    Timer updateTimer = new Timer(TimeSpan.FromSeconds(10));
     public override void Initialize()
     {
         AvaloniaXamlLoader.Load(this);
@@ -43,7 +45,14 @@ public partial class App : Application
             Client?.SendMessage(a.Command);
         };
         Context.ConnectButtonEnabled = true;
+        updateTimer.Elapsed += GameUpdate;
+        updateTimer.Start();
+    }
 
+    private void GameUpdate(object? sender, ElapsedEventArgs e)
+    {
+        if(! (Client?.IsConnected ?? false)) return;
+        UpdatePlayerState();
     }
 
     public override void OnFrameworkInitializationCompleted()
@@ -116,11 +125,12 @@ public partial class App : Application
         await Client.Connect(e.Host, "Dark Cloud 2");
 
         PopulateLists();
+        CurrentPlayerState = new PlayerState();
         Client.ItemReceived += Client_ItemReceived;
         Client.MessageReceived += Client_MessageReceived;
 
         await Client.Login(e.Slot, !string.IsNullOrWhiteSpace(e.Password) ? e.Password : null);
-
+        CurrentPlayerState.UpdateInventory();
         UpdatePlayerState();
 
 
@@ -129,7 +139,7 @@ public partial class App : Application
             Log.Logger.Information($"Inventory changed: {JsonConvert.SerializeObject(args, Formatting.Indented)}");
             if (!args.IsArchipelagoUpdate)
             {
-                foreach (Item item in args.NewItems)
+                foreach (DarkCloud2Item item in args.NewItems)
                 {
                     if (item.IsProgression)
                     {
@@ -153,7 +163,7 @@ public partial class App : Application
         var locations = Helpers.GetLocations();
         Client.MonitorLocations(locations);
 
-        var goalLocation = locations.First(x => x.Name.ToLower().Contains("chapter 5 complete"));
+        var goalLocation = (Location)locations.First(x => x.Name.ToLower().Contains("chapter 5 complete"));        
         Archipelago.Core.Util.Memory.MonitorAddressForAction<byte>(goalLocation.Address, () => Client.SendGoalCompletion(), (o) => { return o > 4; });
 
         if (Client.Options.ContainsKey("enable_enemy_randomiser") && ((JsonElement)Client.Options["enable_enemy_randomiser"]).Deserialize<int>() > 0)
@@ -177,41 +187,12 @@ public partial class App : Application
     }
     static void UpdatePlayerState()
     {
+        if (CurrentPlayerState == null) CurrentPlayerState = new PlayerState();
         CurrentPlayerState.CurrentFloor = Memory.ReadByte(Addresses.CurrentFloor);
         CurrentPlayerState.CurrentDungeon = Memory.ReadByte(Addresses.CurrentDungeon);
         CurrentPlayerState.Gilda = Memory.ReadInt(Addresses.PlayerGilda);
         CurrentPlayerState.MedalCount = Memory.ReadShort(Addresses.PlayerMedals);
-        var tempInv = ReadInventory();
-        for (int i = 0; i < tempInv.Count; i++)
-        {
-            if (tempInv[i].Id != CurrentPlayerState.Inventory[i].Id || tempInv[i].Quantity != CurrentPlayerState.Inventory[i].Quantity)
-            {
-                CurrentPlayerState.Inventory[i] = tempInv[i];
-            }
-        }
-    }
-    public static List<Item> ReadInventory()
-    {
-        List<Item> inventory = new List<Item>();
-
-        var startAddress = Addresses.InventoryStartAddress;
-
-        for (int i = 0; i < 144; i++)
-        {
-            Item item = new Item();
-
-            var itemId = Memory.ReadShort(startAddress);
-            item.Id = itemId;
-            var itemQuantityAddress = startAddress + 0x0000000E;
-            var itemQuantity = Memory.ReadShort(itemQuantityAddress);
-            item.Quantity = itemQuantity;
-            item.Name = ItemList.First(x => x.Id == item.Id).Name;
-            item.IsProgression = ItemList.FirstOrDefault(x => x.Id == itemId).isProgression;
-            Log.Logger.Debug($"Inventory slot {i}: {item.Name}, {item.Id} x {item.Quantity}");
-            startAddress += 0x0000006C;
-            inventory.Add(item);
-        }
-        return inventory;
+        CurrentPlayerState.UpdateInventory();
     }
     public static List<Dungeon> PopulateDungeons()
     {
@@ -259,9 +240,8 @@ public partial class App : Application
     {
         var messageToLog = new LogListItem(new List<TextSpan>()
             {
-                new TextSpan(){Text = $"[{item.Id.ToString()}] -", TextColor = Color.FromRgb(255, 255, 255)},
-                new TextSpan(){Text = $"{item.Name}", TextColor = Color.FromRgb(200, 255, 200)},
-                new TextSpan(){Text = $"x{item.Quantity.ToString()}", TextColor = Color.FromRgb(200, 255, 200)}
+                new TextSpan(){Text = $"[{item.Id.ToString()}] -", TextColor = new SolidColorBrush(Color.FromRgb(255, 255, 255))},
+                new TextSpan(){Text = $"{item.Name}", TextColor = new SolidColorBrush(Color.FromRgb(200, 255, 200))}
             });
         lock (_lockObject)
         {
@@ -282,7 +262,7 @@ public partial class App : Application
         List<TextSpan> spans = new List<TextSpan>();
         foreach (var part in message.Parts)
         {
-            spans.Add(new TextSpan() { Text = part.Text, TextColor = Color.FromRgb(part.Color.R, part.Color.G, part.Color.B) });
+            spans.Add(new TextSpan() { Text = part.Text, TextColor = new SolidColorBrush(Color.FromRgb(part.Color.R, part.Color.G, part.Color.B)) });
         }
         lock (_lockObject)
         {
