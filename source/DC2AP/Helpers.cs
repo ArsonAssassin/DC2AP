@@ -17,70 +17,68 @@ namespace DC2AP
 {
     public static class Helpers
     {
+        private const int AP_ID_OFFSET = 694200000;
+        private static T DeserializeResource<T>(string resourceName)
+        {
+            var json = OpenEmbeddedResource(resourceName);
+            return JsonConvert.DeserializeObject<T>(json)!;
+        }
+        public static List<DarkCloud2Item> GetItemIds() =>
+            DeserializeResource<List<DarkCloud2Item>>("DC2AP.Resources.ItemIds.json");
 
+        public static List<QuestId> GetQuestIds() =>
+            DeserializeResource<List<QuestId>>("DC2AP.Resources.QuestIds.json");
 
-        public static List<DarkCloud2Item> GetItemIds()
-        {
-            var json = OpenEmbeddedResource("DC2AP.Resources.ItemIds.json");
-            var list = JsonConvert.DeserializeObject<List<DarkCloud2Item>>(json);
-            return list;
-        }
-        public static List<QuestId> GetQuestIds()
-        {
-            var json = OpenEmbeddedResource("DC2AP.Resources.QuestIds.json");
-            var list = JsonConvert.DeserializeObject<List<QuestId>>(json);
-            return list;
-        }
-        public static List<Dungeon> GetDungeons()
-        {
-            var json = OpenEmbeddedResource("DC2AP.Resources.Dungeons.json");
-            var list = JsonConvert.DeserializeObject<List<Dungeon>>(json);
-            return list;
-        }
+        public static List<Dungeon> GetDungeons() =>
+            DeserializeResource<List<Dungeon>>("DC2AP.Resources.Dungeons.json");
         public static List<ILocation> GetLocations()
         {
             var json = OpenEmbeddedResource("DC2AP.Resources.Locations.json");
-            var list = Archipelago.Core.Json.LocationJsonHelper.Instance.DeserializeLocations(json);
-            return list;
+            return Archipelago.Core.Json.LocationJsonHelper.Instance.DeserializeLocations(json);
         }
         public static string OpenEmbeddedResource(string resourceName)
         {
             var assembly = Assembly.GetExecutingAssembly();
-            using (Stream stream = assembly.GetManifestResourceStream(resourceName))
-            using (StreamReader reader = new StreamReader(stream))
+            using var stream = assembly.GetManifestResourceStream(resourceName);
+            using var reader = new StreamReader(stream);
+            return reader.ReadToEnd();
+
+        }
+        internal static IEnumerable<(int ItemId, int Quantity)> GetRewardPack(long packId)
+        {
+            return packId switch
             {
-                string jsonFile = reader.ReadToEnd();
-                return jsonFile;
-            }
+                2000 => new[] { (268, 5), (294, 5), (298, 5), (352, 5), (381, 2) }, // Essential Pack
+                2001 => new[] { (186, 1), (187, 1), (188, 1), (189, 1), (190, 1), (191, 1), (192, 1) }, // Gem Pack A
+                2002 => new[] { (193, 1), (194, 1), (195, 1), (196, 1), (197, 1), (198, 1), (199, 1) }, // Gem Pack B
+                2003 => new[] { (200, 1), (201, 1), (202, 1), (203, 1), (204, 1) }, // Coin Pack A
+                2004 => new[] { (205, 1), (206, 1), (207, 1), (208, 1), (209, 1) }, // Coin Pack B
+                2005 => new[] { (175, 2), (176, 2), (177, 2), (178, 2), (179, 2), (180, 2), (181, 2), (182, 2), (183, 1), (184, 2) }, // Crystal Pack
+                _ => Array.Empty<(int, int)>()
+            };
         }
-        public static int ToAPId(int gameId)
-        {
-            return gameId + 694200000;
-        }
-        public static int ToGameId(int apId)
-        {
-            return apId - 694200000;
-        }
+        public static int ToAPId(int gameId) => gameId + AP_ID_OFFSET;
+        public static int ToGameId(int apId) => apId - AP_ID_OFFSET;
         private static bool GetBitValue(byte value, int bitIndex)
         {
             return (value & (1 << bitIndex)) != 0;
         }
-        public static void AddItem(Item item, PlayerState playerState, bool IsArchipelago = true)
-        {            
+        public static void AddItem(Item item, PlayerState playerState, int quantity = 1, bool IsArchipelago = true)
+        {
             playerState.IsReceivingArchipelagoItem = IsArchipelago;
             var alreadyHave = playerState.Inventory.Any(x => x.Id == item.Id);
 
             var slotNum = playerState.GetFirstSlot((int)item.Id);
             var address = GetItemSlotAddress(slotNum);
-            var currentQuantity = Memory.ReadUShort(address + 0x0000000E);
-            WriteItem(item, address, (ushort)(currentQuantity + 1));
+            var currentQuantity = Memory.ReadUShort(address + 0xE);
+            WriteItem(item, address, (ushort)(currentQuantity + quantity));
         }
         public static void RemoveItem(Item item, PlayerState playerState)
         {
             var slot = playerState.GetFirstSlot((int)item.Id);
             if (slot == -1) return; //Player does not have that item
             var address = GetItemSlotAddress(slot);
-            var currentQuantity = Memory.ReadShort(address + 0x0000000E);
+            var currentQuantity = Memory.ReadShort(address + 0xE);
             if (currentQuantity <= 1)
             {
                 RemoveAllItem(item, playerState);
@@ -95,8 +93,8 @@ namespace DC2AP
             var slot = playerState.GetFirstSlot((int)item.Id);
             if (slot == -1) return; //Player does not have that item
             var address = GetItemSlotAddress(slot);
-
-            WriteItem(new Item() { Id = 0, IsProgression = false, Name = "null" }, address, 0);
+            var emptyItem = new Item { Id = 0, IsProgression = false, Name = "null" };
+            WriteItem(emptyItem, address, 0);
         }
         public static void WriteItem(Item item, ulong address, ushort quantity)
         {
@@ -108,15 +106,14 @@ namespace DC2AP
         {
             for (int i = 0; i < 54; i++)
             {
-                var value = Memory.ReadShort(address + (ulong)(2 * i));
+                _ = Memory.ReadShort(address + (ulong)(2 * i));
             }
         }
         public static ulong GetItemSlotAddress(int slotNum)
         {
             var startAddress = Addresses.InventoryStartAddress;
-            ulong offset = (uint)(0x0000006c * (slotNum));
-            ulong slotAddress = startAddress + offset;
-            return slotAddress;
+            ulong offset = (uint)(0x6c * (slotNum));
+            return startAddress + offset;
         }
         public static long GetLocationFromProgressionItem(int progressionId)
         {
@@ -142,21 +139,21 @@ namespace DC2AP
         static void AddChestItem(ulong startAddress, int id, int quantity)
         {
             startAddress += Addresses.IntOffset;
-            Log.Logger.Information($"Setting Chest contents to {id}");
+            Log.Logger.Debug($"Setting Chest contents to {id}");
             Memory.Write(startAddress, BitConverter.GetBytes(id));
             startAddress += Addresses.IntOffset;
             Memory.Write(startAddress, BitConverter.GetBytes(quantity));
-            Log.Logger.Information("Added item!");
+            Log.Logger.Debug("Added item!");
         }
         static void AddDoubleChestItems(ulong startAddress, int id1, int quantity1, int id2, int quantity2)
         {
             startAddress += Addresses.IntOffset;
             var currentItem = Memory.ReadByte(startAddress);
-            Log.Logger.Information($"replacing {currentItem} with {id1}");
+            Log.Logger.Debug($"replacing {currentItem} with {id1}");
             Memory.Write(startAddress, BitConverter.GetBytes(id1));
             startAddress += Addresses.ShortOffset;
             var currentItem2 = Memory.ReadByte(startAddress);
-            Log.Logger.Information($"replacing {currentItem2} with {id2}");
+            Log.Logger.Debug($"replacing {currentItem2} with {id2}");
             Memory.Write(startAddress, BitConverter.GetBytes(id2));
             startAddress += Addresses.ShortOffset;
             Memory.Write(startAddress, BitConverter.GetBytes(quantity1));
@@ -174,7 +171,7 @@ namespace DC2AP
                 chestId = Memory.ReadByte(currentChestAddress);
                 var chest = ReadChest(currentChestAddress, chestId >= 128);
                 chests.Add(chest);
-                currentChestAddress += 0x00000070;
+                currentChestAddress += 0x70;
             }
             Log.Logger.Information("End of chests");
             return chests;
@@ -217,8 +214,6 @@ namespace DC2AP
         }
         public static List<Enemy> ReadEnemies()
         {
-            var itemList = GetItemIds();
-            var dungeonList = GetDungeons();
             List<Enemy> enemies = new List<Enemy>();
             var currentAddress = Addresses.EnemyStartAddress + Addresses.IntOffset;
             for (int i = 0; i < 280; i++)
@@ -240,301 +235,88 @@ namespace DC2AP
                 currentAddress += 0xB8;
             }
         }
-        //public static List<Enemy> ReadEnemies(bool debug = false)
-        //{
-        //    var itemList = GetItemIds();
-        //    var dungeonList = GetDungeons();
-        //    List<Enemy> enemies = new List<Enemy>();
-        //    var currentAddress = Addresses.EnemyStartAddress;
-        //    currentAddress += Addresses.IntOffset;
-        //    for (int i = 0; i < 280; i++)
-        //    {
-        //        Enemy enemy = new Enemy();
-        //        enemy.Name = Memory.ReadString(currentAddress, 32);
-        //        currentAddress += 0x00000020;
-        //        enemy.ModelAI = BitConverter.ToString(Memory.ReadByteArray(currentAddress, 32));
-        //        currentAddress += 0x00000020;
-        //        var modelType = Memory.ReadInt(currentAddress).ToString();
-        //        enemy.ModelType = Helpers.GetModelType(modelType);
-        //        currentAddress += Addresses.IntOffset;
-        //        enemy.Sound = Memory.ReadInt(currentAddress).ToString();
-        //        currentAddress += Addresses.IntOffset;
-        //        enemy.Unknown1 = Memory.ReadInt(currentAddress).ToString();
-        //        currentAddress += Addresses.IntOffset;
-        //        enemy.HP = Memory.ReadInt(currentAddress).ToString();
-        //        currentAddress += Addresses.IntOffset;
-        //        enemy.Family = Memory.ReadShort(currentAddress).ToString();
-        //        currentAddress += Addresses.ShortOffset;
-        //        //    var absMultiplied = Memory.ReadShort(currentAddress) *  Client.Options.ExpMultiplier;
-        //        //    Memory.Write(currentAddress, (short)absMultiplied);
-        //        enemy.ABS = Memory.ReadShort(currentAddress).ToString();
-        //        currentAddress += Addresses.ShortOffset;
-        //        //    var gildaMultiplied = Memory.ReadShort(currentAddress) * Client.Options.GoldMultiplier;
-        //        //    Memory.Write(currentAddress, (short)gildaMultiplied);
-        //        enemy.Gilda = Memory.ReadShort(currentAddress).ToString();
-        //        currentAddress += Addresses.ShortOffset;
-        //        enemy.Unknown2 = BitConverter.ToString(Memory.ReadByteArray(currentAddress, 6));
-        //        currentAddress += 0x00000006;
-        //        enemy.Rage = Memory.ReadShort(currentAddress).ToString();
-        //        currentAddress += Addresses.ShortOffset;
-        //        enemy.Unknown3 = BitConverter.ToString(Memory.ReadByteArray(currentAddress, 4));
-        //        currentAddress += Addresses.IntOffset;
-        //        enemy.Damage = Memory.ReadShort(currentAddress).ToString();
-        //        currentAddress += Addresses.ShortOffset;
-        //        enemy.Defense = Memory.ReadShort(currentAddress).ToString();
-        //        currentAddress += Addresses.ShortOffset;
-        //        enemy.BossFlag = Memory.ReadShort(currentAddress).ToString();
-        //        currentAddress += Addresses.ShortOffset;
-        //        enemy.Weaknesses = BitConverter.ToString(Memory.ReadByteArray(currentAddress, 16));
-        //        currentAddress += 0x00000010;
-        //        enemy.Effectiveness = BitConverter.ToString(Memory.ReadByteArray(currentAddress, 24));
-        //        currentAddress += 0x00000018;
-        //        enemy.Unknown4 = BitConverter.ToString(Memory.ReadByteArray(currentAddress, 4));
-        //        currentAddress += Addresses.IntOffset;
-        //        enemy.IsRidepodEnemy = Memory.ReadByte(currentAddress).ToString();
-        //        currentAddress += Addresses.ShortOffset;
-        //        enemy.UnusedBits = BitConverter.ToString(Memory.ReadByteArray(currentAddress, 2));
-        //        currentAddress += Addresses.ShortOffset;
-        //        enemy.Minions = BitConverter.ToString(Memory.ReadByteArray(currentAddress, 4));
-        //        currentAddress += Addresses.IntOffset;
-
-        //        var itemSlot1 = Memory.ReadShort(currentAddress);
-        //        currentAddress += Addresses.ShortOffset;
-        //        var itemSlot2 = Memory.ReadShort(currentAddress);
-        //        currentAddress += Addresses.ShortOffset;
-        //        var itemSlot3 = Memory.ReadShort(currentAddress);
-        //        currentAddress += Addresses.ShortOffset;
-
-        //        enemy.Items = new List<DarkCloud2Item>();
-        //        if (itemSlot1 != 0x00)
-        //        {
-        //            var id = itemList.First(x => x.Id == itemSlot1);
-        //            enemy.Items.Add(id);
-        //        }
-        //        if (itemSlot2 != 0x00)
-        //        {
-        //            var id = itemList.First(x => x.Id == itemSlot2);
-        //            enemy.Items.Add(id);
-        //        }
-        //        if (itemSlot3 != 0x00)
-        //        {
-        //            var id = itemList.First(x => x.Id == itemSlot3);
-        //            enemy.Items.Add(id);
-        //        }
-        //        enemy.Unknown6 = BitConverter.ToString(Memory.ReadByteArray(currentAddress, 10));
-        //        currentAddress += 0x0000000A;
-        //        var dungeon = Memory.ReadShort(currentAddress).ToString();
-        //        enemy.Dungeon = dungeonList.First(x => x.id == int.Parse(dungeon)).Name;
-        //        currentAddress += Addresses.ShortOffset;
-        //        enemy.BestiarySpot = Memory.ReadShort(currentAddress).ToString();
-        //        currentAddress += Addresses.ShortOffset;
-        //        enemy.SharedHP = Memory.ReadShort(currentAddress).ToString();
-        //        currentAddress += Addresses.ShortOffset;
-        //        enemy.Unknown7 = Memory.ReadShort(currentAddress).ToString();
-        //        currentAddress += Addresses.ShortOffset;
-        //        enemies.Add(enemy);
-
-        //        if (debug) Log.Logger.Information($"Discovered enemy: {JsonConvert.SerializeObject(enemy, Formatting.Indented)}");
-
-
-        //        currentAddress += 0x00000004;
-        //    }
-
-        //    if (debug) Log.Logger.Information($"Found {enemies.Count} enemies");
-        //    return enemies;
-        //}
-        public static string GetHabitat(string id)
+        public static string GetHabitat(string id) => id switch
         {
-            switch (id)
-            {
-                case ("0"):
-                    return "Underground water channel";
-                case ("1"):
-                    return "Rainbow butterfly wood";
-                case ("2"):
-                    return "Starlight Canyon";
-                case ("3"):
-                    return "Oceans roar cave";
-                case ("4"):
-                    return "Mount Gundor";
-                case ("5"):
-                    return "Moon flower palace";
-                case ("6"):
-                    return "Zelmite Mine";
-            }
-            return "";
-        }
+            "0" => "Underground water channel",
+            "1" => "Rainbow butterfly wood",
+            "2" => "Starlight Canyon",
+            "3" => "Oceans roar cave",
+            "4" => "Mount Gundor",
+            "5" => "Moon flower palace",
+            "6" => "Zelmite Mine",
+            _ => string.Empty
+        };
 
-        public static string GetModelType(int id)
+        public static string GetModelType(int id) => id switch
         {
-            switch (id)
-            {
-                case (0):
-                    return "Rat";
-                case (1):
-                    return "Vanguard";
-                case (2):
-                    return "Frog";
-                case (3):
-                    return "Tree";
-                case (4):
-                    return "Small Tree";
-                case (5):
-                    return "Fox";
-                case (6):
-                    return "Balloon";
-                case (7):
-                    return "Tortoise";
-                case (8):
-                    return "Turtle";
-                case (9):
-                    return "Clown";
-                case (10):
-                    return "Griffon";
-                case (11):
-                    return "Pixie";
-                case (12):
-                    return "Elephant";
-                case (13):
-                    return "Flower1";
-                case (14):
-                    return "Beast";
-                case (15):
-                    return "Ghost";
-                case (16):
-                    return "Dragon";
-                case (17):
-                    return "Tapir";
-                case (18):
-                    return "Spider";
-                case (19):
-                    return "Fire Elemental";
-                case (20):
-                    return "Ice Elemental";
-                case (21):
-                    return "Lightning Elemental";
-                case (22):
-                    return "Water Elemental";
-                case (23):
-                    return "Wind Elemental";
-                case (24):
-                    return "Mask1";
-                case (25):
-                    return "Pumpkin";
-                case (26):
-                    return "Mummy";
-                case (27):
-                    return "Flower2";
-                case (28):
-                    return "Fire Gemron";
-                case (29):
-                    return "Ice Gemron";
-                case (30):
-                    return "Lightning Gemron";
-                case (31):
-                    return "Wind Gemron";
-                case (32):
-                    return "Holy Gemron";
-                case (33):
-                    return "Mask2";
-                case (34):
-                    return "Ram";
-                case (35):
-                    return "Mole";
-                case (36):
-                    return "Snake";
-                case (37):
-                    return "Fish";
-                case (38):
-                    return "Naga";
-                case (39):
-                    return "Dog Statue";
-                case (40):
-                    return "Rock";
-                case (41):
-                    return "Statue";
-                case (42):
-                    return "Golem";
-                case (43):
-                    return "Big Skeleton";
-                case (44):
-                    return "Skeleton";
-                case (45):
-                    return "Pirate Skeleton";
-                case (46):
-                    return "Pirate Captain Skeleton";
-                case (47):
-                    return "Dagger Skeleton";
-                case (48):
-                    return "Face";
-                case (49):
-                    return "Fairy";
-                case (50):
-                    return "Moon";
-                case (51):
-                    return "Shadow";
-                case (52):
-                    return "Priest";
-                case (53):
-                    return "Knight";
-                case (54):
-                    return "Tank";
-                case (55):
-                    return "Bomb";
-                case (56):
-                    return "Card (Clubs)";
-                case (57):
-                    return "Card (Hearts)";
-                case (58):
-                    return "Card (Spades)";
-                case (59):
-                    return "Card (Diamonds)";
-                case (60):
-                    return "Card (Joker)";
-                case (61):
-                    return "Mimic";
-                case (62):
-                    return "King Mimic";
-                case (63):
-                    return "Sonic Bomber";
-                case (64):
-                    return "Barrel Robot";
-                case (150):
-                    return "Bat";
-            }
-            return "";
-        }
+            0 => "Rat",
+            1 => "Vanguard",
+            2 => "Frog",
+            3 => "Tree",
+            4 => "Small Tree",
+            5 => "Fox",
+            6 => "Balloon",
+            7 => "Tortoise",
+            8 => "Turtle",
+            9 => "Clown",
+            10 => "Griffon",
+            11 => "Pixie",
+            12 => "Elephant",
+            13 => "Flower1",
+            14 => "Beast",
+            15 => "Ghost",
+            16 => "Dragon",
+            17 => "Tapir",
+            18 => "Spider",
+            19 => "Fire Elemental",
+            20 => "Ice Elemental",
+            21 => "Lightning Elemental",
+            22 => "Water Elemental",
+            23 => "Wind Elemental",
+            24 => "Mask1",
+            25 => "Pumpkin",
+            26 => "Mummy",
+            27 => "Flower2",
+            28 => "Fire Gemron",
+            29 => "Ice Gemron",
+            30 => "Lightning Gemron",
+            31 => "Wind Gemron",
+            32 => "Holy Gemron",
+            33 => "Mask2",
+            34 => "Ram",
+            35 => "Mole",
+            36 => "Snake",
+            37 => "Fish",
+            38 => "Naga",
+            39 => "Dog Statue",
+            40 => "Rock",
+            41 => "Statue",
+            42 => "Golem",
+            43 => "Big Skeleton",
+            44 => "Skeleton",
+            45 => "Pirate Skeleton",
+            46 => "Pirate Captain Skeleton",
+            47 => "Dagger Skeleton",
+            48 => "Face",
+            49 => "Fairy",
+            50 => "Moon",
+            51 => "Shadow",
+            52 => "Priest",
+            53 => "Knight",
+            54 => "Tank",
+            55 => "Bomb",
+            56 => "Card (Clubs)",
+            57 => "Card (Hearts)",
+            58 => "Card (Spades)",
+            59 => "Card (Diamonds)",
+            60 => "Card (Joker)",
+            61 => "Mimic",
+            62 => "King Mimic",
+            63 => "Sonic Bomber",
+            64 => "Barrel Robot",
+            150 => "Bat",
+            _ => string.Empty
+        };
 
-        internal static int GetLocationFromProgressionItem(long itemId)
-        {
-            var locations = GetLocations();
-            Dictionary<string, int> locationToItemDict = new Dictionary<string, int>()
-            {
-                { "Grape Juice", 370 },
-                { "Lafrescia Seed", 361 },
-                { "Fishing Rod", 302 },
-                { "Earth Gem", 365 },
-                { "Starglass", 371 },
-                { "Miracle Dumplings", 364 },
-                { "White Windflower", 363 },
-                { "Wind Gem", 367 },
-                { "Electrim Worm", 370 },
-                { "Shell Talkie", 373 },
-                { "Secret Dragon Remedy", 375 },
-                { "Water Gem", 366 },
-                { "Time Bomb", 372 },
-                { "Fire Horn", 354 },
-                { "Fire Gem", 368 },
-                { "Flower of the Sun", 374 },
-
-            };
-            if (locationToItemDict.Any(x => x.Value == itemId))
-            {
-                var locationName = locationToItemDict.First(x => x.Value == itemId).Key;
-                var location = locations.First(x => x.Name.ToLower().Contains(locationName.ToLower()));
-                if (location != null) return location.Id;
-            }
-            return -1;
-        }
     }
 }
