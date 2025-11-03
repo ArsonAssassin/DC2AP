@@ -176,41 +176,45 @@ namespace DC2AP
             Log.Logger.Information("End of chests");
             return chests;
         }
+        //public static Floor ReadFloor(ulong currentAddress, bool debug = false)
+        //{
+        //    if (debug) Log.Logger.Information($"Starting floor read at {currentAddress.ToString("X8")}");
+        //    Floor floor = new Floor();
+        //    var data = new BitArray(Memory.ReadByteArray(currentAddress, 2));
+        //    data[0] = true;
+        //    byte[] newBytes = new byte[2];
+        //    data.CopyTo(newBytes, 0);
+        //    Memory.WriteByteArray(currentAddress, newBytes);
+        //    currentAddress += Addresses.ShortOffset;
+        //    if (debug) Log.Logger.Information($"Reading {currentAddress.ToString("X8")}");
+        //    var monstersKilled = Memory.ReadShort(currentAddress);
+        //    currentAddress += Addresses.ShortOffset;
+        //    if (debug) Log.Logger.Information($"Reading {currentAddress.ToString("X8")}");
+        //    var timesVisited = Memory.ReadShort(currentAddress);
+
+        //    floor.IsUnlocked = data[0].ToString();
+        //    floor.IsFinished = data[1].ToString();
+        //    var unknown1 = data[2].ToString();
+        //    floor.SpecialMedalCompleted = data[3].ToString();
+
+        //    floor.ClearMedalCompleted = data[4].ToString();
+        //    floor.FishMedalCompleted = data[5].ToString();
+        //    var unknown3 = data[6].ToString();
+        //    floor.SphedaMedalCompleted = data[7].ToString();
+
+        //    floor.GotGeostone = data[8].ToString();
+        //    floor.DownloadedGeostone = data[9].ToString();
+        //    floor.KilledAllMonsters = data[10].ToString();
+
+        //    floor.MonstersKilled = monstersKilled;
+        //    floor.TimesVisited = timesVisited;
+
+
+        //    return floor;
+        }
         public static Floor ReadFloor(ulong currentAddress, bool debug = false)
         {
-            if (debug) Log.Logger.Information($"Starting floor read at {currentAddress.ToString("X8")}");
-            Floor floor = new Floor();
-            var data = new BitArray(Memory.ReadByteArray(currentAddress, 2));
-            data[0] = true;
-            byte[] newBytes = new byte[2];
-            data.CopyTo(newBytes, 0);
-            Memory.WriteByteArray(currentAddress, newBytes);
-            currentAddress += Addresses.ShortOffset;
-            if (debug) Log.Logger.Information($"Reading {currentAddress.ToString("X8")}");
-            var monstersKilled = Memory.ReadShort(currentAddress);
-            currentAddress += Addresses.ShortOffset;
-            if (debug) Log.Logger.Information($"Reading {currentAddress.ToString("X8")}");
-            var timesVisited = Memory.ReadShort(currentAddress);
-
-            floor.IsUnlocked = data[0].ToString();
-            floor.IsFinished = data[1].ToString();
-            var unknown1 = data[2].ToString();
-            floor.SpecialMedalCompleted = data[3].ToString();
-
-            floor.ClearMedalCompleted = data[4].ToString();
-            floor.FishMedalCompleted = data[5].ToString();
-            var unknown3 = data[6].ToString();
-            floor.SphedaMedalCompleted = data[7].ToString();
-
-            floor.GotGeostone = data[8].ToString();
-            floor.DownloadedGeostone = data[9].ToString();
-            floor.KilledAllMonsters = data[10].ToString();
-
-            floor.MonstersKilled = monstersKilled;
-            floor.TimesVisited = timesVisited;
-
-
-            return floor;
+            return Memory.ReadObject<Floor>(currentAddress);
         }
         public static List<Enemy> ReadEnemies()
         {
