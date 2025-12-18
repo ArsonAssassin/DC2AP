@@ -14,6 +14,10 @@ namespace DC2AP
         public static ulong ShortOffset = 0x02;
         public static ulong IntOffset = 0x04;
 
+        public static int ItemSlotSize = 0x6C;
+        public static int ItemQuantityOffset = 0x0F;
+        public static int CrystalQuantityOffset = 0x48;
+
         public static ulong CurrentFloor = 0x01ECD638;
         public static ulong CurrentDungeon = 0x00376638;
         public static ulong[] DungeonAreaChestAddress = { 0x00E656A0, 0x00E65D60, 0x00E67220, 0x00E67620, 0x00E681A0, 0x00E679A0, 0x00E68960 };

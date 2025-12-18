@@ -62,25 +62,25 @@ namespace DC2AP.Models
                 }
             }
         }
-        public int FreeInventorySlots => 144 - inventory.Count;
+        public int FreeInventorySlots => Constants.MAX_INVENTORY_SLOTS - inventory.Count;
         public int GetFirstSlot(int itemId = 0)
         {
-            if (inventory.Any(x => x.Id == itemId))
+            var itemSlot = inventory.Select((item, index) => new { item, index })
+                                    .FirstOrDefault(x => x.item.Id == itemId);
+            if (itemSlot != null)
+                return itemSlot.index;
+
+            if (itemId != 0)
             {
-                return inventory.IndexOf(inventory.First(x => x.Id == itemId));
+                var emptySlot = inventory.Select((item, index) => new { item, index })
+                                         .FirstOrDefault(x => x.item.Id == 0);
+                return emptySlot?.index ?? -1;
             }
-            else if (itemId != 0)
-            {
-                if (inventory.Any(x => x.Id == 0))
-                {
-                    return inventory.IndexOf(inventory.First(x => x.Id == 0));
-                }
-            }
+
             return -1;
         }
         public event EventHandler<InventoryChangedEventArgs>? InventoryChanged;
         public event PropertyChangedEventHandler? PropertyChanged;
-        public static List<DarkCloud2Item> ItemList { get; set; }
         public void OnPropertyChanged([CallerMemberName] string propertyName = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
@@ -90,15 +90,19 @@ namespace DC2AP.Models
 
             var startAddress = Addresses.InventoryStartAddress;
 
-            for (int i = 0; i < 144; i++)
+            for (int i = 0; i < Constants.MAX_INVENTORY_SLOTS; i++)
             {
                 DarkCloud2Item item = new DarkCloud2Item();
+
+                var foo = Memory.ReadObject<DarkCloud2Item>(startAddress);
+                foo.Name = Helpers.ItemList.First(x => x.Id == foo.Id).Name;
+                foo.IsProgression = Helpers.ItemList.FirstOrDefault(x => x.Id == foo.Id).IsProgression;
 
                 var itemId = Memory.ReadShort(startAddress);
                 item.Id = itemId;
                 var itemType = Memory.ReadShort(startAddress - Addresses.ShortOffset);
                 item.Type = (DarkCloud2ItemType)itemType;
-                item.Name = ItemList.First(x => x.Id == item.Id).Name;
+                item.Name = Helpers.ItemList.First(x => x.Id == item.Id).Name;
                 if (item.Type == Enums.DarkCloud2ItemType.Crystal)
                 {
                     var itemQuantityAddress = startAddress + 0x00000048;
@@ -107,20 +111,19 @@ namespace DC2AP.Models
                 }
                 else
                 {
-                    var itemQuantityAddress = startAddress + 0x0000000E;
+                    var itemQuantityAddress = startAddress + (ulong)Addresses.ItemQuantityOffset;
                     var itemQuantity = Memory.ReadShort(itemQuantityAddress);
                     item.Quantity = (ushort)itemQuantity;
                 }
-                item.IsProgression = ItemList.FirstOrDefault(x => x.Id == itemId).isProgression;
-                startAddress += 0x0000006C;
+                item.IsProgression = Helpers.ItemList.FirstOrDefault(x => x.Id == itemId).IsProgression;
+                startAddress += (ulong)Addresses.ItemSlotSize;
                 Inventory[i] =item;
             }
 
         }
         public PlayerState()
         {
-            ItemList = Helpers.GetItemIds();
-            Inventory = new ObservableCollection<DarkCloud2Item>(Enumerable.Range(0, 144).Select(_ => new DarkCloud2Item()));
+            Inventory = new ObservableCollection<DarkCloud2Item>(Enumerable.Range(0, Constants.MAX_INVENTORY_SLOTS).Select(_ => new DarkCloud2Item()));
             Inventory.CollectionChanged += (obj, args) =>
             {
                 List<DarkCloud2Item> newItems = new List<DarkCloud2Item>();
@@ -128,7 +131,7 @@ namespace DC2AP.Models
                 InventoryChangedEventArgs newArgs = null;
                 if(oldInventory != null)
                 {
-                    for(int i = 0; i < 144; i++)
+                    for(int i = 0; i < Constants.MAX_INVENTORY_SLOTS; i++)
                     {
                         var oldItem = oldInventory[i];
                         var newItem = Inventory[i];

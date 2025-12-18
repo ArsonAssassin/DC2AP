@@ -1,4 +1,5 @@
 ﻿using Archipelago.Core.Models;
+using Archipelago.Core.Util;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,9 +11,24 @@ namespace DC2AP.Models
 {
     public class DarkCloud2Item : Item
     {
-        public bool isProgression { get; set; }
-        public long locationId { get; set; }
-        public ushort Quantity { get; set; }
+        [MemoryOffset(0x00)]
+        public new short Id { get; set; }
+        public ushort Quantity
+        {
+            get => Type == DarkCloud2ItemType.Crystal ? CrystalQuantity : ItemQuantity;
+            set
+            {
+                if (Type == DarkCloud2ItemType.Crystal)
+                    CrystalQuantity = value;
+                else
+                    ItemQuantity = value;
+            }
+        }
+        [MemoryOffset(0x02)]
         public DarkCloud2ItemType Type {  get; set; }
+        [MemoryOffset(0x0F)]
+        public ushort ItemQuantity {  get; set; }
+        [MemoryOffset(0x48)]
+        public ushort CrystalQuantity { get; set; }
     }
 }

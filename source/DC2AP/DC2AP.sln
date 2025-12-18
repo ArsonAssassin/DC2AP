@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DC2AP", "DC2AP.csproj", "{F
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DC2AP.Desktop", "..\DC2AP.Desktop\DC2AP.Desktop.csproj", "{AD6DC180-0BCB-F671-BAA6-EFF8ADCFB14F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Archipelago.Core", "..\..\..\Archipelago.Core\Archipelago.Core.csproj", "{55C31BA8-27C2-D2E7-C7FB-EED2A858D5A3}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,10 +21,6 @@ Global
 		{AD6DC180-0BCB-F671-BAA6-EFF8ADCFB14F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AD6DC180-0BCB-F671-BAA6-EFF8ADCFB14F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AD6DC180-0BCB-F671-BAA6-EFF8ADCFB14F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{55C31BA8-27C2-D2E7-C7FB-EED2A858D5A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{55C31BA8-27C2-D2E7-C7FB-EED2A858D5A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{55C31BA8-27C2-D2E7-C7FB-EED2A858D5A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{55C31BA8-27C2-D2E7-C7FB-EED2A858D5A3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

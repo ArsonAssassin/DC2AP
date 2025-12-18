@@ -62,8 +62,8 @@ namespace DC2AP.Models
 		public ushort TimesVisited { get; set; }
 		
 		// Unknown data section (14 bytes)
-		[MemoryOffset(0x06, collectionLength: 14)]
-		public List<byte> UnknownData { get; set; }
+		[MemoryOffset(0x06, stringLength:7)]
+		public string UnknownData { get; set; }
 	}
 	
 }

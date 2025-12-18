@@ -17,14 +17,29 @@ namespace DC2AP
 {
     public static class Helpers
     {
-        private const int AP_ID_OFFSET = 694200000;
+        public static List<ItemId> ItemList { get; set; }
+        public static List<Enemy> EnemyList { get; set; }
+        public static List<QuestId> QuestList { get; set; }
+        public static List<Dungeon> DungeonList { get; set; }
+        public static void PopulateLists()
+        {
+            Log.Logger.Debug("Building Item List");
+            ItemList = Helpers.GetItemIds();
+            Log.Logger.Debug("Building Quest List");
+            QuestList = Helpers.GetQuestIds();
+            Log.Logger.Debug("Building Dungeon List");
+            DungeonList = PopulateDungeons();
+            Log.Logger.Debug("Building Enemy List");
+            EnemyList = Helpers.ReadEnemies();
+        }
+
         private static T DeserializeResource<T>(string resourceName)
         {
             var json = OpenEmbeddedResource(resourceName);
             return JsonConvert.DeserializeObject<T>(json)!;
         }
-        public static List<DarkCloud2Item> GetItemIds() =>
-            DeserializeResource<List<DarkCloud2Item>>("DC2AP.Resources.ItemIds.json");
+        public static List<ItemId> GetItemIds() =>
+            DeserializeResource<List<ItemId>>("DC2AP.Resources.ItemIds.json");
 
         public static List<QuestId> GetQuestIds() =>
             DeserializeResource<List<QuestId>>("DC2AP.Resources.QuestIds.json");
@@ -57,8 +72,8 @@ namespace DC2AP
                 _ => Array.Empty<(int, int)>()
             };
         }
-        public static int ToAPId(int gameId) => gameId + AP_ID_OFFSET;
-        public static int ToGameId(int apId) => apId - AP_ID_OFFSET;
+        public static int ToAPId(int gameId) => gameId + Constants.AP_ID_OFFSET;
+        public static int ToGameId(int apId) => apId - Constants.AP_ID_OFFSET;
         private static bool GetBitValue(byte value, int bitIndex)
         {
             return (value & (1 << bitIndex)) != 0;
@@ -69,8 +84,13 @@ namespace DC2AP
             var alreadyHave = playerState.Inventory.Any(x => x.Id == item.Id);
 
             var slotNum = playerState.GetFirstSlot((int)item.Id);
+            if (slotNum == -1)
+            {
+                Log.Logger.Warning($"No available slot for item {item.Name}");
+                return;
+            }
             var address = GetItemSlotAddress(slotNum);
-            var currentQuantity = Memory.ReadUShort(address + 0xE);
+            var currentQuantity = Memory.ReadUShort(address + (ulong)Addresses.ItemQuantityOffset);
             WriteItem(item, address, (ushort)(currentQuantity + quantity));
         }
         public static void RemoveItem(Item item, PlayerState playerState)
@@ -78,7 +98,7 @@ namespace DC2AP
             var slot = playerState.GetFirstSlot((int)item.Id);
             if (slot == -1) return; //Player does not have that item
             var address = GetItemSlotAddress(slot);
-            var currentQuantity = Memory.ReadShort(address + 0xE);
+            var currentQuantity = Memory.ReadShort(address + (ulong)Addresses.ItemQuantityOffset);
             if (currentQuantity <= 1)
             {
                 RemoveAllItem(item, playerState);
@@ -98,9 +118,10 @@ namespace DC2AP
         }
         public static void WriteItem(Item item, ulong address, ushort quantity)
         {
+            // Writing the items acts weird if you dont access them via a read first. investigate later.
             ReadItem(address);
             Memory.Write(address, (ushort)item.Id);
-            Memory.Write(address + 0x0000000F, quantity);
+            Memory.Write(address + (ulong)Addresses.ItemQuantityOffset, quantity);
         }
         public static void ReadItem(ulong address)
         {
@@ -112,7 +133,7 @@ namespace DC2AP
         public static ulong GetItemSlotAddress(int slotNum)
         {
             var startAddress = Addresses.InventoryStartAddress;
-            ulong offset = (uint)(0x6c * (slotNum));
+            ulong offset = (uint)(Addresses.ItemSlotSize * (slotNum));
             return startAddress + offset;
         }
         public static long GetLocationFromProgressionItem(int progressionId)
@@ -120,7 +141,7 @@ namespace DC2AP
             var itemList = GetItemIds();
             var current = itemList.FirstOrDefault(x => x.Id == progressionId);
             if (current == null) return -1;
-            return current.locationId;
+            return current.LocationId;
 
         }
         static Chest ReadChest(ulong startAddress, bool isDouble = false)
@@ -211,10 +232,30 @@ namespace DC2AP
 
 
         //    return floor;
-        }
+        //}
         public static Floor ReadFloor(ulong currentAddress, bool debug = false)
         {
             return Memory.ReadObject<Floor>(currentAddress);
+        }
+        public static List<Dungeon> PopulateDungeons()
+        {
+            List<Dungeon> dungeons = GetDungeons();
+
+            var currentAddress = Addresses.DungeonStartAddress;
+
+            foreach (var dungeon in dungeons)
+            {
+                dungeon.Floors = new List<Floor>();
+                for (int i = 0; i < dungeon.FloorCount; i++)
+                {
+                    Floor floor = ReadFloor(currentAddress);
+                    currentAddress += 0x14;
+                    dungeon.Floors.Add(floor);
+                    Log.Logger.Debug(JsonConvert.SerializeObject(floor, Formatting.Indented));
+                }
+                currentAddress += 0x14;
+            }
+            return dungeons;
         }
         public static List<Enemy> ReadEnemies()
         {

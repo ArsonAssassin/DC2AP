@@ -28,10 +28,6 @@ public partial class App : Application
 {
     static MainWindowViewModel Context;
     public static ArchipelagoClient Client { get; set; }
-    public static List<DarkCloud2Item> ItemList { get; set; }
-    public static List<Enemy> EnemyList { get; set; }
-    public static List<QuestId> QuestList { get; set; }
-    public static List<Dungeon> DungeonList { get; set; }
     public static PlayerState CurrentPlayerState;
     private static readonly object _lockObject = new object();
     Timer updateTimer = new Timer(TimeSpan.FromSeconds(10));
@@ -81,9 +77,9 @@ public partial class App : Application
         Client.MessageReceived -= Client_MessageReceived;
         Client.CancelMonitors();
     }
-    private async Task<bool> TryConnectToGame()
+    private bool TryConnectToGame()
     {
-        var client = new PCSX2Client();
+        var client = new GenericGameClient("pcsx2-qt");
         if (!client.Connect())
         {
             Log.Logger.Error("PCSX2 not running, open PCSX2 and load your game before connecting!");
@@ -105,7 +101,7 @@ public partial class App : Application
 
         await Client.Connect(e.Host, "Dark Cloud 2");
 
-        PopulateLists();
+        Helpers.PopulateLists();
         CurrentPlayerState = new PlayerState();
 
         await Client.Login(e.Slot, string.IsNullOrWhiteSpace(e.Password) ? null : e.Password);
@@ -122,7 +118,7 @@ public partial class App : Application
         Log.Logger.Information("Connecting...");
         UnsubscribeClientEvents();
 
-        if (!await TryConnectToGame())
+        if (!TryConnectToGame())
         {
             Context.ConnectButtonEnabled = true;
             return;
@@ -139,7 +135,7 @@ public partial class App : Application
     {
         if (CurrentPlayerState == null) return;
 
-        CurrentPlayerState.InventoryChanged += async (_, args) =>
+        CurrentPlayerState.InventoryChanged += (_, args) =>
         {
             Log.Logger.Information($"Inventory changed: {JsonConvert.SerializeObject(args, Formatting.Indented)}");
 
@@ -196,7 +192,7 @@ public partial class App : Application
         }
         else if (gameVersion == "PAL")
         {
-            Log.Logger.Information("You have loaded the Dark Chronicle (PAL). Only Dark Cloud 2 (US) is supported");
+            Log.Logger.Information("You have loaded Dark Chronicle (PAL). Only Dark Cloud 2 (US) is supported");
             Context.ConnectButtonEnabled = true;
             return false;
         }
@@ -204,17 +200,7 @@ public partial class App : Application
         return true;
     }
 
-    static void PopulateLists()
-    {
-        Log.Logger.Debug("Building Item List");
-        ItemList = Helpers.GetItemIds();
-        Log.Logger.Debug("Building Quest List");
-        QuestList = Helpers.GetQuestIds();
-        Log.Logger.Debug("Building Dungeon List");
-        DungeonList = PopulateDungeons();
-        Log.Logger.Debug("Building Enemy List");
-        EnemyList = Helpers.ReadEnemies();
-    }
+
     static void UpdatePlayerState()
     {
         CurrentPlayerState ??= new PlayerState();
@@ -224,46 +210,35 @@ public partial class App : Application
         CurrentPlayerState.MedalCount = Memory.ReadShort(Addresses.PlayerMedals);
         CurrentPlayerState.UpdateInventory();
     }
-    public static List<Dungeon> PopulateDungeons()
-    {
-        List<Dungeon> dungeons = Helpers.GetDungeons();
 
-        var currentAddress = Addresses.DungeonStartAddress;
-
-        foreach (var dungeon in dungeons)
-        {
-            dungeon.Floors = new List<Floor>();
-            for (int i = 0; i < dungeon.FloorCount; i++)
-            {
-                Floor floor = Helpers.ReadFloor(currentAddress);
-                currentAddress += 0x14;
-                dungeon.Floors.Add(floor);
-                Log.Logger.Debug(JsonConvert.SerializeObject(floor, Formatting.Indented));
-            }
-            currentAddress += 0x14;
-        }
-        return dungeons;
-    }
     private void Client_ItemReceived(object? sender, ItemReceivedEventArgs e)
     {
         e.Item.Id = Helpers.ToGameId((int)e.Item.Id);
         if (e.Item.Id <= 428)
         {
-            e.Item.Name = ItemList.First(x => x.Id == e.Item.Id).Name;
+            e.Item.Name = Helpers.ItemList.First(x => x.Id == e.Item.Id).Name;
             Helpers.AddItem(e.Item, CurrentPlayerState);
+        }
+        else if (e.Item.Id <= 1999 && e.Item.Id >= 1000)
+        {
+            //An event was completed
         }
         else if (e.Item.Id <= 2999 && e.Item.Id >= 2000)
         {
-            // Reward item
-            var pack = Helpers.GetRewardPack(e.Item.Id);
-            foreach (var (itemId, quantity) in pack)
+            RxApp.MainThreadScheduler.ScheduleAsync(async (s, t) =>
             {
-                Helpers.AddItem(new Item { Id = itemId }, CurrentPlayerState, quantity, true);
-            }
+                // Reward item
+                var pack = Helpers.GetRewardPack(e.Item.Id);
+                foreach (var (itemId, quantity) in pack)
+                {
+                    Helpers.AddItem(new Item { Id = itemId }, CurrentPlayerState, quantity, true);
+                    await Task.Delay(100);
+                }
+            });
         }
         else
         {
-            //An event was completed
+            // Unknown item id
         }
     }
 
