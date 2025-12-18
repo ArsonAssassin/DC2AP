@@ -43,7 +43,7 @@ namespace DC2AP
 
         public static ulong PlayerGilda = 0x01E6384C;
         public static ulong PlayerMedals = 0x01E63850;
-        public static ulong InventoryStartAddress = 0x01E1EAB2;
+        public static ulong InventoryStartAddress = 0x01E1EAB0;
 
     }
 }

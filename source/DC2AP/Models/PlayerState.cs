@@ -91,33 +91,22 @@ namespace DC2AP.Models
             var startAddress = Addresses.InventoryStartAddress;
 
             for (int i = 0; i < Constants.MAX_INVENTORY_SLOTS; i++)
-            {
-                DarkCloud2Item item = new DarkCloud2Item();
-
-                var foo = Memory.ReadObject<DarkCloud2Item>(startAddress);
-                foo.Name = Helpers.ItemList.First(x => x.Id == foo.Id).Name;
-                foo.IsProgression = Helpers.ItemList.FirstOrDefault(x => x.Id == foo.Id).IsProgression;
-
-                var itemId = Memory.ReadShort(startAddress);
-                item.Id = itemId;
-                var itemType = Memory.ReadShort(startAddress - Addresses.ShortOffset);
-                item.Type = (DarkCloud2ItemType)itemType;
-                item.Name = Helpers.ItemList.First(x => x.Id == item.Id).Name;
-                if (item.Type == Enums.DarkCloud2ItemType.Crystal)
+            {             
+                var item = Memory.ReadObject<DarkCloud2Item>(startAddress);
+                var itemLookup = Helpers.ItemList.First(x => x.Id == item.Id);
+                if (item.Type != DarkCloud2ItemType.Weapon)
                 {
-                    var itemQuantityAddress = startAddress + 0x00000048;
-                    var itemQuantity = Memory.ReadShort(itemQuantityAddress);
-                    item.Quantity = (ushort)itemQuantity;
+                    item.Name = itemLookup.Name;
                 }
-                else
+                item.IsProgression = itemLookup.IsProgression;
+                if(item.Id == 90)
                 {
-                    var itemQuantityAddress = startAddress + (ulong)Addresses.ItemQuantityOffset;
-                    var itemQuantity = Memory.ReadShort(itemQuantityAddress);
-                    item.Quantity = (ushort)itemQuantity;
+                    Console.Write("");
+                    var item2 = Memory.ReadObject<DarkCloud2Item>(startAddress);
                 }
-                item.IsProgression = Helpers.ItemList.FirstOrDefault(x => x.Id == itemId).IsProgression;
                 startAddress += (ulong)Addresses.ItemSlotSize;
                 Inventory[i] =item;
+
             }
 
         }
