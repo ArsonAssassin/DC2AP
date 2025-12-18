@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <!--If you are willing to use Windows/MacOS native APIs you will need to create 3 projects.
@@ -13,14 +13,13 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
     <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
-
     <!-- Display name -->
     <ApplicationTitle>DC2AP</ApplicationTitle>
     <!-- App Identifier -->
     <ApplicationId>com.arsonassassin.dc2ap</ApplicationId>
     <!-- Versions -->
-    <ApplicationDisplayVersion>0.0.3</ApplicationDisplayVersion>
-    <ApplicationVersion>0.0.3</ApplicationVersion>
+    <ApplicationDisplayVersion>0.0.4.0</ApplicationDisplayVersion>
+    <ApplicationVersion>0.0.4.0</ApplicationVersion>
     <Version>0.0.3</Version>
     <!-- Single File Publishing Properties -->
     <PublishSingleFile>true</PublishSingleFile>
@@ -31,11 +30,9 @@
     <UseWindowsForms>false</UseWindowsForms>
     <UseWPF>false</UseWPF>
   </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="Avalonia.Desktop" Version="$(AvaloniaVersion)" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\DC2AP\DC2AP.csproj" />
   </ItemGroup>
