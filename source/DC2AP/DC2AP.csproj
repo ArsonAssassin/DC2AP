@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Resources\DefaultItems.json" />
     <None Remove="Resources\Dungeons.json" />
     <None Remove="Resources\ItemIds.json" />
     <None Remove="Resources\Locations.json" />
@@ -20,6 +21,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Resources\DefaultItems.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
     <EmbeddedResource Include="Resources\Dungeons.json" />
     <EmbeddedResource Include="Resources\ItemIds.json" />
     <EmbeddedResource Include="Resources\Locations.json" />

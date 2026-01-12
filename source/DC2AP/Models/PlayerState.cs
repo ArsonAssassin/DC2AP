@@ -49,10 +49,19 @@ namespace DC2AP.Models
         }
         private ObservableCollection<DarkCloud2Item> inventory;
         private List<DarkCloud2Item> oldInventory;
+        private bool isUpdating = false;
+
         public bool IsReceivingArchipelagoItem { get; set; }
         public ObservableCollection<DarkCloud2Item> Inventory
         {
-            get => inventory;
+            get
+            {
+                if (!isUpdating && inventory.All(x => x.Quantity == 0))
+                {
+                    UpdateInventory();
+                }
+                return inventory;
+            }
             set
             {
                 if (inventory != value)
@@ -65,15 +74,15 @@ namespace DC2AP.Models
         public int FreeInventorySlots => Constants.MAX_INVENTORY_SLOTS - inventory.Count;
         public int GetFirstSlot(int itemId = 0)
         {
-            var itemSlot = inventory.Select((item, index) => new { item, index })
-                                    .FirstOrDefault(x => x.item.Id == itemId);
+            var itemSlot = Inventory.Select((item, index) => new { item, index })
+                                    .FirstOrDefault(x => x.item.ItemId == itemId);
             if (itemSlot != null)
                 return itemSlot.index;
 
             if (itemId != 0)
             {
                 var emptySlot = inventory.Select((item, index) => new { item, index })
-                                         .FirstOrDefault(x => x.item.Id == 0);
+                                         .FirstOrDefault(x => x.item.ItemId == 0);
                 return emptySlot?.index ?? -1;
             }
 
@@ -87,28 +96,34 @@ namespace DC2AP.Models
         }
         public void UpdateInventory()
         {
+            isUpdating = true;
+            try
+            {
+                var startAddress = Addresses.InventoryStartAddress;
 
-            var startAddress = Addresses.InventoryStartAddress;
-
-            for (int i = 0; i < Constants.MAX_INVENTORY_SLOTS; i++)
-            {             
-                var item = Memory.ReadObject<DarkCloud2Item>(startAddress);
-                var itemLookup = Helpers.ItemList.First(x => x.Id == item.Id);
-                if (item.Type != DarkCloud2ItemType.Weapon)
+                for (int i = 0; i < Constants.MAX_INVENTORY_SLOTS; i++)
                 {
-                    item.Name = itemLookup.Name;
-                }
-                item.IsProgression = itemLookup.IsProgression;
-                if(item.Id == 90)
-                {
-                    Console.Write("");
-                    var item2 = Memory.ReadObject<DarkCloud2Item>(startAddress);
-                }
-                startAddress += (ulong)Addresses.ItemSlotSize;
-                Inventory[i] =item;
+                    var item = Memory.ReadObject<DarkCloud2Item>(startAddress);
+                    var itemLookup = Helpers.ItemList.First(x => x.Id == item.ItemId);
+                    if (item.Type != DarkCloud2ItemType.Weapon)
+                    {
+                        item.Name = itemLookup.Name;
+                    }
+                    item.IsProgression = itemLookup.IsProgression;
+                    if (item.ItemId == 90)
+                    {
+                        Console.Write("");
+                        var item2 = Memory.ReadObject<DarkCloud2Item>(startAddress);
+                    }
+                    startAddress += (ulong)Addresses.ItemSlotSize;
+                    Inventory[i] = item;
 
+                }
             }
-
+            finally
+            {
+                isUpdating = false;
+            }
         }
         public PlayerState()
         {
@@ -125,22 +140,22 @@ namespace DC2AP.Models
                         var oldItem = oldInventory[i];
                         var newItem = Inventory[i];
 
-                        if(oldItem.Id == newItem.Id && oldItem.Quantity == newItem.Quantity)
+                        if(oldItem.ItemId == newItem.ItemId && oldItem.Quantity == newItem.Quantity)
                         {
                             //No change
                             continue;
                         }
-                        else if(newItem.Id == 0 || newItem.Quantity == 0)
+                        else if(newItem.ItemId == 0 || newItem.Quantity == 0)
                         {
                             // item was removed
                             removedItems.Add(oldItem);
                         }
-                        else if(oldItem.Id == 0 && newItem.Id != 0)
+                        else if(oldItem.ItemId == 0 && newItem.ItemId != 0)
                         {
                             //item was added
                             newItems.Add(newItem);
                         }
-                        else if (newItem.Id == oldItem.Id && newItem.Quantity != oldItem.Quantity)
+                        else if (newItem.ItemId == oldItem.ItemId && newItem.Quantity != oldItem.Quantity)
                         {
                             // item quantity changed
                             newItems.Add(newItem);

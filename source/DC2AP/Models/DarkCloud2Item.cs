@@ -17,13 +17,50 @@ namespace DC2AP.Models
         public short RawType {  get; set; }
         public DarkCloud2ItemType Type { get => (DarkCloud2ItemType)Enum.ToObject(typeof(DarkCloud2ItemType), RawType); }
 
-        [MemoryOffset(0x02)]
-        public new short Id { get; set; }
+        private short itemId;
 
+        [MemoryOffset(0x02)]
+        public short ItemId
+        {
+            get => itemId;
+            set
+            {
+                itemId = value;
+                base.Id = value;
+            }
+        }
+        public new long Id
+        {
+            get => base.Id;
+            set
+            {
+                base.Id = value;
+                itemId = (short)value;
+            }
+        }
         [MemoryOffset(0x04)]
         public short RawCategory { get; set; }
-        public new DarkCloud2ItemCategory Category { get => (DarkCloud2ItemCategory)Enum.ToObject(typeof(DarkCloud2ItemCategory), RawCategory); }
-
+        public DarkCloud2ItemCategory ItemCategory
+        {
+            get => (DarkCloud2ItemCategory)Enum.ToObject(typeof(DarkCloud2ItemCategory), RawCategory);
+            set
+            {
+                RawCategory = (short)value;
+                base.Category = value.ToString();  // Keep base class synchronized
+            }
+        }
+        public new string Category
+        {
+            get => ItemCategory.ToString();
+            set
+            {
+                base.Category = value;
+                if (Enum.TryParse<DarkCloud2ItemCategory>(value, out var enumValue))
+                {
+                    RawCategory = (short)enumValue;
+                }
+            }
+        }
         [MemoryOffset(0x06)]
         public short NameChangeFlag { get; set; }
 

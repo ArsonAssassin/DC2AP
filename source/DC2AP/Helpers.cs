@@ -17,6 +17,7 @@ namespace DC2AP
 {
     public static class Helpers
     {
+        public static List<DarkCloud2Item> DefaultItems {  get; set; }
         public static List<ItemId> ItemList { get; set; }
         public static List<Enemy> EnemyList { get; set; }
         public static List<QuestId> QuestList { get; set; }
@@ -25,6 +26,8 @@ namespace DC2AP
         {
             Log.Logger.Debug("Building Item List");
             ItemList = Helpers.GetItemIds();
+            Log.Logger.Debug("Building Default Item List");
+            DefaultItems = Helpers.GetDefaultItems();
             Log.Logger.Debug("Building Quest List");
             QuestList = Helpers.GetQuestIds();
             Log.Logger.Debug("Building Dungeon List");
@@ -40,6 +43,9 @@ namespace DC2AP
         }
         public static List<ItemId> GetItemIds() =>
             DeserializeResource<List<ItemId>>("DC2AP.Resources.ItemIds.json");
+
+        public static List<DarkCloud2Item> GetDefaultItems() =>
+            DeserializeResource<List<DarkCloud2Item>>("DC2AP.Resources.DefaultItems.json");
 
         public static List<QuestId> GetQuestIds() =>
             DeserializeResource<List<QuestId>>("DC2AP.Resources.QuestIds.json");
@@ -78,23 +84,31 @@ namespace DC2AP
         {
             return (value & (1 << bitIndex)) != 0;
         }
-        public static void AddItem(Item item, PlayerState playerState, int quantity = 1, bool IsArchipelago = true)
+        public static void AddItem(DarkCloud2Item item, PlayerState playerState, int quantity = 1, bool IsArchipelago = true)
         {
             playerState.IsReceivingArchipelagoItem = IsArchipelago;
-            var alreadyHave = playerState.Inventory.Any(x => x.Id == item.Id);
+            var itemId = item.ItemId;
+            var alreadyHave = playerState.Inventory.Any(x => x.Id == item.ItemId);
 
-            var slotNum = playerState.GetFirstSlot((int)item.Id);
+            var slotNum = playerState.GetFirstSlot((int)item.ItemId);
+            var currentQuantity = 0;
+            if (alreadyHave)
+            {
+                var existingItem = playerState.Inventory.First(x => x.Id == item.ItemId);
+                currentQuantity = existingItem.Quantity;
+
+            }
             if (slotNum == -1)
             {
                 Log.Logger.Warning($"No available slot for item {item.Name}");
                 return;
             }
             var address = GetItemSlotAddress(slotNum);
-            var currentQuantity = Memory.ReadUShort(address + (ulong)Addresses.ItemQuantityOffset);
             WriteItem(item, address, (ushort)(currentQuantity + quantity));
         }
-        public static void RemoveItem(Item item, PlayerState playerState)
+        public static void RemoveItem(DarkCloud2Item item, PlayerState playerState)
         {
+            playerState.IsReceivingArchipelagoItem = true;
             var slot = playerState.GetFirstSlot((int)item.Id);
             if (slot == -1) return; //Player does not have that item
             var address = GetItemSlotAddress(slot);
@@ -108,28 +122,20 @@ namespace DC2AP
                 WriteItem(item, address, (ushort)(currentQuantity - 1));
             }
         }
-        public static void RemoveAllItem(Item item, PlayerState playerState)
+        public static void RemoveAllItem(DarkCloud2Item item, PlayerState playerState)
         {
+            playerState.IsReceivingArchipelagoItem = true;
             var slot = playerState.GetFirstSlot((int)item.Id);
             if (slot == -1) return; //Player does not have that item
             var address = GetItemSlotAddress(slot);
-            var emptyItem = new Item { Id = 0, IsProgression = false, Name = "null" };
+            var emptyItem = new DarkCloud2Item { Id = 0, IsProgression = false, Name = "null" };
             WriteItem(emptyItem, address, 0);
         }
-        public static void WriteItem(Item item, ulong address, ushort quantity)
+        public static void WriteItem(DarkCloud2Item item, ulong address, ushort quantity)
         {
-            // Writing the items acts weird if you dont access them via a read first. investigate later.
-            ReadItem(address);
-            Memory.Write(address, (ushort)item.Id);
-            Memory.Write(address + (ulong)Addresses.ItemQuantityOffset, quantity);
+            Memory.WriteObject<DarkCloud2Item>(address, item);
         }
-        public static void ReadItem(ulong address)
-        {
-            for (int i = 0; i < 54; i++)
-            {
-                _ = Memory.ReadShort(address + (ulong)(2 * i));
-            }
-        }
+
         public static ulong GetItemSlotAddress(int slotNum)
         {
             var startAddress = Addresses.InventoryStartAddress;

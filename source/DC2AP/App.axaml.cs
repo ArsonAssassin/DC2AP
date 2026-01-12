@@ -99,7 +99,7 @@ public partial class App : Application
         Client.ItemReceived += Client_ItemReceived;
         Client.MessageReceived += Client_MessageReceived;
 
-        await Client.Connect(e.Host, "Dark Cloud 2");
+        await Client.Connect(e.Host, "Dark Cloud 2", e.Slot);
 
         Helpers.PopulateLists();
         CurrentPlayerState = new PlayerState();
@@ -216,8 +216,12 @@ public partial class App : Application
         e.Item.Id = Helpers.ToGameId((int)e.Item.Id);
         if (e.Item.Id <= 428)
         {
-            e.Item.Name = Helpers.ItemList.First(x => x.Id == e.Item.Id).Name;
-            Helpers.AddItem(e.Item, CurrentPlayerState);
+            var newItem = Helpers.DefaultItems.FirstOrDefault(x => x.Id == e.Item.Id);
+            if(newItem == null)
+            {
+                Log.Logger.Error($"Could not find default item stats for item with id: {e.Item.Id}");
+            }
+            Helpers.AddItem(newItem, CurrentPlayerState, 1, true);
         }
         else if (e.Item.Id <= 1999 && e.Item.Id >= 1000)
         {
@@ -231,14 +235,19 @@ public partial class App : Application
                 var pack = Helpers.GetRewardPack(e.Item.Id);
                 foreach (var (itemId, quantity) in pack)
                 {
-                    Helpers.AddItem(new Item { Id = itemId }, CurrentPlayerState, quantity, true);
+                    var newItem = Helpers.DefaultItems.FirstOrDefault(x => x.Id == itemId);
+                    if (newItem == null)
+                    {
+                        Log.Logger.Error($"Could not find default item stats for item with id: {e.Item.Id}");
+                    }
+                    Helpers.AddItem(newItem, CurrentPlayerState, quantity, true);
                     await Task.Delay(100);
                 }
             });
         }
         else
         {
-            // Unknown item id
+            Log.Logger.Error($"Could not find default item stats for item with id: {e.Item.Id}");
         }
     }
 
