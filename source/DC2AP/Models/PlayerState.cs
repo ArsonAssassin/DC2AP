@@ -1,5 +1,6 @@
 ﻿using Archipelago.Core.Models;
 using Archipelago.Core.Util;
+using DC2AP.Helpers;
 using ReactiveUI;
 using Serilog;
 using System;
@@ -54,14 +55,7 @@ namespace DC2AP.Models
         public bool IsReceivingArchipelagoItem { get; set; }
         public ObservableCollection<DarkCloud2Item> Inventory
         {
-            get
-            {
-                if (!isUpdating && inventory.All(x => x.Quantity == 0))
-                {
-                    UpdateInventory();
-                }
-                return inventory;
-            }
+            get => inventory;
             set
             {
                 if (inventory != value)
@@ -74,7 +68,7 @@ namespace DC2AP.Models
         public int FreeInventorySlots => Constants.MAX_INVENTORY_SLOTS - inventory.Count;
         public int GetFirstSlot(int itemId = 0)
         {
-            var itemSlot = Inventory.Select((item, index) => new { item, index })
+            var itemSlot = inventory.Select((item, index) => new { item, index })
                                     .FirstOrDefault(x => x.item.ItemId == itemId);
             if (itemSlot != null)
                 return itemSlot.index;
@@ -104,12 +98,11 @@ namespace DC2AP.Models
                 for (int i = 0; i < Constants.MAX_INVENTORY_SLOTS; i++)
                 {
                     var item = Memory.ReadObject<DarkCloud2Item>(startAddress);
-                    var itemLookup = Helpers.ItemList.First(x => x.Id == item.ItemId);
+                    var itemLookup = GeneralHelpers.ItemList.First(x => x.Id == item.ItemId);
                     if (item.Type != DarkCloud2ItemType.Weapon)
                     {
                         item.Name = itemLookup.Name;
                     }
-                    item.IsProgression = itemLookup.IsProgression;
                     if (item.ItemId == 90)
                     {
                         Console.Write("");

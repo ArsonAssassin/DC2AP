@@ -13,9 +13,9 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DC2AP
+namespace DC2AP.Helpers
 {
-    public static class Helpers
+    public static class GeneralHelpers
     {
         public static List<DarkCloud2Item> DefaultItems {  get; set; }
         public static List<ItemId> ItemList { get; set; }
@@ -25,15 +25,15 @@ namespace DC2AP
         public static void PopulateLists()
         {
             Log.Logger.Debug("Building Item List");
-            ItemList = Helpers.GetItemIds();
+            ItemList = GetItemIds();
             Log.Logger.Debug("Building Default Item List");
-            DefaultItems = Helpers.GetDefaultItems();
+            DefaultItems = GetDefaultItems();
             Log.Logger.Debug("Building Quest List");
-            QuestList = Helpers.GetQuestIds();
+            QuestList = GetQuestIds();
             Log.Logger.Debug("Building Dungeon List");
             DungeonList = PopulateDungeons();
             Log.Logger.Debug("Building Enemy List");
-            EnemyList = Helpers.ReadEnemies();
+            EnemyList = ReadEnemies();
         }
 
         private static T DeserializeResource<T>(string resourceName)
@@ -82,7 +82,7 @@ namespace DC2AP
         public static int ToGameId(int apId) => apId - Constants.AP_ID_OFFSET;
         private static bool GetBitValue(byte value, int bitIndex)
         {
-            return (value & (1 << bitIndex)) != 0;
+            return (value & 1 << bitIndex) != 0;
         }
         public static void AddItem(DarkCloud2Item item, PlayerState playerState, int quantity = 1, bool IsArchipelago = true)
         {
@@ -90,7 +90,7 @@ namespace DC2AP
             var itemId = item.ItemId;
             var alreadyHave = playerState.Inventory.Any(x => x.Id == item.ItemId);
 
-            var slotNum = playerState.GetFirstSlot((int)item.ItemId);
+            var slotNum = playerState.GetFirstSlot(item.ItemId);
             var currentQuantity = 0;
             if (alreadyHave)
             {
@@ -128,18 +128,18 @@ namespace DC2AP
             var slot = playerState.GetFirstSlot((int)item.Id);
             if (slot == -1) return; //Player does not have that item
             var address = GetItemSlotAddress(slot);
-            var emptyItem = new DarkCloud2Item { Id = 0, IsProgression = false, Name = "null" };
+            var emptyItem = new DarkCloud2Item { Id = 0, Name = "null" };
             WriteItem(emptyItem, address, 0);
         }
         public static void WriteItem(DarkCloud2Item item, ulong address, ushort quantity)
         {
-            Memory.WriteObject<DarkCloud2Item>(address, item);
+            Memory.WriteObject(address, item);
         }
 
         public static ulong GetItemSlotAddress(int slotNum)
         {
             var startAddress = Addresses.InventoryStartAddress;
-            ulong offset = (uint)(Addresses.ItemSlotSize * (slotNum));
+            ulong offset = (uint)(Addresses.ItemSlotSize * slotNum);
             return startAddress + offset;
         }
         public static long GetLocationFromProgressionItem(int progressionId)

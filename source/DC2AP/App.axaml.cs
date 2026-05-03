@@ -2,7 +2,7 @@
 using Archipelago.Core.AvaloniaGUI.Models;
 using Archipelago.Core.AvaloniaGUI.ViewModels;
 using Archipelago.Core.AvaloniaGUI.Views;
-using Archipelago.Core.GameClients;
+using Archipelago.Core.Helpers;
 using Archipelago.Core.Models;
 using Archipelago.Core.Util;
 using Archipelago.MultiClient.Net.MessageLog.Messages;
@@ -10,6 +10,7 @@ using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
+using DC2AP.Helpers;
 using DC2AP.Models;
 using Newtonsoft.Json;
 using ReactiveUI;
@@ -21,6 +22,7 @@ using System.Reactive.Concurrency;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Timers;
+using static DC2AP.Helpers.OptionsHelper;
 
 namespace DC2AP;
 
@@ -30,6 +32,8 @@ public partial class App : Application
     public static ArchipelagoClient Client { get; set; }
     public static PlayerState CurrentPlayerState;
     private static readonly object _lockObject = new object();
+    private NotificationHelper NotificationHelper;
+    private OptionsHelper OptionsHelper;
     Timer updateTimer = new Timer(TimeSpan.FromSeconds(10));
     public override void Initialize()
     {
@@ -73,13 +77,13 @@ public partial class App : Application
 
         Client.Connected -= OnConnected;
         Client.Disconnected -= OnDisconnected;
-        Client.ItemReceived -= Client_ItemReceived;
+        Client.ItemManager.ItemReceived -= Client_ItemReceived;
         Client.MessageReceived -= Client_MessageReceived;
-        Client.CancelMonitors();
+        Client.LocationManager.CancelMonitors();
     }
     private bool TryConnectToGame()
     {
-        var client = new GenericGameClient("pcsx2-qt");
+        var client = new GameClient("pcsx2");
         if (!client.Connect())
         {
             Log.Logger.Error("PCSX2 not running, open PCSX2 and load your game before connecting!");
@@ -88,6 +92,20 @@ public partial class App : Application
 
         Client = new ArchipelagoClient(client);
         Memory.GlobalOffset = Memory.GetPCSX2Offset();
+        NotificationHelper = new NotificationHelper();
+        NotificationHelper.Install();
+        var options = new List<OptionRow>
+        {
+            new()
+        {
+            Label          = "Test Option",
+            ButtonCount    = 2,
+            GetInitialValue = () => 0,
+            OnChanged      = val => { },
+        }
+        };
+        OptionsHelper = new OptionsHelper(options);
+        OptionsHelper.Start();
         return true;
     }
     private async Task ConnectToArchipelago(ConnectClickedEventArgs e)
@@ -96,16 +114,17 @@ public partial class App : Application
 
         Client.Connected += OnConnected;
         Client.Disconnected += OnDisconnected;
-        Client.ItemReceived += Client_ItemReceived;
         Client.MessageReceived += Client_MessageReceived;
 
-        await Client.Connect(e.Host, "Dark Cloud 2", e.Slot);
+        await Client.Connect(e.Host, "Dark Cloud 2");
 
-        Helpers.PopulateLists();
+        GeneralHelpers.PopulateLists();
         CurrentPlayerState = new PlayerState();
 
         await Client.Login(e.Slot, string.IsNullOrWhiteSpace(e.Password) ? null : e.Password);
-
+        Client.ItemManager!.Initialize();
+        Client.ItemManager.ItemReceived += Client_ItemReceived;
+        await Client.ItemManager.ReceiveReady(Client.CurrentSession);
         CurrentPlayerState.UpdateInventory();
         UpdatePlayerState();
 
@@ -143,12 +162,12 @@ public partial class App : Application
 
             foreach (var item in args.NewItems.Where(i => i.IsProgression))
             {
-                Helpers.RemoveItem(item, CurrentPlayerState);
-                var location = Helpers.GetLocationFromProgressionItem((int)item.Id);
+                GeneralHelpers.RemoveItem(item, CurrentPlayerState);
+                var location = GeneralHelpers.GetLocationFromProgressionItem((int)item.Id);
 
                 if (location != -1)
                 {
-                    Client?.SendLocation(new Location { Id = (int)location });
+                    Client?.SendLocationAsync(new Location { Id = (int)location });
                 }
             }
         };
@@ -162,9 +181,9 @@ public partial class App : Application
     {
         if (Client == null) return;
 
-        var enemies = Helpers.ReadEnemies();
-        var locations = Helpers.GetLocations();
-        Client.MonitorLocations(locations);
+        var enemies = GeneralHelpers.ReadEnemies();
+        var locations = GeneralHelpers.GetLocations();
+        Client.LocationManager.MonitorLocationsAsync(Client.CurrentSession, locations);
 
         var goalLocation = (Location)locations.First(x => x.Name.Contains("chapter 5 complete", StringComparison.OrdinalIgnoreCase));
         Memory.MonitorAddressForAction<byte>(
@@ -176,7 +195,7 @@ public partial class App : Application
         if (Client?.Options.ContainsKey("enable_enemy_randomiser") == true
             && ((JsonElement)Client.Options["enable_enemy_randomiser"]).Deserialize<int>() > 0)
         {
-            Helpers.ShuffleEnemies(enemies);
+            GeneralHelpers.ShuffleEnemies(enemies);
         }
     }
     private static bool ValidateGameVersion()
@@ -213,15 +232,16 @@ public partial class App : Application
 
     private void Client_ItemReceived(object? sender, ItemReceivedEventArgs e)
     {
-        e.Item.Id = Helpers.ToGameId((int)e.Item.Id);
+        e.Item.Id = GeneralHelpers.ToGameId((int)e.Item.Id);
         if (e.Item.Id <= 428)
         {
-            var newItem = Helpers.DefaultItems.FirstOrDefault(x => x.Id == e.Item.Id);
-            if(newItem == null)
+            var newItem = GeneralHelpers.DefaultItems.FirstOrDefault(x => x.Id == e.Item.Id);
+            if (newItem == null)
             {
                 Log.Logger.Error($"Could not find default item stats for item with id: {e.Item.Id}");
             }
-            Helpers.AddItem(newItem, CurrentPlayerState, 1, true);
+            NotificationHelper.ShowNotification("Received " + newItem.Name);
+            GeneralHelpers.AddItem(newItem, CurrentPlayerState, 1, true);
         }
         else if (e.Item.Id <= 1999 && e.Item.Id >= 1000)
         {
@@ -232,15 +252,15 @@ public partial class App : Application
             RxApp.MainThreadScheduler.ScheduleAsync(async (s, t) =>
             {
                 // Reward item
-                var pack = Helpers.GetRewardPack(e.Item.Id);
+                var pack = GeneralHelpers.GetRewardPack(e.Item.Id);
                 foreach (var (itemId, quantity) in pack)
                 {
-                    var newItem = Helpers.DefaultItems.FirstOrDefault(x => x.Id == itemId);
+                    var newItem = GeneralHelpers.DefaultItems.FirstOrDefault(x => x.Id == itemId);
                     if (newItem == null)
                     {
                         Log.Logger.Error($"Could not find default item stats for item with id: {e.Item.Id}");
                     }
-                    Helpers.AddItem(newItem, CurrentPlayerState, quantity, true);
+                    GeneralHelpers.AddItem(newItem, CurrentPlayerState, quantity, true);
                     await Task.Delay(100);
                 }
             });

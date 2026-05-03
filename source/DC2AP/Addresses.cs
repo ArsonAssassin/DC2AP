@@ -45,5 +45,12 @@ namespace DC2AP
         public static ulong PlayerMedals = 0x01E63850;
         public static ulong InventoryStartAddress = 0x01E1EAB0;
 
+        public static ulong CMenuOptionPtr = 0x003781B0;
+        public static ulong OptionButtonForm = 0x00378198;
+        public static ulong MenuCommonInfo = 0x003779E8;
+        public static ulong ConfigOptionNumI = 0x003769F8;
+        public static ulong ConfigOptionNumF = 0x003769FC;
+        public static ulong LocalMenuClipForm = 0x00378148;
+
     }
 }
