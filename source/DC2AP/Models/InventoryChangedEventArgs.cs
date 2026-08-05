@@ -15,6 +15,7 @@ namespace DC2AP.Models
         public List<DarkCloud2Item> NewItems { get; set; } = new List<DarkCloud2Item>();
         public List<DarkCloud2Item> RemovedItems { get; set; } = new List<DarkCloud2Item>();
         public bool IsArchipelagoUpdate { get; set; }
+        public bool HasChanges => NewItems.Count > 0 || RemovedItems.Count > 0;
         public InventoryChangedEventArgs() { }
     }
 }

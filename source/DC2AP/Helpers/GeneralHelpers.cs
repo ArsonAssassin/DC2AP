@@ -80,6 +80,11 @@ namespace DC2AP.Helpers
         }
         public static int ToAPId(int gameId) => gameId + Constants.AP_ID_OFFSET;
         public static int ToGameId(int apId) => apId - Constants.AP_ID_OFFSET;
+        public static bool IsProgressionItem(int itemId)
+        {
+            var item = ItemList?.FirstOrDefault(x => x.Id == itemId);
+            return item?.IsProgression ?? false;
+        }
         private static bool GetBitValue(byte value, int bitIndex)
         {
             return (value & 1 << bitIndex) != 0;
@@ -87,53 +92,50 @@ namespace DC2AP.Helpers
         public static void AddItem(DarkCloud2Item item, PlayerState playerState, int quantity = 1, bool IsArchipelago = true)
         {
             playerState.IsReceivingArchipelagoItem = IsArchipelago;
-            var itemId = item.ItemId;
-            var alreadyHave = playerState.Inventory.Any(x => x.Id == item.ItemId);
-
             var slotNum = playerState.GetFirstSlot(item.ItemId);
-            var currentQuantity = 0;
-            if (alreadyHave)
-            {
-                var existingItem = playerState.Inventory.First(x => x.Id == item.ItemId);
-                currentQuantity = existingItem.Quantity;
-
-            }
             if (slotNum == -1)
             {
                 Log.Logger.Warning($"No available slot for item {item.Name}");
                 return;
             }
+
             var address = GetItemSlotAddress(slotNum);
-            WriteItem(item, address, (ushort)(currentQuantity + quantity));
+            var currentSlot = Memory.ReadStruct<InventorySlot>(address);
+            var currentQuantity = currentSlot.ItemId == item.ItemId ? currentSlot.Quantity : (short)0;
+
+            var slotData = item.ToSlot();
+            slotData.Quantity = (short)(currentQuantity + quantity);
+            WriteSlot(address, slotData);
         }
         public static void RemoveItem(DarkCloud2Item item, PlayerState playerState)
         {
             playerState.IsReceivingArchipelagoItem = true;
             var slot = playerState.GetFirstSlot((int)item.Id);
-            if (slot == -1) return; //Player does not have that item
+            if (slot == -1) return;
             var address = GetItemSlotAddress(slot);
-            var currentQuantity = Memory.ReadShort(address + (ulong)Addresses.ItemQuantityOffset);
-            if (currentQuantity <= 1)
+            var currentSlot = Memory.ReadStruct<InventorySlot>(address);
+
+            if (currentSlot.Quantity <= 1)
             {
                 RemoveAllItem(item, playerState);
             }
             else
             {
-                WriteItem(item, address, (ushort)(currentQuantity - 1));
+                currentSlot.Quantity = (short)(currentSlot.Quantity - 1);
+                WriteSlot(address, currentSlot);
             }
         }
         public static void RemoveAllItem(DarkCloud2Item item, PlayerState playerState)
         {
             playerState.IsReceivingArchipelagoItem = true;
             var slot = playerState.GetFirstSlot((int)item.Id);
-            if (slot == -1) return; //Player does not have that item
+            if (slot == -1) return;
             var address = GetItemSlotAddress(slot);
-            var emptyItem = new DarkCloud2Item { Id = 0, Name = "null" };
-            WriteItem(emptyItem, address, 0);
+            WriteSlot(address, default);
         }
-        public static void WriteItem(DarkCloud2Item item, ulong address, ushort quantity)
+        public static void WriteSlot(ulong address, InventorySlot slotData)
         {
-            Memory.WriteObject(address, item);
+            Memory.WriteStruct(address, slotData);
         }
 
         public static ulong GetItemSlotAddress(int slotNum)
@@ -144,11 +146,9 @@ namespace DC2AP.Helpers
         }
         public static long GetLocationFromProgressionItem(int progressionId)
         {
-            var itemList = GetItemIds();
-            var current = itemList.FirstOrDefault(x => x.Id == progressionId);
-            if (current == null) return -1;
+            var current = ItemList?.FirstOrDefault(x => x.Id == progressionId);
+            if (current == null || current.LocationId == 0) return -1;
             return current.LocationId;
-
         }
         static Chest ReadChest(ulong startAddress, bool isDouble = false)
         {
@@ -203,42 +203,6 @@ namespace DC2AP.Helpers
             Log.Logger.Information("End of chests");
             return chests;
         }
-        //public static Floor ReadFloor(ulong currentAddress, bool debug = false)
-        //{
-        //    if (debug) Log.Logger.Information($"Starting floor read at {currentAddress.ToString("X8")}");
-        //    Floor floor = new Floor();
-        //    var data = new BitArray(Memory.ReadByteArray(currentAddress, 2));
-        //    data[0] = true;
-        //    byte[] newBytes = new byte[2];
-        //    data.CopyTo(newBytes, 0);
-        //    Memory.WriteByteArray(currentAddress, newBytes);
-        //    currentAddress += Addresses.ShortOffset;
-        //    if (debug) Log.Logger.Information($"Reading {currentAddress.ToString("X8")}");
-        //    var monstersKilled = Memory.ReadShort(currentAddress);
-        //    currentAddress += Addresses.ShortOffset;
-        //    if (debug) Log.Logger.Information($"Reading {currentAddress.ToString("X8")}");
-        //    var timesVisited = Memory.ReadShort(currentAddress);
-
-        //    floor.IsUnlocked = data[0].ToString();
-        //    floor.IsFinished = data[1].ToString();
-        //    var unknown1 = data[2].ToString();
-        //    floor.SpecialMedalCompleted = data[3].ToString();
-
-        //    floor.ClearMedalCompleted = data[4].ToString();
-        //    floor.FishMedalCompleted = data[5].ToString();
-        //    var unknown3 = data[6].ToString();
-        //    floor.SphedaMedalCompleted = data[7].ToString();
-
-        //    floor.GotGeostone = data[8].ToString();
-        //    floor.DownloadedGeostone = data[9].ToString();
-        //    floor.KilledAllMonsters = data[10].ToString();
-
-        //    floor.MonstersKilled = monstersKilled;
-        //    floor.TimesVisited = timesVisited;
-
-
-        //    return floor;
-        //}
         public static Floor ReadFloor(ulong currentAddress, bool debug = false)
         {
             return Memory.ReadObject<Floor>(currentAddress);

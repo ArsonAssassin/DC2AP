@@ -15,8 +15,6 @@ namespace DC2AP
         public static ulong IntOffset = 0x04;
 
         public static int ItemSlotSize = 0x6C;
-        public static int ItemQuantityOffset = 0x0F;
-        public static int CrystalQuantityOffset = 0x48;
 
         public static ulong CurrentFloor = 0x01ECD638;
         public static ulong CurrentDungeon = 0x00376638;

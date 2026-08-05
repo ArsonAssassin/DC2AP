@@ -9,6 +9,7 @@ namespace DC2AP.Models
 {
     public class ItemId : Item
     {
+        public new bool IsProgression { get; set; }
         public long LocationId { get; set; }
     }
 }

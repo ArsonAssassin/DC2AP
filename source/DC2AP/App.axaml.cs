@@ -160,7 +160,7 @@ public partial class App : Application
 
             if (args.IsArchipelagoUpdate) return;
 
-            foreach (var item in args.NewItems.Where(i => i.IsProgression))
+            foreach (var item in args.NewItems.Where(i => GeneralHelpers.IsProgressionItem(i.ItemId)))
             {
                 GeneralHelpers.RemoveItem(item, CurrentPlayerState);
                 var location = GeneralHelpers.GetLocationFromProgressionItem((int)item.Id);
@@ -239,6 +239,7 @@ public partial class App : Application
             if (newItem == null)
             {
                 Log.Logger.Error($"Could not find default item stats for item with id: {e.Item.Id}");
+                return;
             }
             NotificationHelper.ShowNotification("Received " + newItem.Name);
             GeneralHelpers.AddItem(newItem, CurrentPlayerState, 1, true);
@@ -258,7 +259,8 @@ public partial class App : Application
                     var newItem = GeneralHelpers.DefaultItems.FirstOrDefault(x => x.Id == itemId);
                     if (newItem == null)
                     {
-                        Log.Logger.Error($"Could not find default item stats for item with id: {e.Item.Id}");
+                        Log.Logger.Error($"Could not find default item stats for item with id: {itemId}");
+                        continue;
                     }
                     GeneralHelpers.AddItem(newItem, CurrentPlayerState, quantity, true);
                     await Task.Delay(100);

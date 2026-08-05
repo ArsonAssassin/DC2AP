@@ -158,5 +158,34 @@ namespace DC2AP.Models
 
         [MemoryOffset(0x00, byteArrayLength: 110)]
         public byte[] RawData { get; set; }
+
+        public InventorySlot ToSlot()
+        {
+            var slot = new InventorySlot
+            {
+                RawType = RawType,
+                ItemId = ItemId,
+                RawCategory = RawCategory,
+                NameChangeFlag = NameChangeFlag,
+                MaxDurability = MaxDurability,
+                CurrentDurability = CurrentDurability,
+                RequiredExp = RequiredExp,
+                CurrentExp = CurrentExp,
+                Level = Level,
+                Attack = Attack,
+                Durable = Durable,
+                Flame = Flame,
+                Chill = Chill,
+                Lightning = Lightning,
+                Cyclone = Cyclone,
+                Smash = Smash,
+                Exorcism = Exorcism,
+                Beast = Beast,
+                Scale = Scale,
+                SynthesisPoints = SynthesisPoints,
+                CrystalQuantity = CrystalQuantity,
+            };
+            return slot;
+        }
     }
 }

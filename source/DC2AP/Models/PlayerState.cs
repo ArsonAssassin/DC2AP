@@ -1,18 +1,9 @@
-﻿using Archipelago.Core.Models;
 using Archipelago.Core.Util;
-using DC2AP.Helpers;
-using ReactiveUI;
-using Serilog;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using static DC2AP.Models.Enums;
 
 namespace DC2AP.Models
 {
@@ -48,133 +39,103 @@ namespace DC2AP.Models
                 }
             }
         }
-        private ObservableCollection<DarkCloud2Item> inventory;
-        private List<DarkCloud2Item> oldInventory;
-        private bool isUpdating = false;
+
+        private InventorySlot[] _slots;
+        private InventorySlot[] _previousSlots;
 
         public bool IsReceivingArchipelagoItem { get; set; }
-        public ObservableCollection<DarkCloud2Item> Inventory
-        {
-            get => inventory;
-            set
-            {
-                if (inventory != value)
-                {
-                    inventory = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
-        public int FreeInventorySlots => Constants.MAX_INVENTORY_SLOTS - inventory.Count;
+
+        public InventorySlot[] Slots => _slots;
+
+        public int FreeInventorySlots => _slots.Count(s => s.IsEmpty);
+
         public int GetFirstSlot(int itemId = 0)
         {
-            var itemSlot = inventory.Select((item, index) => new { item, index })
-                                    .FirstOrDefault(x => x.item.ItemId == itemId);
-            if (itemSlot != null)
-                return itemSlot.index;
+            for (int i = 0; i < _slots.Length; i++)
+            {
+                if (_slots[i].ItemId == itemId)
+                    return i;
+            }
 
             if (itemId != 0)
             {
-                var emptySlot = inventory.Select((item, index) => new { item, index })
-                                         .FirstOrDefault(x => x.item.ItemId == 0);
-                return emptySlot?.index ?? -1;
+                for (int i = 0; i < _slots.Length; i++)
+                {
+                    if (_slots[i].IsEmpty)
+                        return i;
+                }
             }
 
             return -1;
         }
-        public event EventHandler<InventoryChangedEventArgs>? InventoryChanged;
-        public event PropertyChangedEventHandler? PropertyChanged;
+
+        public event EventHandler<InventoryChangedEventArgs> InventoryChanged;
+        public event PropertyChangedEventHandler PropertyChanged;
+
         public void OnPropertyChanged([CallerMemberName] string propertyName = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
         public void UpdateInventory()
         {
-            isUpdating = true;
-            try
+            var newSlots = Memory.ReadStructs<InventorySlot>(
+                Addresses.InventoryStartAddress, Constants.MAX_INVENTORY_SLOTS).ToArray();
+
+            if (_previousSlots != null)
             {
-                var startAddress = Addresses.InventoryStartAddress;
-
-                for (int i = 0; i < Constants.MAX_INVENTORY_SLOTS; i++)
+                var diff = ComputeDiff(_previousSlots, newSlots);
+                if (diff.NewItems.Count > 0 || diff.RemovedItems.Count > 0)
                 {
-                    var item = Memory.ReadObject<DarkCloud2Item>(startAddress);
-                    var itemLookup = GeneralHelpers.ItemList.First(x => x.Id == item.ItemId);
-                    if (item.Type != DarkCloud2ItemType.Weapon)
-                    {
-                        item.Name = itemLookup.Name;
-                    }
-                    if (item.ItemId == 90)
-                    {
-                        Console.Write("");
-                        var item2 = Memory.ReadObject<DarkCloud2Item>(startAddress);
-                    }
-                    startAddress += (ulong)Addresses.ItemSlotSize;
-                    Inventory[i] = item;
-
+                    diff.IsArchipelagoUpdate = IsReceivingArchipelagoItem;
+                    InventoryChanged?.Invoke(this, diff);
+                    IsReceivingArchipelagoItem = false;
                 }
             }
-            finally
-            {
-                isUpdating = false;
-            }
-        }
-        public PlayerState()
-        {
-            Inventory = new ObservableCollection<DarkCloud2Item>(Enumerable.Range(0, Constants.MAX_INVENTORY_SLOTS).Select(_ => new DarkCloud2Item()));
-            Inventory.CollectionChanged += (obj, args) =>
-            {
-                List<DarkCloud2Item> newItems = new List<DarkCloud2Item>();
-                List<DarkCloud2Item> removedItems = new List<DarkCloud2Item>();
-                InventoryChangedEventArgs newArgs = null;
-                if(oldInventory != null)
-                {
-                    for(int i = 0; i < Constants.MAX_INVENTORY_SLOTS; i++)
-                    {
-                        var oldItem = oldInventory[i];
-                        var newItem = Inventory[i];
 
-                        if(oldItem.ItemId == newItem.ItemId && oldItem.Quantity == newItem.Quantity)
-                        {
-                            //No change
-                            continue;
-                        }
-                        else if(newItem.ItemId == 0 || newItem.Quantity == 0)
-                        {
-                            // item was removed
-                            removedItems.Add(oldItem);
-                        }
-                        else if(oldItem.ItemId == 0 && newItem.ItemId != 0)
-                        {
-                            //item was added
-                            newItems.Add(newItem);
-                        }
-                        else if (newItem.ItemId == oldItem.ItemId && newItem.Quantity != oldItem.Quantity)
-                        {
-                            // item quantity changed
-                            newItems.Add(newItem);
-                        }
-                        else
-                        {
-                            // item was replaced
-                            newItems.Add(newItem);
-                            removedItems.Add(oldItem);
-                        }
-                    }
-                    newArgs = new InventoryChangedEventArgs { NewItems = newItems, RemovedItems = removedItems, IsArchipelagoUpdate = IsReceivingArchipelagoItem };
+            _previousSlots = (InventorySlot[])newSlots.Clone();
+            _slots = newSlots;
+        }
+
+        private static InventoryChangedEventArgs ComputeDiff(InventorySlot[] oldSlots, InventorySlot[] newSlots)
+        {
+            var newItems = new List<DarkCloud2Item>();
+            var removedItems = new List<DarkCloud2Item>();
+
+            for (int i = 0; i < Constants.MAX_INVENTORY_SLOTS; i++)
+            {
+                var oldSlot = oldSlots[i];
+                var newSlot = newSlots[i];
+
+                if (oldSlot == newSlot)
+                    continue;
+
+                if (newSlot.IsEmpty || newSlot.Quantity == 0)
+                {
+                    removedItems.Add(oldSlot.ToItem());
+                }
+                else if (oldSlot.IsEmpty && !newSlot.IsEmpty)
+                {
+                    newItems.Add(newSlot.ToItem());
+                }
+                else if (newSlot.ItemId == oldSlot.ItemId && newSlot.Quantity != oldSlot.Quantity)
+                {
+                    newItems.Add(newSlot.ToItem());
                 }
                 else
                 {
-                    newArgs = new InventoryChangedEventArgs { NewItems = Inventory.ToList(), RemovedItems = new List<DarkCloud2Item>(), IsArchipelagoUpdate = IsReceivingArchipelagoItem };
+                    // Item was replaced
+                    newItems.Add(newSlot.ToItem());
+                    removedItems.Add(oldSlot.ToItem());
                 }
-                if (!newItems.Any() && !removedItems.Any()) 
-                {
-                    oldInventory = Inventory.ToList();
-                    return; 
-                }
-                InventoryChanged?.Invoke(obj, newArgs);
-                IsReceivingArchipelagoItem = false;
-                oldInventory = Inventory.ToList();
-            };
+            }
+
+            return new InventoryChangedEventArgs { NewItems = newItems, RemovedItems = removedItems };
+        }
+
+        public PlayerState()
+        {
+            _slots = new InventorySlot[Constants.MAX_INVENTORY_SLOTS];
         }
     }
 }
