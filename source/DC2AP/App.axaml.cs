@@ -5,6 +5,7 @@ using Archipelago.Core.AvaloniaGUI.Views;
 using Archipelago.Core.Helpers;
 using Archipelago.Core.Models;
 using Archipelago.Core.Util;
+using Archipelago.Core.Util.PlatformMemory;
 using Archipelago.MultiClient.Net.MessageLog.Messages;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
@@ -19,6 +20,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Concurrency;
+using System.Security.Cryptography;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Timers;
@@ -91,7 +93,7 @@ public partial class App : Application
         }
 
         Client = new ArchipelagoClient(client);
-        Memory.GlobalOffset = Memory.GetPCSX2Offset();
+        PlatformMemory.GlobalOffset = PlatformMemory.GetPCSX2Offset();
         NotificationHelper = new NotificationHelper();
         NotificationHelper.Install();
         var options = new List<OptionRow>
@@ -127,10 +129,38 @@ public partial class App : Application
         await Client.ItemManager.ReceiveReady(Client.CurrentSession);
         CurrentPlayerState.UpdateInventory();
         UpdatePlayerState();
-
+        HandleOptions();
         SetupPlayerStateHandlers();
         SetupLocationMonitoring();
     }
+
+    private void HandleOptions()
+    {
+        var enemies = GeneralHelpers.ReadEnemies();
+
+        if (Client?.Options.ContainsKey("abs_multiplier") == true )
+        {
+            var absMult = ((JsonElement)Client.Options["abs_multiplier"]).Deserialize<int>();
+            foreach (var enemy in enemies)
+            {
+                enemy.ABS *= (short)absMult;
+            }
+        }
+        if (Client?.Options.ContainsKey("gilda_multiplier") == true)
+        {
+            var gildaMult = ((JsonElement)Client.Options["gilda_multiplier"]).Deserialize<int>();
+            foreach (var enemy in enemies)
+            {
+                enemy.Gilda *= (short)gildaMult;
+            }
+        }
+        if (Client?.Options.ContainsKey("enable_enemy_randomiser") == true && ((JsonElement)Client.Options["enable_enemy_randomiser"]).Deserialize<int>() > 0)
+        {
+            enemies = GeneralHelpers.ShuffleEnemies(enemies);
+        }
+        GeneralHelpers.WriteEnemies(enemies.ToList());
+    }
+
     private async void Context_ConnectClicked(object? sender, ConnectClickedEventArgs e)
     {
         Context.ConnectButtonEnabled = false;
@@ -181,7 +211,6 @@ public partial class App : Application
     {
         if (Client == null) return;
 
-        var enemies = GeneralHelpers.ReadEnemies();
         var locations = GeneralHelpers.GetLocations();
         Client.LocationManager.MonitorLocationsAsync(Client.CurrentSession, locations);
 
@@ -192,11 +221,7 @@ public partial class App : Application
             value => value > 4
         );
 
-        if (Client?.Options.ContainsKey("enable_enemy_randomiser") == true
-            && ((JsonElement)Client.Options["enable_enemy_randomiser"]).Deserialize<int>() > 0)
-        {
-            GeneralHelpers.ShuffleEnemies(enemies);
-        }
+
     }
     private static bool ValidateGameVersion()
     {

@@ -239,16 +239,20 @@ namespace DC2AP.Helpers
             }
             return enemies;
         }
-        public static void ShuffleEnemies(List<Enemy> enemies)
+        public static void WriteEnemies(List<Enemy> enemies)
         {
-            var newOrder = enemies.ToArray();
-            new Random().Shuffle(newOrder);
             var currentAddress = Addresses.EnemyStartAddress + Addresses.IntOffset;
-            foreach (var enemy in newOrder)
+            foreach (var enemy in enemies)
             {
                 Memory.WriteObject(currentAddress, enemy);
                 currentAddress += 0xB8;
             }
+        }
+        public static List<Enemy> ShuffleEnemies(List<Enemy> enemies)
+        {
+            var newOrder = enemies.ToArray();
+            new Random().Shuffle(newOrder);
+            return newOrder.ToList();
         }
         public static string GetHabitat(string id) => id switch
         {
