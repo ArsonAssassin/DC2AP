@@ -28,9 +28,37 @@ class InventionsanityOption(DefaultOnToggle):
     display_name = "Randomize invention Locations"
     
 
-class IncludeResourcePacksOption(Range):
-    """Adds packs of useful items"""
-    display_name = "Number of resource packs to include in the pool"
+class EssentialPackCountOption(Range):
+    """Adds packs of essential consumable items"""
+    display_name = "Number of essential packs to include in the pool"
+    range_start = 0
+    range_end = 100
+    default = 20
+
+class GemPackCountOption(Range):
+    """Adds packs of gems for weapon synthesis"""
+    display_name = "Number of gem packs to include in the pool"
+    range_start = 0
+    range_end = 100
+    default = 5
+
+class CrystalPackCountOption(Range):
+    """Adds packs of crystals for weapon synthesis"""
+    display_name = "Number of crystal packs to include in the pool"
+    range_start = 0
+    range_end = 100
+    default = 5
+
+class CoinPackCountOption(Range):
+    """Adds packs of coins for weapon synthesis"""
+    display_name = "Number of coin packs to include in the pool"
+    range_start = 0
+    range_end = 100
+    default = 5
+
+class GeoramaResourcePackCountOption(Range):
+    """Adds packs of georama resources"""
+    display_name = "Number of georama resource packs to include in the pool"
     range_start = 0
     range_end = 100
     default = 20
@@ -39,7 +67,7 @@ class ChapterGoalCountOption(Range):
     """Amount of chapters to complete for the goal"""
     display_name = "Number of chapters that must be completed"
     range_start = 1
-    range_end = 8
+    range_end = 7
     default = 4
 
 class ABSMultiplierOption(Range):
@@ -72,7 +100,12 @@ class DC2Option(PerGameCommonOptions):
     #georamasanity: GeoramasanityOption
     #photosanity: PhotosanityOption
     #inventionsanity: InventionsanityOption
-    resource_pack_count: IncludeResourcePacksOption
+    essential_pack_count: EssentialPackCountOption
+    gem_pack_count: GemPackCountOption
+    crystal_pack_count: CrystalPackCountOption
+    coin_pack_count: CoinPackCountOption
+    georama_resource_pack_count: GeoramaResourcePackCountOption
+    chapter_goal_count: ChapterGoalCountOption
     abs_multiplier: ABSMultiplierOption
     gilda_multiplier: GildaMultiplierOption
     guaranteed_items: GuaranteedItemsOption

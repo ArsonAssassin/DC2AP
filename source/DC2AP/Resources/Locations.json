@@ -80,10 +80,9 @@
   {
     "Name": "UWC: Chapter 1 Complete",
     "Id": 694202006,
-    "Address": "0x01E03218",
-    "CheckType": 1,
-    "CheckValue": "0",
-    "CompareType": 1
+    "Address": "0x1E01829",
+    "AddressBit": 3,
+    "CheckType": 0
   },
   {
     "Name": "S: Grape Juice",
@@ -287,10 +286,9 @@
   {
     "Name": "RBW: Chapter 2 Complete",
     "Id": 694202016,
-    "Address": "0x01E03218",
-    "CheckType": 1,
-    "CheckValue": "1",
-    "CompareType": 1
+    "Address": "0x1E01833",
+    "AddressBit": 3,
+    "CheckType": 0
   },
   {
     "Name": "RBW: Floor 9 - Looking for the Earth Gem",
@@ -624,10 +622,9 @@
   {
     "Name": "SC: Chapter 3 Complete",
     "Id": 694202038,
-    "Address": "0x01E03218",
-    "CheckType": 1,
-    "CheckValue": "2",
-    "CompareType": 1
+    "Address": "0x1E0183C",
+    "AddressBit": 4,
+    "CheckType": 0
   },
   {
     "Name": "SC: Floor 17 - Looking for the Wind Gem",
@@ -967,10 +964,9 @@
   {
     "Name": "ORC: Chapter 4 Complete",
     "Id": 694202057,
-    "Address": "0x01E03218",
-    "CheckType": 1,
-    "CheckValue": "3",
-    "CompareType": 1
+    "Address": "0x1E01848",
+    "AddressBit": 4,
+    "CheckType": 0
   },
   {
     "Name": "ORC: Floor 15 - Looking for the Water Gem",
@@ -1338,10 +1334,9 @@
   {
     "Name": "MG: Chapter 5 Complete",
     "Id": 694202078,
-    "Address": "0x01E03218",
-    "CheckType": 1,
-    "CheckValue": "4",
-    "CompareType": 1
+    "Address": "0x1E0185B",
+    "AddressBit": 0,
+    "CheckType": 0
   },
   {
     "Name": "MG: Floor 17 - Looking for the Fire Gem",
@@ -1723,5 +1718,1028 @@
     "CheckType": 1,
     "CheckValue": "8",
     "CompareType": 1
+  },
+  {
+    "Name": "CH6: Chapter 6 Complete",
+    "Id": 694202108,
+    "Address": "0x1E01861",
+    "AddressBit": 0,
+    "CheckType": 0
+  },
+  {
+    "Name": "MFP: Chapter 7 Complete",
+    "Id": 694202109,
+    "Address": "0x1E0186B",
+    "AddressBit": 4,
+    "CheckType": 0
+  },
+  {
+    "Name": "Max Available",
+    "Id": 694205000,
+    "Address": "0x1E01810",
+    "AddressBit": 4,
+    "CheckType": 0
+  },
+  {
+    "Name": "Lost Circus Ticket",
+    "Id": 694205001,
+    "Address": "0x1E01810",
+    "AddressBit": 1,
+    "CheckType": 0
+  },
+  {
+    "Name": "Talked to the Couple",
+    "Id": 694205002,
+    "Address": "0x1E01810",
+    "AddressBit": 2,
+    "CheckType": 0
+  },
+  {
+    "Name": "Talked to Granny Rosa",
+    "Id": 694205003,
+    "Address": "0x1E01810",
+    "AddressBit": 3,
+    "CheckType": 0
+  },
+  {
+    "Name": "Monica Prologue Story End",
+    "Id": 694205004,
+    "Address": "0x1E01816",
+    "AddressBit": 6,
+    "CheckType": 0
+  },
+  {
+    "Name": "Finished Linda Invincible Battle",
+    "Id": 694205005,
+    "Address": "0x1E0181D",
+    "AddressBit": 0,
+    "CheckType": 0
+  },
+  {
+    "Name": "Received Camera from Cedric",
+    "Id": 694205006,
+    "Address": "0x1E0181D",
+    "AddressBit": 1,
+    "CheckType": 0
+  },
+  {
+    "Name": "Before Fighting Linda",
+    "Id": 694205007,
+    "Address": "0x1E0181D",
+    "AddressBit": 2,
+    "CheckType": 0
+  },
+  {
+    "Name": "Lost Against Linda",
+    "Id": 694205008,
+    "Address": "0x1E0181D",
+    "AddressBit": 4,
+    "CheckType": 0
+  },
+  {
+    "Name": "Entered Battle Halloween",
+    "Id": 694205009,
+    "Address": "0x1E0181D",
+    "AddressBit": 6,
+    "CheckType": 0
+  },
+  {
+    "Name": "Defeated Halloween",
+    "Id": 694205010,
+    "Address": "0x1E0181D",
+    "AddressBit": 7,
+    "CheckType": 0
+  },
+  {
+    "Name": "Sindain Georama 100% Prize",
+    "Id": 694205011,
+    "Address": "0x1E01833",
+    "AddressBit": 5,
+    "CheckType": 0
+  },
+  {
+    "Name": "Lin Saved",
+    "Id": 694205012,
+    "Address": "0x1E01839",
+    "AddressBit": 2,
+    "CheckType": 0
+  },
+  {
+    "Name": "Lao Chaos Bistro Restored",
+    "Id": 694205013,
+    "Address": "0x1E0183D",
+    "AddressBit": 4,
+    "CheckType": 0
+  },
+  {
+    "Name": "Starlight Temple 100%",
+    "Id": 694205014,
+    "Address": "0x1E0183F",
+    "AddressBit": 0,
+    "CheckType": 0
+  },
+  {
+    "Name": "Broke Shingala Mind Control Device",
+    "Id": 694205015,
+    "Address": "0x1E01844",
+    "AddressBit": 4,
+    "CheckType": 0
+  },
+  {
+    "Name": "Luna Labs 100% Restored",
+    "Id": 694205016,
+    "Address": "0x1E0184A",
+    "AddressBit": 4,
+    "CheckType": 0
+  },
+  {
+    "Name": "Meet Gaspard in Lava Land",
+    "Id": 694205017,
+    "Address": "0x1E01852",
+    "AddressBit": 0,
+    "CheckType": 0
+  },
+  {
+    "Name": "Phase 1 Defeated",
+    "Id": 694205018,
+    "Address": "0x1E01852",
+    "AddressBit": 4,
+    "CheckType": 0
+  },
+  {
+    "Name": "Gundorada 100% Restored",
+    "Id": 694205019,
+    "Address": "0x1E01856",
+    "AddressBit": 0,
+    "CheckType": 0
+  },
+  {
+    "Name": "Defeated Griffon First Form",
+    "Id": 694205020,
+    "Address": "0x1E0185C",
+    "AddressBit": 4,
+    "CheckType": 0
+  },
+  {
+    "Name": "Griffon Presentation",
+    "Id": 694205021,
+    "Address": "0x1E01869",
+    "AddressBit": 4,
+    "CheckType": 0
+  },
+  {
+    "Name": "Emperor Griffon Phase 1 Defeated",
+    "Id": 694205022,
+    "Address": "0x1E0186A",
+    "AddressBit": 0,
+    "CheckType": 0
+  },
+  {
+    "Name": "Emperor Griffon Phase 2 Defeated",
+    "Id": 694205023,
+    "Address": "0x1E0186A",
+    "AddressBit": 4,
+    "CheckType": 0
+  },
+  {
+    "Name": "Emperor Griffon Phase 3 Defeated",
+    "Id": 694205024,
+    "Address": "0x1E0186B",
+    "AddressBit": 0,
+    "CheckType": 0
+  },
+  {
+    "Name": "Dark Element Defeated",
+    "Id": 694205143,
+    "Address": "0x1E0186B",
+    "AddressBit": 4,
+    "CheckType": 0
+  },
+  {
+    "Name": "Moon Flower Palace 100%",
+    "Id": 694205025,
+    "Address": "0x1E0186D",
+    "AddressBit": 4,
+    "CheckType": 0
+  },
+  {
+    "Name": "Escaped Circus and Watched Prologue",
+    "Id": 694205026,
+    "Address": "0x1E0191A",
+    "CheckType": 1,
+    "CheckValue": "3",
+    "CompareType": 1
+  },
+  {
+    "Name": "Arrived at Circus",
+    "Id": 694205027,
+    "Address": "0x1E0191A",
+    "AddressBit": 0,
+    "CheckType": 0
+  },
+  {
+    "Name": "Fighting Clowns",
+    "Id": 694205028,
+    "Address": "0x1E0191A",
+    "AddressBit": 1,
+    "CheckType": 0
+  },
+  {
+    "Name": "Donny Tutorial",
+    "Id": 694205029,
+    "Address": "0x1E0181C",
+    "AddressBit": 4,
+    "CheckType": 0
+  },
+  {
+    "Name": "Flashback Cutscene",
+    "Id": 694205030,
+    "Address": "0x1E0181C",
+    "AddressBit": 6,
+    "CheckType": 0
+  },
+  {
+    "Name": "Pump Room Cutscene",
+    "Id": 694205031,
+    "Address": "0x1E0181C",
+    "AddressBit": 7,
+    "CheckType": 0
+  },
+  {
+    "Name": "Back in the Pump Room",
+    "Id": 694205032,
+    "Address": "0x1E0181D",
+    "AddressBit": 3,
+    "CheckType": 0
+  },
+  {
+    "Name": "Mayor Need Cutscene",
+    "Id": 694205033,
+    "Address": "0x1E0181D",
+    "AddressBit": 5,
+    "CheckType": 0
+  },
+  {
+    "Name": "Reached End of Sewers",
+    "Id": 694205034,
+    "Address": "0x1E01829",
+    "AddressBit": 1,
+    "CheckType": 0
+  },
+  {
+    "Name": "Train Arrived Cutscene",
+    "Id": 694205035,
+    "Address": "0x1E01829",
+    "AddressBit": 2,
+    "CheckType": 0
+  },
+  {
+    "Name": "Max is on the Train",
+    "Id": 694205036,
+    "Address": "0x1E01829",
+    "AddressBit": 3,
+    "CheckType": 0
+  },
+  {
+    "Name": "P-5000 Cutscene",
+    "Id": 694205037,
+    "Address": "0x1E01829",
+    "AddressBit": 4,
+    "CheckType": 0
+  },
+  {
+    "Name": "P-5000 Defeated",
+    "Id": 694205038,
+    "Address": "0x1E01829",
+    "AddressBit": 6,
+    "CheckType": 0
+  },
+  {
+    "Name": "Arrived at Sindain Station",
+    "Id": 694205039,
+    "Address": "0x1E01829",
+    "AddressBit": 7,
+    "CheckType": 0
+  },
+  {
+    "Name": "Sindain Arrival Cutscene",
+    "Id": 694205040,
+    "Address": "0x1E0182A",
+    "AddressBit": 0,
+    "CheckType": 0
+  },
+  {
+    "Name": "Visited Firbits",
+    "Id": 694205041,
+    "Address": "0x1E0182A",
+    "AddressBit": 1,
+    "CheckType": 0
+  },
+  {
+    "Name": "Fish Monster Swamp Arrival Cutscene",
+    "Id": 694205042,
+    "Address": "0x1E0182A",
+    "AddressBit": 7,
+    "CheckType": 0
+  },
+  {
+    "Name": "Talked to Fishing Firbit at Swamp",
+    "Id": 694205043,
+    "Address": "0x1E0182B",
+    "AddressBit": 4,
+    "CheckType": 0
+  },
+  {
+    "Name": "Used Sundrop",
+    "Id": 694205044,
+    "Address": "0x1E01813",
+    "AddressBit": 0,
+    "CheckType": 0
+  },
+  {
+    "Name": "Gave Grape Juice to Firbits",
+    "Id": 694205045,
+    "Address": "0x1E01813",
+    "AddressBit": 4,
+    "CheckType": 0
+  },
+  {
+    "Name": "Collected First Geostone",
+    "Id": 694205046,
+    "Address": "0x1E01813",
+    "AddressBit": 7,
+    "CheckType": 0
+  },
+  {
+    "Name": "Master Utan Sick",
+    "Id": 694205047,
+    "Address": "0x1E0182C",
+    "AddressBit": 6,
+    "CheckType": 0
+  },
+  {
+    "Name": "Fishing King Mardan",
+    "Id": 694205048,
+    "Address": "0x1E0182E",
+    "AddressBit": 0,
+    "CheckType": 0
+  },
+  {
+    "Name": "Gave Priscleen",
+    "Id": 694205049,
+    "Address": "0x1E0182E",
+    "AddressBit": 5,
+    "CheckType": 0
+  },
+  {
+    "Name": "Awakened Firbits",
+    "Id": 694205050,
+    "Address": "0x1E0182E",
+    "AddressBit": 7,
+    "CheckType": 0
+  },
+  {
+    "Name": "Firbits Reunited",
+    "Id": 694205051,
+    "Address": "0x1E0182F",
+    "AddressBit": 2,
+    "CheckType": 0
+  },
+  {
+    "Name": "Master Utan Recovers",
+    "Id": 694205052,
+    "Address": "0x1E0182F",
+    "AddressBit": 5,
+    "CheckType": 0
+  },
+  {
+    "Name": "Geostone Tutorial",
+    "Id": 694205053,
+    "Address": "0x1E0182F",
+    "AddressBit": 6,
+    "CheckType": 0
+  },
+  {
+    "Name": "Lafrescia Seed Used",
+    "Id": 694205054,
+    "Address": "0x1E0182F",
+    "AddressBit": 7,
+    "CheckType": 0
+  },
+  {
+    "Name": "Time Gate Tutorial",
+    "Id": 694205055,
+    "Address": "0x1E01817",
+    "AddressBit": 5,
+    "CheckType": 0
+  },
+  {
+    "Name": "Meet Jurak",
+    "Id": 694205056,
+    "Address": "0x1E01831",
+    "AddressBit": 6,
+    "CheckType": 0
+  },
+  {
+    "Name": "Second Jurak Meeting",
+    "Id": 694205057,
+    "Address": "0x1E01832",
+    "AddressBit": 0,
+    "CheckType": 0
+  },
+  {
+    "Name": "Jurak Mall Cutscene",
+    "Id": 694205058,
+    "Address": "0x1E01832",
+    "AddressBit": 3,
+    "CheckType": 0
+  },
+  {
+    "Name": "Monster Form Tutorial",
+    "Id": 694205059,
+    "Address": "0x1E01832",
+    "AddressBit": 5,
+    "CheckType": 0
+  },
+  {
+    "Name": "Going Up Lafrescia Stem",
+    "Id": 694205060,
+    "Address": "0x1E01830",
+    "AddressBit": 0,
+    "CheckType": 0
+  },
+  {
+    "Name": "On Top of Lafrescia",
+    "Id": 694205061,
+    "Address": "0x1E01830",
+    "AddressBit": 1,
+    "CheckType": 0
+  },
+  {
+    "Name": "Rainbow Butterfly Defeated",
+    "Id": 694205062,
+    "Address": "0x1E01830",
+    "AddressBit": 4,
+    "CheckType": 0
+  },
+  {
+    "Name": "Jurak Memory Restored",
+    "Id": 694205063,
+    "Address": "0x1E01833",
+    "AddressBit": 0,
+    "CheckType": 0
+  },
+  {
+    "Name": "Train Leaves Sindain",
+    "Id": 694205064,
+    "Address": "0x1E01833",
+    "AddressBit": 3,
+    "CheckType": 0
+  },
+  {
+    "Name": "Train Arrives in Balance Valley",
+    "Id": 694205065,
+    "Address": "0x1E01835",
+    "AddressBit": 4,
+    "CheckType": 0
+  },
+  {
+    "Name": "Balance Valley First Cutscene",
+    "Id": 694205066,
+    "Address": "0x1E01835",
+    "AddressBit": 6,
+    "CheckType": 0
+  },
+  {
+    "Name": "Lin Unconscious",
+    "Id": 694205067,
+    "Address": "0x1E01836",
+    "AddressBit": 0,
+    "CheckType": 0
+  },
+  {
+    "Name": "Dr Dell Joins",
+    "Id": 694205068,
+    "Address": "0x1E01836",
+    "AddressBit": 1,
+    "CheckType": 0
+  },
+  {
+    "Name": "Dr Dell Diagnosis",
+    "Id": 694205069,
+    "Address": "0x1E01836",
+    "AddressBit": 2,
+    "CheckType": 0
+  },
+  {
+    "Name": "Max Flashback",
+    "Id": 694205070,
+    "Address": "0x1E01836",
+    "AddressBit": 3,
+    "CheckType": 0
+  },
+  {
+    "Name": "Train Leaves Balance Valley",
+    "Id": 694205071,
+    "Address": "0x1E0183D",
+    "AddressBit": 0,
+    "CheckType": 0
+  },
+  {
+    "Name": "Enter Bargas Valley",
+    "Id": 694205072,
+    "Address": "0x1E01837",
+    "AddressBit": 0,
+    "CheckType": 0
+  },
+  {
+    "Name": "Spheda Tutorial",
+    "Id": 694205073,
+    "Address": "0x1E01837",
+    "AddressBit": 2,
+    "CheckType": 0
+  },
+  {
+    "Name": "Give Up on Spheda",
+    "Id": 694205074,
+    "Address": "0x1E01837",
+    "AddressBit": 3,
+    "CheckType": 0
+  },
+  {
+    "Name": "Completed Spheda",
+    "Id": 694205075,
+    "Address": "0x1E01837",
+    "AddressBit": 4,
+    "CheckType": 0
+  },
+  {
+    "Name": "Condor Returns to Nest",
+    "Id": 694205076,
+    "Address": "0x1E01837",
+    "AddressBit": 5,
+    "CheckType": 0
+  },
+  {
+    "Name": "Give Lao Chao White Windflower",
+    "Id": 694205077,
+    "Address": "0x1E01838",
+    "AddressBit": 4,
+    "CheckType": 0
+  },
+  {
+    "Name": "Return to Lin with Miracle Dumplings",
+    "Id": 694205078,
+    "Address": "0x1E01839",
+    "AddressBit": 0,
+    "CheckType": 0
+  },
+  {
+    "Name": "Memo Eater Cutscene",
+    "Id": 694205079,
+    "Address": "0x1E0183A",
+    "AddressBit": 0,
+    "CheckType": 0
+  },
+  {
+    "Name": "Memo Eater Defeated",
+    "Id": 694205080,
+    "Address": "0x1E0183A",
+    "AddressBit": 4,
+    "CheckType": 0
+  },
+  {
+    "Name": "Star Items Unlocked",
+    "Id": 694205081,
+    "Address": "0x1E0183E",
+    "AddressBit": 0,
+    "CheckType": 0
+  },
+  {
+    "Name": "Future Lin Cutscene",
+    "Id": 694205082,
+    "Address": "0x1E0183E",
+    "AddressBit": 4,
+    "CheckType": 0
+  },
+  {
+    "Name": "Bought Starglass",
+    "Id": 694205083,
+    "Address": "0x1E01811",
+    "AddressBit": 4,
+    "CheckType": 0
+  },
+  {
+    "Name": "Starglass Removed from Shop",
+    "Id": 694205084,
+    "Address": "0x1E01813",
+    "AddressBit": 3,
+    "CheckType": 0
+  },
+  {
+    "Name": "Fishing Tournament Unlocked",
+    "Id": 694205085,
+    "Address": "0x1E0183B",
+    "AddressBit": 0,
+    "CheckType": 0
+  },
+  {
+    "Name": "Visit Lighthouse Cutscene",
+    "Id": 694205086,
+    "Address": "0x1E0183B",
+    "AddressBit": 4,
+    "CheckType": 0
+  },
+  {
+    "Name": "Used Starglass",
+    "Id": 694205087,
+    "Address": "0x1E0183C",
+    "AddressBit": 0,
+    "CheckType": 0
+  },
+  {
+    "Name": "Beat Gaspard",
+    "Id": 694205088,
+    "Address": "0x1E0183C",
+    "AddressBit": 4,
+    "CheckType": 0
+  },
+  {
+    "Name": "Train Arrives at Veniccio Station",
+    "Id": 694205089,
+    "Address": "0x1E01842",
+    "AddressBit": 0,
+    "CheckType": 0
+  },
+  {
+    "Name": "Go to Veniccio",
+    "Id": 694205090,
+    "Address": "0x1E01842",
+    "AddressBit": 2,
+    "CheckType": 0
+  },
+  {
+    "Name": "Visit Paos House",
+    "Id": 694205091,
+    "Address": "0x1E01842",
+    "AddressBit": 4,
+    "CheckType": 0
+  },
+  {
+    "Name": "Veniccio Flashback",
+    "Id": 694205092,
+    "Address": "0x1E01842",
+    "AddressBit": 6,
+    "CheckType": 0
+  },
+  {
+    "Name": "Arrive at Cave of Ancient Murals",
+    "Id": 694205093,
+    "Address": "0x1E01843",
+    "AddressBit": 0,
+    "CheckType": 0
+  },
+  {
+    "Name": "Osmond Cutscene",
+    "Id": 694205094,
+    "Address": "0x1E01843",
+    "AddressBit": 4,
+    "CheckType": 0
+  },
+  {
+    "Name": "Luna Lab 1 Visited",
+    "Id": 694205095,
+    "Address": "0x1E01849",
+    "AddressBit": 0,
+    "CheckType": 0
+  },
+  {
+    "Name": "Luna Lab 2 Visited",
+    "Id": 694205096,
+    "Address": "0x1E01849",
+    "AddressBit": 1,
+    "CheckType": 0
+  },
+  {
+    "Name": "Shingala Fight Started",
+    "Id": 694205097,
+    "Address": "0x1E01844",
+    "AddressBit": 0,
+    "CheckType": 0
+  },
+  {
+    "Name": "Shell Talkie Cutscene",
+    "Id": 694205098,
+    "Address": "0x1E01845",
+    "AddressBit": 4,
+    "CheckType": 0
+  },
+  {
+    "Name": "Finny Frenzy Unlocked",
+    "Id": 694205099,
+    "Address": "0x1E01846",
+    "AddressBit": 0,
+    "CheckType": 0
+  },
+  {
+    "Name": "Oceans Rest Cavern Final Floor Reached",
+    "Id": 694205100,
+    "Address": "0x1E01846",
+    "AddressBit": 0,
+    "CheckType": 0
+  },
+  {
+    "Name": "Shigura Elder Visited",
+    "Id": 694205101,
+    "Address": "0x1E01846",
+    "AddressBit": 2,
+    "CheckType": 0
+  },
+  {
+    "Name": "Sea Dragon Medicine Given",
+    "Id": 694205102,
+    "Address": "0x1E01846",
+    "AddressBit": 6,
+    "CheckType": 0
+  },
+  {
+    "Name": "Shigura Village Fight Start",
+    "Id": 694205103,
+    "Address": "0x1E01847",
+    "AddressBit": 0,
+    "CheckType": 0
+  },
+  {
+    "Name": "Shigura Village Fight End",
+    "Id": 694205104,
+    "Address": "0x1E01847",
+    "AddressBit": 4,
+    "CheckType": 0
+  },
+  {
+    "Name": "Main Lab Cutscene",
+    "Id": 694205105,
+    "Address": "0x1E0184A",
+    "AddressBit": 0,
+    "CheckType": 0
+  },
+  {
+    "Name": "Jamings Grandson",
+    "Id": 694205106,
+    "Address": "0x1E01848",
+    "AddressBit": 0,
+    "CheckType": 0
+  },
+  {
+    "Name": "Train Leaves Veniccio",
+    "Id": 694205107,
+    "Address": "0x1E01848",
+    "AddressBit": 4,
+    "CheckType": 0
+  },
+  {
+    "Name": "Arrive at Heim Rada Station",
+    "Id": 694205108,
+    "Address": "0x1E0184E",
+    "AddressBit": 4,
+    "CheckType": 0
+  },
+  {
+    "Name": "Heim Rada First Visit",
+    "Id": 694205109,
+    "Address": "0x1E0184F",
+    "AddressBit": 0,
+    "CheckType": 0
+  },
+  {
+    "Name": "Meet Garrek",
+    "Id": 694205110,
+    "Address": "0x1E0184F",
+    "AddressBit": 4,
+    "CheckType": 0
+  },
+  {
+    "Name": "Gundorada Workshop Cutscene 1",
+    "Id": 694205111,
+    "Address": "0x1E01854",
+    "AddressBit": 4,
+    "CheckType": 0
+  },
+  {
+    "Name": "Reached Volcano Top",
+    "Id": 694205112,
+    "Address": "0x1E01850",
+    "AddressBit": 0,
+    "CheckType": 0
+  },
+  {
+    "Name": "Used Time Bomb",
+    "Id": 694205113,
+    "Address": "0x1E01850",
+    "AddressBit": 4,
+    "CheckType": 0
+  },
+  {
+    "Name": "Defeated Airship",
+    "Id": 694205114,
+    "Address": "0x1E01851",
+    "AddressBit": 0,
+    "CheckType": 0
+  },
+  {
+    "Name": "Operation Room",
+    "Id": 694205115,
+    "Address": "0x1E01851",
+    "AddressBit": 4,
+    "CheckType": 0
+  },
+  {
+    "Name": "Fire Horn Used",
+    "Id": 694205116,
+    "Address": "0x1E01851",
+    "AddressBit": 6,
+    "CheckType": 0
+  },
+  {
+    "Name": "Gundorada Workshop Cutscene 2",
+    "Id": 694205117,
+    "Address": "0x1E01855",
+    "AddressBit": 0,
+    "CheckType": 0
+  },
+  {
+    "Name": "Paznos Cutscene",
+    "Id": 694205118,
+    "Address": "0x1E01855",
+    "AddressBit": 4,
+    "CheckType": 0
+  },
+  {
+    "Name": "Demon Gaspard Defeated",
+    "Id": 694205119,
+    "Address": "0x1E01853",
+    "AddressBit": 0,
+    "CheckType": 0
+  },
+  {
+    "Name": "Paznos Counterattack",
+    "Id": 694205120,
+    "Address": "0x1E01853",
+    "AddressBit": 4,
+    "CheckType": 0
+  },
+  {
+    "Name": "Ixion Completed",
+    "Id": 694205121,
+    "Address": "0x1E0185B",
+    "AddressBit": 0,
+    "CheckType": 0
+  },
+  {
+    "Name": "Moon Flower Palace Arrival Cutscene",
+    "Id": 694205122,
+    "Address": "0x1E0185B",
+    "AddressBit": 4,
+    "CheckType": 0
+  },
+  {
+    "Name": "Sirus Fight Start",
+    "Id": 694205123,
+    "Address": "0x1E0185C",
+    "AddressBit": 0,
+    "CheckType": 0
+  },
+  {
+    "Name": "Sirus Phase 1 Defeated",
+    "Id": 694205124,
+    "Address": "0x1E0185C",
+    "AddressBit": 2,
+    "CheckType": 0
+  },
+  {
+    "Name": "Osmond Panic Cutscene",
+    "Id": 694205125,
+    "Address": "0x1E0185D",
+    "AddressBit": 0,
+    "CheckType": 0
+  },
+  {
+    "Name": "Earth Gem Obtained",
+    "Id": 694205126,
+    "Address": "0x1E0185E",
+    "AddressBit": 0,
+    "CheckType": 0
+  },
+  {
+    "Name": "Wind Gem Obtained",
+    "Id": 694205127,
+    "Address": "0x1E0185E",
+    "AddressBit": 4,
+    "CheckType": 0
+  },
+  {
+    "Name": "Water Gem Obtained",
+    "Id": 694205128,
+    "Address": "0x1E0185F",
+    "AddressBit": 0,
+    "CheckType": 0
+  },
+  {
+    "Name": "Fire Gem Obtained",
+    "Id": 694205129,
+    "Address": "0x1E0185F",
+    "AddressBit": 4,
+    "CheckType": 0
+  },
+  {
+    "Name": "Earth Gem Returned",
+    "Id": 694205130,
+    "Address": "0x1E01930",
+    "AddressBit": 0,
+    "CheckType": 0
+  },
+  {
+    "Name": "Wind Gem Returned",
+    "Id": 694205131,
+    "Address": "0x1E01930",
+    "AddressBit": 1,
+    "CheckType": 0
+  },
+  {
+    "Name": "Water Gem Returned",
+    "Id": 694205132,
+    "Address": "0x1E01930",
+    "AddressBit": 2,
+    "CheckType": 0
+  },
+  {
+    "Name": "Fire Gem Returned",
+    "Id": 694205133,
+    "Address": "0x1E01930",
+    "AddressBit": 3,
+    "CheckType": 0
+  },
+  {
+    "Name": "Chrono Union Made",
+    "Id": 694205134,
+    "Address": "0x1E01860",
+    "AddressBit": 0,
+    "CheckType": 0
+  },
+  {
+    "Name": "Ixion Heads for Moon Flower Palace",
+    "Id": 694205135,
+    "Address": "0x1E01861",
+    "AddressBit": 0,
+    "CheckType": 0
+  },
+  {
+    "Name": "Start Chapter 7",
+    "Id": 694205136,
+    "Address": "0x1E01867",
+    "AddressBit": 4,
+    "CheckType": 0
+  },
+  {
+    "Name": "Painting Cutscene",
+    "Id": 694205137,
+    "Address": "0x1E01867",
+    "AddressBit": 6,
+    "CheckType": 0
+  },
+  {
+    "Name": "Enter the Flower Room",
+    "Id": 694205138,
+    "Address": "0x1E01868",
+    "AddressBit": 0,
+    "CheckType": 0
+  },
+  {
+    "Name": "Flower in Alexandrias Room",
+    "Id": 694205139,
+    "Address": "0x1E01868",
+    "AddressBit": 4,
+    "CheckType": 0
+  },
+  {
+    "Name": "MFP Georama Cutscene",
+    "Id": 694205140,
+    "Address": "0x1E0186D",
+    "AddressBit": 0,
+    "CheckType": 0
+  },
+  {
+    "Name": "Talk to Gargoyle",
+    "Id": 694205141,
+    "Address": "0x1E01869",
+    "AddressBit": 0,
+    "CheckType": 0
+  },
+  {
+    "Name": "Password Given",
+    "Id": 694205142,
+    "Address": "0x1E01817",
+    "AddressBit": 2,
+    "CheckType": 0
   }
 ]

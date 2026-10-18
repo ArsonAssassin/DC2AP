@@ -75,6 +75,8 @@ namespace DC2AP.Helpers
                 2003 => new[] { (200, 1), (201, 1), (202, 1), (203, 1), (204, 1) }, // Coin Pack A
                 2004 => new[] { (205, 1), (206, 1), (207, 1), (208, 1), (209, 1) }, // Coin Pack B
                 2005 => new[] { (175, 2), (176, 2), (177, 2), (178, 2), (179, 2), (180, 2), (181, 2), (182, 2), (183, 1), (184, 2) }, // Crystal Pack
+                2006 => new[] { (210, 50), (211, 50), (212, 50), (213, 50), (214, 50), (215, 50), (216, 50), (217, 50), (218, 50), (219, 50), (220, 50), (221, 50), (222, 50), (223, 50), (224, 50), (225, 50), (226, 50), (227, 50), (245, 50) }, // Georama Pack A
+                2007 => new[] { (228, 25), (229, 25), (230, 25), (231, 25), (232, 25), (233, 25), (234, 25), (235, 25), (236, 25) }, // Georama Pack B
                 _ => Array.Empty<(int, int)>()
             };
         }
@@ -101,11 +103,22 @@ namespace DC2AP.Helpers
 
             var address = GetItemSlotAddress(slotNum);
             var currentSlot = Memory.ReadStruct<InventorySlot>(address);
-            var currentQuantity = currentSlot.ItemId == item.ItemId ? currentSlot.Quantity : (short)0;
 
-            var slotData = item.ToSlot();
-            slotData.Quantity = (short)(currentQuantity + quantity);
+            InventorySlot slotData;
+            if (currentSlot.ItemId == item.ItemId)
+            {
+                // Item already exists in this slot — update quantity only, preserve all other game data
+                slotData = currentSlot;
+                slotData.Quantity = (short)(currentSlot.Quantity + quantity);
+            }
+            else
+            {
+                // Empty slot — write fresh item data
+                slotData = item.ToSlot();
+                slotData.Quantity = (short)quantity;
+            }
             WriteSlot(address, slotData);
+            playerState.UpdateSlot(slotNum, slotData);
         }
         public static void RemoveItem(DarkCloud2Item item, PlayerState playerState)
         {
@@ -123,6 +136,7 @@ namespace DC2AP.Helpers
             {
                 currentSlot.Quantity = (short)(currentSlot.Quantity - 1);
                 WriteSlot(address, currentSlot);
+                playerState.UpdateSlot(slot, currentSlot);
             }
         }
         public static void RemoveAllItem(DarkCloud2Item item, PlayerState playerState)
@@ -132,6 +146,7 @@ namespace DC2AP.Helpers
             if (slot == -1) return;
             var address = GetItemSlotAddress(slot);
             WriteSlot(address, default);
+            playerState.UpdateSlot(slot, default);
         }
         public static void WriteSlot(ulong address, InventorySlot slotData)
         {
@@ -250,9 +265,39 @@ namespace DC2AP.Helpers
         }
         public static List<Enemy> ShuffleEnemies(List<Enemy> enemies)
         {
-            var newOrder = enemies.ToArray();
-            new Random().Shuffle(newOrder);
-            return newOrder.ToList();
+            // Collect cosmetic properties (model, AI, name, sound) from all enemies
+            var cosmetics = enemies.Select(e => new
+            {
+                e.Name,
+                e.ModelAI,
+                e.ModelType,
+                e.Sound,
+                e.Family,
+                e.BestiaryId,
+                e.DungeonId,
+                e.IsRidepodEnemy,
+                e.BestiarySpot,
+                e.Minions
+            }).ToArray();
+
+            new Random().Shuffle(cosmetics);
+
+            // Apply shuffled cosmetics while keeping all stats in place
+            for (int i = 0; i < enemies.Count; i++)
+            {
+                enemies[i].Name = cosmetics[i].Name;
+                enemies[i].ModelAI = cosmetics[i].ModelAI;
+                enemies[i].ModelType = cosmetics[i].ModelType;
+                enemies[i].Sound = cosmetics[i].Sound;
+                enemies[i].Family = cosmetics[i].Family;
+                enemies[i].BestiaryId = cosmetics[i].BestiaryId;
+                enemies[i].DungeonId = cosmetics[i].DungeonId;
+                enemies[i].IsRidepodEnemy = cosmetics[i].IsRidepodEnemy;
+                enemies[i].BestiarySpot = cosmetics[i].BestiarySpot;
+                enemies[i].Minions = cosmetics[i].Minions;
+            }
+
+            return enemies;
         }
         public static string GetHabitat(string id) => id switch
         {

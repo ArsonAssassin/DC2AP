@@ -143,7 +143,7 @@ public partial class App : Application
             var absMult = ((JsonElement)Client.Options["abs_multiplier"]).Deserialize<int>();
             foreach (var enemy in enemies)
             {
-                enemy.ABS *= (short)absMult;
+                enemy.ABS = (short)Math.Min(enemy.ABS * absMult, short.MaxValue);
             }
         }
         if (Client?.Options.ContainsKey("gilda_multiplier") == true)
@@ -151,7 +151,7 @@ public partial class App : Application
             var gildaMult = ((JsonElement)Client.Options["gilda_multiplier"]).Deserialize<int>();
             foreach (var enemy in enemies)
             {
-                enemy.Gilda *= (short)gildaMult;
+                enemy.Gilda = (short)Math.Min(enemy.Gilda * gildaMult, short.MaxValue);
             }
         }
         if (Client?.Options.ContainsKey("enable_enemy_randomiser") == true && ((JsonElement)Client.Options["enable_enemy_randomiser"]).Deserialize<int>() > 0)
@@ -214,11 +214,17 @@ public partial class App : Application
         var locations = GeneralHelpers.GetLocations();
         Client.LocationManager.MonitorLocationsAsync(Client.CurrentSession, locations);
 
-        var goalLocation = (Location)locations.First(x => x.Name.Contains("chapter 5 complete", StringComparison.OrdinalIgnoreCase));
-        Memory.MonitorAddressForAction<byte>(
+        var chapterGoalCount = 5;
+        if (Client?.Options.ContainsKey("chapter_goal_count") == true)
+        {
+            chapterGoalCount = ((JsonElement)Client.Options["chapter_goal_count"]).Deserialize<int>();
+        }
+
+        var goalLocation = (Location)locations.First(x => x.Name.Contains($"chapter {chapterGoalCount} complete", StringComparison.OrdinalIgnoreCase));
+        Memory.MonitorAddressBitForAction(
             goalLocation.Address,
-            () => Client.SendGoalCompletion(),
-            value => value > 4
+            goalLocation.AddressBit,
+            () => Client.SendGoalCompletion()
         );
 
 
@@ -275,6 +281,7 @@ public partial class App : Application
         }
         else if (e.Item.Id <= 2999 && e.Item.Id >= 2000)
         {
+            NotificationHelper.ShowNotification("Received " + e.Item.Name);
             RxApp.MainThreadScheduler.ScheduleAsync(async (s, t) =>
             {
                 // Reward item

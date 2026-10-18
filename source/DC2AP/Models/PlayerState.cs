@@ -69,6 +69,14 @@ namespace DC2AP.Models
             return -1;
         }
 
+        public void UpdateSlot(int slotIndex, InventorySlot slotData)
+        {
+            if (slotIndex >= 0 && slotIndex < _slots.Length)
+            {
+                _slots[slotIndex] = slotData;
+            }
+        }
+
         public event EventHandler<InventoryChangedEventArgs> InventoryChanged;
         public event PropertyChangedEventHandler PropertyChanged;
 

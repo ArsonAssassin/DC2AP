@@ -87,7 +87,12 @@ class DarkCloud2World(World):
             "Heim Rada",
             "Mount Gundor",
             "Gundorada Workshop",
-            "Moon Flower Palace"
+            "Moon Flower Palace",
+            "Chapter 6",
+            "Post-CH6 Jurak Mall",
+            "Post-CH6 Starlight Temple",
+            "Post-CH6 Lunatic Wisdom Laboratories",
+            "Post-CH6 Gundorada Workshop"
         ]})
         
 
@@ -106,7 +111,7 @@ class DarkCloud2World(World):
         create_connection("Palm Brinks", "Veniccio")
         create_connection("Palm Brinks", "Heim Rada")
         create_connection("Palm Brinks", "Moon Flower Palace")
-        
+
         create_connection("Sindain", "Rainbow Butterfly Wood")
         create_connection("Sindain", "Jurak Mall")
         
@@ -118,7 +123,13 @@ class DarkCloud2World(World):
         
         create_connection("Heim Rada", "Mount Gundor")
         create_connection("Heim Rada", "Gundorada Workshop")
-        
+
+        create_connection("Palm Brinks", "Chapter 6")
+        create_connection("Chapter 6", "Post-CH6 Jurak Mall")
+        create_connection("Chapter 6", "Post-CH6 Starlight Temple")
+        create_connection("Chapter 6", "Post-CH6 Lunatic Wisdom Laboratories")
+        create_connection("Chapter 6", "Post-CH6 Gundorada Workshop")
+
         
     # For each region, add the associated locations retrieved from the corresponding location_table
     def create_region(self, region_name, location_table) -> Region:
@@ -233,7 +244,8 @@ class DarkCloud2World(World):
         set_rule(self.multiworld.get_entrance("Palm Brinks -> Balance Valley", self.player), lambda state: state.can_reach_location("RBW: Chapter 2 Complete", self.player))   
         set_rule(self.multiworld.get_entrance("Palm Brinks -> Veniccio", self.player), lambda state: state.can_reach_location("SC: Chapter 3 Complete", self.player))   
         set_rule(self.multiworld.get_entrance("Palm Brinks -> Heim Rada", self.player), lambda state: state.can_reach_location("ORC: Chapter 4 Complete", self.player))     
-        set_rule(self.multiworld.get_entrance("Palm Brinks -> Moon Flower Palace", self.player), lambda state: state.can_reach_location("MG: Chapter 5 Complete", self.player))            
+        set_rule(self.multiworld.get_entrance("Palm Brinks -> Moon Flower Palace", self.player), lambda state: state.can_reach_location("CH6: Chapter 6 Complete", self.player))
+        set_rule(self.multiworld.get_entrance("Palm Brinks -> Chapter 6", self.player), lambda state: state.can_reach_location("MG: Chapter 5 Complete", self.player) and state.has("Star Key", self.player))            
                   
         set_rule(self.multiworld.get_entrance("Sindain -> Jurak Mall", self.player), lambda state: state.has("Grape Juice", self.player) and state.can_reach_location("S: Grape Juice", self.player)) 
         
@@ -262,10 +274,10 @@ class DarkCloud2World(World):
         set_rule(self.multiworld.get_location("RBW: Chapter 2 Complete", self.player), lambda state: state.can_reach_location("RBW: Rainbow Butterfly", self.player))
            
         # RBW Star path floors
-        set_rule(self.multiworld.get_location("RBW: Floor 9 - Looking for the Earth Gem", self.player), lambda state: state.can_reach_location("RBW: Chapter 2 Complete", self.player) and state.has("Star Key", self.player))
-        set_rule(self.multiworld.get_location("RBW: Floor 10 - Something Rare Here!", self.player), lambda state: state.can_reach_location("RBW: Floor 9 - Looking for the Earth Gem", self.player) and state.has("Star Key", self.player))
-        set_rule(self.multiworld.get_location("RBW: Floor 11 - Scary Tree", self.player), lambda state: state.can_reach_location("RBW: Floor 10 - Something Rare Here!", self.player) and state.has("Star Key", self.player))
-        set_rule(self.multiworld.get_location("RBW: Trentos", self.player), lambda state: state.can_reach_location("RBW: Floor 11 - Scary Tree", self.player) and state.has("Star Key", self.player))
+        set_rule(self.multiworld.get_location("RBW: Floor 9 - Looking for the Earth Gem", self.player), lambda state: True)
+        set_rule(self.multiworld.get_location("RBW: Floor 10 - Something Rare Here!", self.player), lambda state: state.can_reach_location("RBW: Floor 9 - Looking for the Earth Gem", self.player))
+        set_rule(self.multiworld.get_location("RBW: Floor 11 - Scary Tree", self.player), lambda state: state.can_reach_location("RBW: Floor 10 - Something Rare Here!", self.player))
+        set_rule(self.multiworld.get_location("RBW: Trentos", self.player), lambda state: state.can_reach_location("RBW: Floor 11 - Scary Tree", self.player))
     
         # Chapter 3 floors
         set_rule(self.multiworld.get_location("SC: Floor 1 - Headlong Dash", self.player), lambda state: state.can_reach_location("RBW: Chapter 2 Complete", self.player))
@@ -290,10 +302,10 @@ class DarkCloud2World(World):
         set_rule(self.multiworld.get_location("SC: Chapter 3 Complete", self.player), lambda state: state.can_reach_location("SC: Evil Flame and Gaspard", self.player))
         
         # SC Star path floors
-        set_rule(self.multiworld.get_location("SC: Floor 17 - Looking for the Wind Gem", self.player), lambda state: state.can_reach_location("SC: Chapter 3 Complete", self.player) and state.has("Star Key", self.player))
-        set_rule(self.multiworld.get_location("SC: Floor 18 - Evil Spirit in the Valley", self.player), lambda state: state.can_reach_location("SC: Floor 17 - Looking for the Wind Gem", self.player) and state.has("Star Key", self.player))
-        set_rule(self.multiworld.get_location("SC: Floor 19 - Brave Warriors in the Valley", self.player), lambda state: state.can_reach_location("SC: Floor 18 - Evil Spirit in the Valley", self.player) and state.has("Star Key", self.player))
-        set_rule(self.multiworld.get_location("SC: Lapis Garter", self.player), lambda state: state.can_reach_location("SC: Floor 19 - Brave Warriors in the Valley", self.player) and state.has("Star Key", self.player))
+        set_rule(self.multiworld.get_location("SC: Floor 17 - Looking for the Wind Gem", self.player), lambda state: True)
+        set_rule(self.multiworld.get_location("SC: Floor 18 - Evil Spirit in the Valley", self.player), lambda state: state.can_reach_location("SC: Floor 17 - Looking for the Wind Gem", self.player))
+        set_rule(self.multiworld.get_location("SC: Floor 19 - Brave Warriors in the Valley", self.player), lambda state: state.can_reach_location("SC: Floor 18 - Evil Spirit in the Valley", self.player))
+        set_rule(self.multiworld.get_location("SC: Lapis Garter", self.player), lambda state: state.can_reach_location("SC: Floor 19 - Brave Warriors in the Valley", self.player))
 
         # Chapter 4 floors
         set_rule(self.multiworld.get_location("ORC: Floor 1 - Pirates!", self.player), lambda state: state.can_reach_location("SC: Chapter 3 Complete", self.player))
@@ -315,10 +327,10 @@ class DarkCloud2World(World):
         set_rule(self.multiworld.get_location("ORC: Chapter 4 Complete", self.player), lambda state: state.can_reach_location("ORC: Dr. Jaming", self.player))        
 
         # ORC Star path floors
-        set_rule(self.multiworld.get_location("ORC: Floor 15 - Looking for the Water Gem", self.player), lambda state: state.can_reach_location("ORC: Chapter 4 Complete", self.player))
-        set_rule(self.multiworld.get_location("ORC: Floor 16 - Pirates' Revenge", self.player), lambda state: state.can_reach_location("ORC: Floor 15 - Looking for the Water Gem", self.player) and state.has("Star Key", self.player))
-        set_rule(self.multiworld.get_location("ORC: Floor 17 - Death Ocean", self.player), lambda state: state.can_reach_location("ORC: Floor 16 - Pirates' Revenge", self.player) and state.has("Star Key", self.player))
-        set_rule(self.multiworld.get_location("ORC: Sea Dragon", self.player), lambda state: state.can_reach_location("ORC: Floor 17 - Death Ocean", self.player) and state.has("Star Key", self.player))
+        set_rule(self.multiworld.get_location("ORC: Floor 15 - Looking for the Water Gem", self.player), lambda state: True)
+        set_rule(self.multiworld.get_location("ORC: Floor 16 - Pirates' Revenge", self.player), lambda state: state.can_reach_location("ORC: Floor 15 - Looking for the Water Gem", self.player))
+        set_rule(self.multiworld.get_location("ORC: Floor 17 - Death Ocean", self.player), lambda state: state.can_reach_location("ORC: Floor 16 - Pirates' Revenge", self.player))
+        set_rule(self.multiworld.get_location("ORC: Sea Dragon", self.player), lambda state: state.can_reach_location("ORC: Floor 17 - Death Ocean", self.player))
         
         # Chapter 5 floors
         set_rule(self.multiworld.get_location("MG: Floor 1 - Battle with Griffon's Army", self.player), lambda state: state.can_reach_location("ORC: Chapter 4 Complete", self.player))
@@ -341,11 +353,14 @@ class DarkCloud2World(World):
         set_rule(self.multiworld.get_location("MG: Gaspard", self.player), lambda state: state.can_reach_location("MG: Floor 16 - Road to the River of Flames", self.player) and state.has("Fire Horn", self.player))
         set_rule(self.multiworld.get_location("MG: Chapter 5 Complete", self.player), lambda state: state.can_reach_location("MG: Gaspard", self.player))        
         # MG Star path floors
-        set_rule(self.multiworld.get_location("MG: Floor 17 - Looking for the Fire Gem", self.player), lambda state: state.can_reach_location("MG: Chapter 5 Complete", self.player) and state.has("Star Key", self.player))
-        set_rule(self.multiworld.get_location("MG: Floor 18 - Explosive Hot Spring", self.player), lambda state: state.can_reach_location("MG: Floor 17 - Looking for the Fire Gem", self.player) and state.has("Star Key", self.player))
-        set_rule(self.multiworld.get_location("MG: Floor 19 - Crazy Mountain", self.player), lambda state: state.can_reach_location("MG: Floor 18 - Explosive Hot Spring", self.player) and state.has("Star Key", self.player))
-        set_rule(self.multiworld.get_location("MG: Inferno", self.player), lambda state: state.can_reach_location("MG: Floor 19 - Crazy Mountain", self.player) and state.has("Star Key", self.player))
-        
+        set_rule(self.multiworld.get_location("MG: Floor 17 - Looking for the Fire Gem", self.player), lambda state: True)
+        set_rule(self.multiworld.get_location("MG: Floor 18 - Explosive Hot Spring", self.player), lambda state: state.can_reach_location("MG: Floor 17 - Looking for the Fire Gem", self.player))
+        set_rule(self.multiworld.get_location("MG: Floor 19 - Crazy Mountain", self.player), lambda state: state.can_reach_location("MG: Floor 18 - Explosive Hot Spring", self.player))
+        set_rule(self.multiworld.get_location("MG: Inferno", self.player), lambda state: state.can_reach_location("MG: Floor 19 - Crazy Mountain", self.player))
+
+        # Chapter 6 completion
+        set_rule(self.multiworld.get_location("CH6: Chapter 6 Complete", self.player), lambda state: state.has("Earth Gem", self.player) and state.has("Wind Gem", self.player) and state.has("Water Gem", self.player) and state.has("Fire Gem", self.player) and state.can_reach_location("RBW: Trentos", self.player) and state.can_reach_location("SC: Lapis Garter", self.player) and state.can_reach_location("ORC: Sea Dragon", self.player) and state.can_reach_location("MG: Inferno", self.player))
+
         # Moon Flower Palace floors
         set_rule(self.multiworld.get_location("MFP: Floor 1 - Ancient Wind", self.player), lambda state: state.can_reach_location("MG: Chapter 5 Complete", self.player))
         set_rule(self.multiworld.get_location("MFP: Floor 2 - Card Warriors Gather", self.player), lambda state: state.can_reach_location("MFP: Floor 1 - Ancient Wind", self.player))
@@ -373,8 +388,21 @@ class DarkCloud2World(World):
         set_rule(self.multiworld.get_location("MFP: Floor 22 - Wandering Knight's Soul", self.player), lambda state: state.can_reach_location("MFP: Floor 21 - Elemental Party", self.player))
         set_rule(self.multiworld.get_location("MFP: Floor 23 - Beware Carelessness", self.player), lambda state: state.can_reach_location("MFP: Floor 22 - Wandering Knight's Soul", self.player))
         set_rule(self.multiworld.get_location("MFP: Floor 24 - Final Battle", self.player), lambda state: state.can_reach_location("MFP: Floor 23 - Beware Carelessness", self.player))
-        
-        self.multiworld.completion_condition[self.player] = lambda state: state.can_reach_location("MG: Chapter 5 Complete", self.player)
+
+        # Chapter 7 completion
+        set_rule(self.multiworld.get_location("MFP: Chapter 7 Complete", self.player), lambda state: state.can_reach_location("MFP: Floor 24 - Final Battle", self.player))
+
+        chapter_goal_locations = {
+            1: "UWC: Chapter 1 Complete",
+            2: "RBW: Chapter 2 Complete",
+            3: "SC: Chapter 3 Complete",
+            4: "ORC: Chapter 4 Complete",
+            5: "MG: Chapter 5 Complete",
+            6: "CH6: Chapter 6 Complete",
+            7: "MFP: Chapter 7 Complete",
+        }
+        goal_location = chapter_goal_locations[self.options.chapter_goal_count.value]
+        self.multiworld.completion_condition[self.player] = lambda state, loc=goal_location: state.can_reach_location(loc, self.player)
 
 
     def fill_slot_data(self) -> Dict[str, object]:
@@ -410,10 +438,12 @@ class DarkCloud2World(World):
                 #"georamasanity": self.options.georamasanity.value,
                 #"photosanity": self.options.photosanity.value,
                 #"inventionsanity": self.options.inventionsanity.value,
-                #"resource_pack_count": self.options.resource_pack_count.value,
-                #"weapon_upgrade_pack_count": self.options.weapon_upgrade_pack_count.value,
-                #"element_pack_count": self.options.element_pack_count.value,
-                #"chapter_goal_count": self.options.chapter_goal_count.value,
+                "essential_pack_count": self.options.essential_pack_count.value,
+                "gem_pack_count": self.options.gem_pack_count.value,
+                "crystal_pack_count": self.options.crystal_pack_count.value,
+                "coin_pack_count": self.options.coin_pack_count.value,
+                "georama_resource_pack_count": self.options.georama_resource_pack_count.value,
+                "chapter_goal_count": self.options.chapter_goal_count.value,
                 "abs_multiplier": self.options.abs_multiplier.value,
                 "gilda_multiplier": self.options.gilda_multiplier.value,
                 "guaranteed_items": self.options.guaranteed_items.value,

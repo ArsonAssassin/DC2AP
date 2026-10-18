@@ -2,6 +2,7 @@
 using Archipelago.Core.Util;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -68,7 +69,13 @@ namespace DC2AP.Models
         [MemoryOffset(0x10)]
         public short ItemQuantity { get; set; }
 
-        [MemoryOffset(0x48)]
+        [MemoryOffset(0x12)]
+        public short CrystalAttack { get; set; }
+
+        [MemoryOffset(0x26)]
+        public short CrystalIconId { get; set; }
+
+        [MemoryOffset(0x4A)]
         public short CrystalQuantity { get; set; }
 
         public short Quantity
@@ -84,6 +91,8 @@ namespace DC2AP.Models
         }
 
         // ===== FISH PROPERTIES =====
+        [MemoryOffset(0x10, stringLength: 20)]
+        public string FishName { get; set; }
         [MemoryOffset(0x28)]
         public short FishSize { get; set; }
 
@@ -137,6 +146,9 @@ namespace DC2AP.Models
         [MemoryOffset(0x34)]
         public short Scale { get; set; }
 
+        [MemoryOffset(0x38)]
+        public short WeaponAbilities { get; set; }
+
         [MemoryOffset(0x3C)]
         public short SynthesisPoints { get; set; }
 
@@ -167,24 +179,42 @@ namespace DC2AP.Models
                 ItemId = ItemId,
                 RawCategory = RawCategory,
                 NameChangeFlag = NameChangeFlag,
-                MaxDurability = MaxDurability,
-                CurrentDurability = CurrentDurability,
-                RequiredExp = RequiredExp,
-                CurrentExp = CurrentExp,
-                Level = Level,
-                Attack = Attack,
-                Durable = Durable,
-                Flame = Flame,
-                Chill = Chill,
-                Lightning = Lightning,
-                Cyclone = Cyclone,
-                Smash = Smash,
-                Exorcism = Exorcism,
-                Beast = Beast,
-                Scale = Scale,
-                SynthesisPoints = SynthesisPoints,
-                CrystalQuantity = CrystalQuantity,
             };
+
+            switch (Type)
+            {
+                case DarkCloud2ItemType.Weapon:
+                case DarkCloud2ItemType.Fish:
+                    slot.MaxDurability = MaxDurability;
+                    slot.CurrentDurability = CurrentDurability;
+                    slot.RequiredExp = RequiredExp;
+                    slot.CurrentExp = CurrentExp;
+                    slot.Level = Level;
+                    slot.Attack = Attack;
+                    slot.Durable = Durable;
+                    slot.Flame = Flame;
+                    slot.Chill = Chill;
+                    slot.Lightning = Lightning;
+                    slot.Cyclone = Cyclone;
+                    slot.Smash = Smash;
+                    slot.Exorcism = Exorcism;
+                    slot.Beast = Beast;
+                    slot.Scale = Scale;
+                    slot.WeaponAbilities = WeaponAbilities;
+                    slot.SynthesisPoints = SynthesisPoints;
+                    break;
+
+                case DarkCloud2ItemType.Crystal:
+                    slot.CrystalQuantity = CrystalQuantity;
+                    slot.CrystalAttack = CrystalAttack;
+                    slot.CrystalIconId = CrystalIconId;
+                    break;
+
+                default:
+                    slot.ItemQuantity = ItemQuantity;
+                    break;
+            }
+
             return slot;
         }
     }

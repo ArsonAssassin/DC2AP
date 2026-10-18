@@ -49,8 +49,18 @@ namespace DC2AP.Models
         // ===== FISH =====
         [FieldOffset(0x28)] public short FishSize;
 
+        // ===== WEAPON ABILITIES (bit flags) =====
+        [FieldOffset(0x38)] public short WeaponAbilities;
+
         // ===== CRYSTAL =====
-        [FieldOffset(0x48)] public short CrystalQuantity;
+        [FieldOffset(0x12)] public short CrystalAttack;
+        [FieldOffset(0x26)] public short CrystalIconId;
+        [FieldOffset(0x4A)] public short CrystalQuantity;
+
+        // ===== RIDEPOD WEAPON (Type 5 — different layout from regular weapons) =====
+        [FieldOffset(0x18)] public float RidepodMaxDurability;   // overlaps RequiredExp
+        [FieldOffset(0x1C)] public float RidepodCurrDurability;  // overlaps CurrentExp
+        [FieldOffset(0x20)] public short RidepodAttack;          // overlaps Level
 
         // ===== HELPERS =====
 
@@ -113,7 +123,13 @@ namespace DC2AP.Models
                 item.Exorcism = Exorcism;
                 item.Beast = Beast;
                 item.Scale = Scale;
+                item.WeaponAbilities = WeaponAbilities;
                 item.SynthesisPoints = SynthesisPoints;
+            }
+            else if (Type == DarkCloud2ItemType.Crystal)
+            {
+                item.CrystalAttack = CrystalAttack;
+                item.CrystalIconId = CrystalIconId;
             }
 
             // Resolve name from item list; weapons keep their in-memory name

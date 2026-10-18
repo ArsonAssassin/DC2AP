@@ -17,7 +17,9 @@ namespace DC2AP.Models
         [MemoryOffset(0x40)]
         public int ModelType { get; set; }
         [MemoryOffset(0x044)]
-        public int Sound { get; set; }
+        public short Sound { get; set; }
+        [MemoryOffset(0x046)]
+        public short Unknown0 { get; set; }
         [MemoryOffset(0x48)]
         public int Unknown1 { get; set; }
 
@@ -43,7 +45,7 @@ namespace DC2AP.Models
         public string Unknown3 { get; set; }
 
         [MemoryOffset(0x62)]
-        public short Damage { get; set; }
+        public short Attack { get; set; }
 
         [MemoryOffset(0x64)]
         public short Defense { get; set; }
@@ -51,13 +53,66 @@ namespace DC2AP.Models
         [MemoryOffset(0x66)]
         public short BossFlag { get; set; }
 
+
+        [MemoryOffset(0x68)]
+        public short FireWeakness { get; set; }
+
+        [MemoryOffset(0x6A)]
+        public short ChillWeakness { get; set; }
+
+        [MemoryOffset(0x6C)]
+        public short LightningWeakness { get; set; }
+
+        [MemoryOffset(0x6E)]
+        public short CycloneWeakness { get; set; }
+
+        [MemoryOffset(0x70)]
+        public short SmashWeakness { get; set; }
+
+        [MemoryOffset(0x72)]
+        public short ExorcismWeakness { get; set; }
+
+        [MemoryOffset(0x74)]
+        public short BeastWeakness { get; set; }
+
+        [MemoryOffset(0x76)]
+        public short ScaleWeakness { get; set; }
+
+
         [MemoryOffset(0x68, stringLength: 16)]
         public string Weaknesses { get; set; }
+
+        [MemoryOffset(0x78)]
+        public short WrenchEffectiveness { get; set; }
+        [MemoryOffset(0x7A)]
+        public short GunEffectiveness { get; set; }
+        [MemoryOffset(0x7C)]
+        public short LaserEffectiveness { get; set; }
+        [MemoryOffset(0x7E)]
+        public short GrenadeEffectiveness { get; set; }
+        [MemoryOffset(0x80)]
+        public short SwordEffectiveness { get; set; }
+        [MemoryOffset(0x82)]
+        public short MagicEffectiveness { get; set; }
+        [MemoryOffset(0x84)]
+        public short Ridepod1Effectiveness { get; set; }
+        [MemoryOffset(0x86)]
+        public short Ridepod2Effectiveness { get; set; }
+        [MemoryOffset(0x88)]
+        public short Ridepod3Effectiveness { get; set; }
+        [MemoryOffset(0x8A)]
+        public short Ridepod4Effectiveness { get; set; }
+        [MemoryOffset(0x8C)]
+        public short MonsterEffectiveness { get; set; }
+        [MemoryOffset(0x8E)]
+        public short ItemEffectiveness { get; set; }
 
         [MemoryOffset(0x78, stringLength: 24)]
         public string Effectiveness { get; set; }
 
-        [MemoryOffset(0x90, stringLength: 4)]
+        [MemoryOffset(0x90)]
+        public short BestiaryId { get; set; }
+        [MemoryOffset(0x92, stringLength: 2)]
         public string Unknown4 { get; set; }
 
         [MemoryOffset(0x94)]
